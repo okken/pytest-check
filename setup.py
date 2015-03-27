@@ -17,10 +17,9 @@ setup(
   maintainer_email = 'brian@pythontesting.net',
   url = 'https://github.com/okken/pytest-expect', 
   #url = 'http://pythontesting.net/pytest-expect', 
-  #download_url = 'https://github.com/okken/pytest-expect/tarball/0.1',
   license='MIT',
   keywords = ['testing', 'pytest', 'assert'], 
-  install_requires=['pytest>=2.5'],
+  install_requires=['pytest>=2.7'],
   classifiers = [
                  'Intended Audience :: Developers',
                  'Topic :: Software Development :: Testing',
