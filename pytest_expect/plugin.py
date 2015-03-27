@@ -22,9 +22,10 @@ def _log_failure(node, msg=''):
         node._failed_expect = []
     node._failed_expect.append(entry)
 
-@pytest.mark.tryfirst
-def pytest_runtest_makereport(item, call, __multicall__):
-    report = __multicall__.execute()
+@pytest.mark.hookwrapper
+def pytest_runtest_makereport(item, call):
+    outcome = yield
+    report = outcome.get_result()
     if (call.when == "call") and hasattr(item, '_failed_expect'):
         summary = 'Failed Expectations:%s' % len(item._failed_expect)
         item._failed_expect.append(summary)
@@ -33,5 +34,4 @@ def pytest_runtest_makereport(item, call, __multicall__):
         else:
             report.longrepr = '\n'.join(item._failed_expect)
         report.outcome = "failed"
-    return report
 
