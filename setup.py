@@ -13,7 +13,7 @@ def read(fname):
 
 setup(
     name='pytest-check',
-    version='0.2.0',
+    version='0.2.1',
     author='Brian Okken',
     author_email='brian@pythontesting.net',
     maintainer='Brian Okken',

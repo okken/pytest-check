@@ -164,9 +164,9 @@ class Check:
         funcname = ''
         while 'test_' not in funcname:
             (filename, line, funcname, context) = self.get_full_context(level)
-            pseudo_trace.append('  {}, line {}, in {}() -> {}'.format(filename, line, funcname, contxt))
+            pseudo_trace.append('  {}, line {}, in {}() -> {}'.format(filename, line, funcname, context))
             level += 1
         pseudo_trace_str = '\n'.join(reversed(pseudo_trace))
-        entry = 'FAILURE: {}\n{pseudo_trace_str}\n{exc_info}'.format(msg if msg else "", pseudo_trace_str, exc_info)
+        entry = 'FAILURE: {}\n{}\n{}'.format(msg if msg else "", pseudo_trace_str, exc_info)
         self.node.failures.append(entry)
 
