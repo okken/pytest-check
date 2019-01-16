@@ -50,8 +50,6 @@ Usage
 Test results:
 
 .. code-block:: bash
-    ================================== FAILURES ==================================
-    __________________________________ test_one __________________________________
     FAILURE: Must be equal part one
       test_one.py, line 6, in test_one() -> check.equal(1, 2, 'Must be equal part one')
     AssertionError
@@ -64,6 +62,7 @@ Test results:
     Failed Checks: 2
 
 **Or use some test case class**
+
 For example test case code:
 
 .. code-block:: python
@@ -75,9 +74,11 @@ For example test case code:
 
         check = None
 
-        @pytest.fixture(scope='function', autouse=True)
+        @pytest.yield_fixture(scope='function', autouse=True)
         def setup(self, check):
             self.check = check
+            yield self.check
+            self.check = None
 
 
 For example test code:
@@ -96,8 +97,6 @@ For example test code:
 Test results:
 
 .. code-block:: bash
-    ================================== FAILURES ==================================
-    ______________________________ TestTwo.test_two ______________________________
     FAILURE: Must be equal, functional is bad
       test_one.py, line 13, in test_two() -> self.check.equal(1, 2, 'Must be equal, functional is bad')
     AssertionError
@@ -107,6 +106,7 @@ Test results:
 
 
 **Exist validations:**
+
 - check.equal *a == b*
 - check.not_equal *a != b*
 - check.is_true *bool(x) is True*
