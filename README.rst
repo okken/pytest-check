@@ -49,7 +49,8 @@ Usage
 
 Test results:
 
-.. code-block:: bash
+.. code-block:: python
+
     FAILURE: Must be equal part one
       test_one.py, line 6, in test_one() -> check.equal(1, 2, 'Must be equal part one')
     AssertionError
@@ -96,7 +97,8 @@ For example test code:
 
 Test results:
 
-.. code-block:: bash
+.. code-block:: python
+
     FAILURE: Must be equal, functional is bad
       test_one.py, line 13, in test_two() -> self.check.equal(1, 2, 'Must be equal, functional is bad')
     AssertionError
