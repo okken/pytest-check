@@ -107,23 +107,23 @@ Test results:
 
 **Exist validations:**
 
-- check.equal *a == b*
-- check.not_equal *a != b*
-- check.is_true *bool(x) is True*
-- check.is_false *bool(x) is False*
-- check.is_not *a is not b*
-- check.is_none *x is None*
-- check.is_not_none *x is not None*
-- check.is_in *a in b*
-- check.not_in *a not in b*
-- check.is_instance *isinstance(a, b)*
-- check.not_is_instance *not isinstance(a, b)*
-- check.almost_equal *a == pytest.approx(b, rel, abs)* see at: `pytest.approx <https://docs.pytest.org/en/latest/reference.html#pytest-approx>`_
-- check.not_almost_equal *a != pytest.approx(b, rel, abs)* see at: `pytest.approx <https://docs.pytest.org/en/latest/reference.html#pytest-approx>`_
-- check.greater *a > b*
-- check.greater_equal *a >= b*
-- check.less *a < b*
-- check.less_equal *a <= b*
+- **check.equal** - *a == b*
+- **check.not_equal** - *a != b*
+- **check.is_true** - *bool(x) is True*
+- **check.is_false** - *bool(x) is False*
+- **check.is_not** - *a is not b*
+- **check.is_none** - *x is None*
+- **check.is_not_none** - *x is not None*
+- **check.is_in** - *a in b*
+- **check.not_in** - *a not in b*
+- **check.is_instance** - *isinstance(a, b)*
+- **check.not_is_instance** - *not isinstance(a, b)*
+- **check.almost_equal** - *a == pytest.approx(b, rel, abs)* see at: `pytest.approx <https://docs.pytest.org/en/latest/reference.html#pytest-approx>`_
+- **check.not_almost_equal** - *a != pytest.approx(b, rel, abs)* see at: `pytest.approx <https://docs.pytest.org/en/latest/reference.html#pytest-approx>`_
+- **check.greater** - *a > b*
+- **check.greater_equal** - *a >= b*
+- **check.less** - *a < b*
+- **check.less_equal** - *a <= b*
 
 
 Contributing
