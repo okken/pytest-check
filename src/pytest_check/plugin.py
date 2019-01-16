@@ -6,6 +6,7 @@ import sys
 import inspect
 import os
 
+
 @pytest.fixture()
 def check(request):
     return Check(request.node)
@@ -45,61 +46,61 @@ class Check:
         except AssertionError:
             self.log_failure(msg)
 
-    def not_equal(self, a, b):
+    def not_equal(self, a, b, msg=None):
         try:
             assert a != b
         except AssertionError:
             self.log_failure(msg)
 
-    def is_true(self, x):
+    def is_true(self, x, msg=None):
         try:
             assert bool(x) is True
         except AssertionError:
             self.log_failure(msg)
 
-    def is_false(self, x):
+    def is_false(self, x, msg=None):
         try:
             assert bool(x) is False
         except AssertionError:
             self.log_failure(msg)
 
-    def is_not(self, a, b):
+    def is_not(self, a, b, msg=None):
         try:
             assert a is not b
         except AssertionError:
             self.log_failure(msg)
 
-    def is_none(self, x):
+    def is_none(self, x, msg=None):
         try:
             assert x is None
         except AssertionError:
             self.log_failure(msg)
 
-    def is_not_none(self, x):
+    def is_not_none(self, x, msg=None):
         try:
             assert x is not None
         except AssertionError:
             self.log_failure(msg)
 
-    def is_in(self, a, b):
+    def is_in(self, a, b, msg=None):
         try:
             assert a in b
         except AssertionError:
             self.log_failure(msg)
 
-    def not_in(self, a, b):
+    def not_in(self, a, b, msg=None):
         try:
             assert a not in b
         except AssertionError:
             self.log_failure(msg)
 
-    def is_instance(self, a, b):
+    def is_instance(self, a, b, msg=None):
         try:
             assert isinstance(a, b)
         except AssertionError:
             self.log_failure(msg)
 
-    def not_is_instance(self, a, b):
+    def not_is_instance(self, a, b, msg=None):
         try:
             assert not isinstance(a, b)
         except AssertionError:
@@ -111,7 +112,7 @@ class Check:
         See https://docs.pytest.org/en/latest/builtin.html#pytest.approx
         """
         try:
-            assert a == approx(b, rel, abs)
+            assert a == pytest.approx(b, rel, abs)
         except AssertionError:
             self.log_failure(msg)
 
@@ -121,7 +122,7 @@ class Check:
         See https://docs.pytest.org/en/latest/builtin.html#pytest.approx
         """
         try:
-            assert a != approx(b, rel, abs)
+            assert a != pytest.approx(b, rel, abs)
         except AssertionError:
             self.log_failure(msg)
 
