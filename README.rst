@@ -9,27 +9,17 @@ A pytest plugin that allows multiple failures per test.
 This `Pytest`_ plugin was a rewrite and a rename of `pytest-expect`_.
 
 
-Features
---------
-
-* TODO
-
-
-Requirements
-------------
-
-- pytest>=3.1.1
-
 
 Installation
 ------------
 
-Eventually, you'll be able to install "pytest-check" via `pip`_ from `PyPI`_:
+From PPI:
 
 .. code-block:: bash
+
     $ pip install pytest-check
 
-But for now, you'll have to install it from github.
+Or from github.
 
 .. code-block:: bash
     $ pip install git+https://github.com/okken/pytest-check
@@ -38,73 +28,43 @@ But for now, you'll have to install it from github.
 Usage
 -----
 
-**Use as pytest fixture**
-
-.. code-block:: python
-
-    def test_one(check):
-        check.equal(1, 2, msg='Must be equal part one')
-        check.equal(1, 3)  # msg None by default
-
-
-Test results:
-
-.. code-block:: python
-
-    FAILURE: Must be equal part one
-      test_one.py, line 6, in test_one() -> check.equal(1, 2, 'Must be equal part one')
-    AssertionError
-
-    FAILURE:
-      test_one.py, line 7, in test_one() -> check.equal(1, 3, 'Must be equal part two')
-    AssertionError
-
-    ------------------------------------------------------------
-    Failed Checks: 2
-
-**Or use some test case class**
-
 For example test case code:
 
 .. code-block:: python
 
-    import pytest
+    import pytest_check as check
 
 
-    class TestCase:
-
-        check = None
-
-        @pytest.yield_fixture(scope='function', autouse=True)
-        def setup(self, check):
-            self.check = check
-            yield self.check
-            self.check = None
-
-
-For example test code:
-
-.. code-block:: python
-
-    from base import TestCase
-
-
-    class TestTwo(TestCase):
-
-        def test_two(self):
-            self.check.equal(1, 2, 'two test')
-
+    def test_example():
+        a = 1
+        b = 2
+        c = [2, 4, 6]
+        check.greater(a, b)
+        check.less_equal(b, a)
+        check.is_in(a, c, "Is 1 in the list")
+        check.is_not_in(b, c, "make sure 2 isn't in list")
 
 Test results:
 
-.. code-block:: python
+.. code-block:: bash
 
-    FAILURE: Must be equal, functional is bad
-      test_one.py, line 13, in test_two() -> self.check.equal(1, 2, 'Must be equal, functional is bad')
-    AssertionError
-
+    =================================== FAILURES ===================================
+    _________________________________ test_example _________________________________
+    FAILURE:
+    assert 1 > 2
+      test_check.py, line 14, in test_example() -> check.greater(a, b)
+    FAILURE:
+    assert 2 <= 1
+      test_check.py, line 15, in test_example() -> check.less_equal(b, a)
+    FAILURE: Is 1 in the list
+    assert 1 in [2, 4, 6]
+      test_check.py, line 16, in test_example() -> check.is_in(a, c, "Is 1 in the list")
+    FAILURE: make sure 2 isn't in list
+    assert 2 not in [2, 4, 6]
+      test_check.py, line 17, in test_example() -> check.is_not_in(b, c, "make sure 2 isn't in list")
     ------------------------------------------------------------
-    Failed Checks: 1
+    Failed Checks: 4
+    =========================== 1 failed in 0.11 seconds ===========================
 
 
 **Exist validations:**
@@ -113,7 +73,6 @@ Test results:
 - **check.not_equal** - *a != b*
 - **check.is_true** - *bool(x) is True*
 - **check.is_false** - *bool(x) is False*
-- **check.is_not** - *a is not b*
 - **check.is_none** - *x is None*
 - **check.is_not_none** - *x is not None*
 - **check.is_in** - *a in b*

@@ -3,3 +3,7 @@
 .tox
 dist/
 __pycache__
+.coverage
+.idea/
+cov_html/
+venv/
