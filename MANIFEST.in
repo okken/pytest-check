@@ -1,5 +1,5 @@
-include LICENSE
-include README.rst
+include LICENSE.txt
+include README.md
 
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]

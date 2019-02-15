@@ -13,7 +13,7 @@ def read_readme():
 
 setup(
     name="pytest-check",
-    version="0.3.0",
+    version="0.3.1",
     author="Brian Okken",
     author_email="brian@pythontesting.net",
     maintainer="Brian Okken",
