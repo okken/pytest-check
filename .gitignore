@@ -7,3 +7,5 @@ __pycache__
 .idea/
 cov_html/
 venv/
+README.html
+build/

@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
-import codecs
+from os import path
 from setuptools import setup, find_packages
 
 
-def read(fname):
-    file_path = os.path.join(os.path.dirname(__file__), fname)
-    return codecs.open(file_path, encoding="utf-8").read()
+def read_readme():
+    this_directory = path.abspath(path.dirname(__file__))
+    with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
+        return f.read()
 
 
 setup(
@@ -21,7 +21,8 @@ setup(
     license="MIT",
     url="https://github.com/okken/pytest-check",
     description="A pytest plugin that allows multiple failures per test.",
-    long_description=read("README.rst"),
+    long_description=read_readme(),
+    long_description_content_type='text/markdown',
     packages=find_packages(where="src"),
     package_dir={"": "src"},
     install_requires=["pytest>=3.1.1"],
