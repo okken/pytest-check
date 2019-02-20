@@ -26,7 +26,7 @@ $ pip install git+https://github.com/okken/pytest-check
 
 ## Usage
 
-For example test case code:
+Example using import:
 
 ```
 import pytest_check as check
@@ -41,6 +41,7 @@ def test_example():
     check.is_in(a, c, "Is 1 in the list")
     check.is_not_in(b, c, "make sure 2 isn't in list")
 ```
+
 
 Test results:
 
@@ -64,6 +65,21 @@ Failed Checks: 4
 =========================== 1 failed in 0.11 seconds ===========================
 ```
 
+
+Example using fixture:
+
+```
+def test_example(check):
+    a = 1
+    b = 2
+    c = [2, 4, 6]
+    check.greater(a, b)
+    check.less_equal(b, a)
+    check.is_in(a, c, "Is 1 in the list")
+    check.is_not_in(b, c, "make sure 2 isn't in list")
+```
+
+
 ## validation functions
 
 - **check.equal** - *a == b*
@@ -82,6 +98,42 @@ Failed Checks: 4
 - **check.greater_equal** - *a >= b*
 - **check.less** - *a < b*
 - **check.less_equal** - *a <= b*
+
+## Defining your own check functions
+
+The `@check_func` decorator allows you to wrap any test helper that has an assert
+statement in it to be a non-blocking assert function.
+
+
+```
+from pytest_check import check_func
+
+@check_func
+def is_four(a):
+    assert a == 4
+
+def test_all_four():
+    is_four(1)
+    is_four(2)
+    is_four(3)
+    is_four(4)
+```
+
+The above will result in:
+
+```
+...
+________________________________ test_all_four _________________________________
+FAILURE: assert 1 == 4
+  test_fail.py, line 8, in test_all_four() -> is_four(1)
+FAILURE: assert 2 == 4
+  test_fail.py, line 9, in test_all_four() -> is_four(2)
+FAILURE: assert 3 == 4
+  test_fail.py, line 10, in test_all_four() -> is_four(3)
+------------------------------------------------------------
+Failed Checks: 3
+=========================== 1 failed in 0.12 seconds ===========================
+```
 
 
 ## Contributing

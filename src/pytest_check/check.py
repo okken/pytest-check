@@ -21,6 +21,7 @@ __all__ = [
     "greater_equal",
     "less",
     "less_equal",
+    "check_func"
 ]
 
 
