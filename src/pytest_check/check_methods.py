@@ -1,4 +1,3 @@
-from contextlib import contextmanager
 import functools
 import inspect
 import os
@@ -45,17 +44,21 @@ def set_stop_on_fail(stop_on_fail):
     _stop_on_fail = stop_on_fail
 
 
-@contextmanager
-def check():
-    __tracebackhide__ = True
-    try:
-        yield
-    except AssertionError as e:
-        if _stop_on_fail:
-            raise e
-        log_failure(e)
-    finally:
-        pass
+class CheckContextManager(object):
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        __tracebackhide__ = True
+        if exc_type is not None and issubclass(exc_type, AssertionError):
+            if _stop_on_fail:
+                return
+            else:
+                log_failure(exc_val)
+                return True
+
+
+check = CheckContextManager()
 
 
 def check_func(func):

@@ -6,7 +6,7 @@ from pytest_check import check
 # flake8: noqa
 
 def test_context_manager():
-    with check():
+    with check:
         x = 3
         assert 1 < x < 4
 
@@ -17,9 +17,9 @@ def test_context_manager_fail(testdir):
         from pytest_check import check
 
         def test_failures():
-            with check(): assert 1 == 0
-            with check(): assert 1 > 2
-            with check(): assert 1 < 5 < 4
+            with check: assert 1 == 0
+            with check: assert 1 > 2
+            with check: assert 1 < 5 < 4
     """
     )
 
@@ -40,9 +40,9 @@ def test_stop_on_fail(testdir):
         from pytest_check import check
 
         def test_failures():
-            with check(): assert 1 == 0
-            with check(): assert 1 > 2
-            with check(): assert 1 < 5 < 4
+            with check: assert 1 == 0
+            with check: assert 1 > 2
+            with check: assert 1 < 5 < 4
     """
     )
 
