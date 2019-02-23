@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import pytest
-from . import check
+from . import check_methods
 
 
 @pytest.hookimpl(hookwrapper=True, tryfirst=True)
@@ -9,8 +9,8 @@ def pytest_runtest_makereport(item, call):
     outcome = yield
     report = outcome.get_result()
     evalxfail = getattr(item, "_evalxfail", None)
-    failures = check.get_failures()
-    check.clear_failures()
+    failures = check_methods.get_failures()
+    check_methods.clear_failures()
 
     if call.when == "call" and failures:
         if evalxfail and evalxfail.wasvalid() and evalxfail.istrue():
@@ -26,9 +26,9 @@ def pytest_runtest_makereport(item, call):
 
 
 def pytest_configure(config):
-    check.set_stop_on_fail(config.getoption("-x"))
+    check_methods.set_stop_on_fail(config.getoption("-x"))
 
 
 @pytest.fixture(name='check')
 def check_fixture():
-    return check
+    return check_methods

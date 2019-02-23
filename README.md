@@ -135,6 +135,30 @@ Failed Checks: 3
 =========================== 1 failed in 0.12 seconds ===========================
 ```
 
+## Using check as a context manager
+
+You can use the `check()` context manager to wrap any assert that you want to continue after in a test.
+
+```
+from pytest_check import check
+
+
+def test_context_manager():
+    with check():
+        x = 3
+        assert 1 < x < 4
+```
+
+Within any `with check():`, however, you still won't get past the assert statement,
+so you will need to use multiple `with check():` blocks for multiple asserts:
+
+```
+    def test_multiple_failures():
+        with check(): assert 1 == 0
+        with check(): assert 1 > 2
+        with check(): assert 1 < 5 < 4
+
+```
 
 ## Contributing
 

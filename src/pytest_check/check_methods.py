@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 import functools
 import inspect
 import os
@@ -5,6 +6,7 @@ import pytest
 
 
 __all__ = [
+    "check",
     "equal",
     "not_equal",
     "is_true",
@@ -41,6 +43,19 @@ def get_failures():
 def set_stop_on_fail(stop_on_fail):
     global _stop_on_fail
     _stop_on_fail = stop_on_fail
+
+
+@contextmanager
+def check():
+    __tracebackhide__ = True
+    try:
+        yield
+    except AssertionError as e:
+        if _stop_on_fail:
+            raise e
+        log_failure(e)
+    finally:
+        pass
 
 
 def check_func(func):
@@ -160,8 +175,11 @@ def log_failure(msg):
     func = ""
     while "test_" not in func:
         (file, line, func, context) = get_full_context(level)
-        line = f"  {file}, line {line}, in {func}() -> {context}"
-        pseudo_trace.append(line)
+        if 'contextlib.py' in file:
+            pass
+        else:
+            line = f"  {file}, line {line}, in {func}() -> {context}"
+            pseudo_trace.append(line)
         level += 1
     pseudo_trace_str = "\n".join(reversed(pseudo_trace))
     entry = "FAILURE: {}\n{}".format(msg if msg else "", pseudo_trace_str)
