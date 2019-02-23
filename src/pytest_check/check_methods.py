@@ -181,7 +181,7 @@ def log_failure(msg):
         if 'contextlib.py' in file:
             pass
         else:
-            line = f"  {file}, line {line}, in {func}() -> {context}"
+            line = "  {}, line {}, in {}() -> {}".format(file, line, func, context)
             pseudo_trace.append(line)
         level += 1
     pseudo_trace_str = "\n".join(reversed(pseudo_trace))
