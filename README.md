@@ -28,7 +28,7 @@ $ pip install git+https://github.com/okken/pytest-check
 
 Example using import:
 
-```
+```python
 import pytest_check as check
 
 
@@ -68,7 +68,7 @@ Failed Checks: 4
 
 Example using fixture:
 
-```
+```python
 def test_example(check):
     a = 1
     b = 2
@@ -105,7 +105,7 @@ The `@check_func` decorator allows you to wrap any test helper that has an asser
 statement in it to be a non-blocking assert function.
 
 
-```
+```python
 from pytest_check import check_func
 
 @check_func
@@ -139,7 +139,7 @@ Failed Checks: 3
 
 You can use the `check()` context manager to wrap any assert that you want to continue after in a test.
 
-```
+```python
 from pytest_check import check
 
 
@@ -152,7 +152,7 @@ def test_context_manager():
 Within any `with check():`, however, you still won't get past the assert statement,
 so you will need to use multiple `with check():` blocks for multiple asserts:
 
-```
+```python
     def test_multiple_failures():
         with check(): assert 1 == 0
         with check(): assert 1 > 2
