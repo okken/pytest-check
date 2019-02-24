@@ -162,8 +162,10 @@ so you will need to use multiple `with check:` blocks for multiple asserts:
 
 ## Contributing
 
-Contributions are very welcome. Tests can be run with [tox](https://tox.readthedocs.io/en/latest/), please ensure
-the coverage at least stays the same before you submit a pull request.
+Contributions are very welcome. Tests can be run with [tox](https://tox.readthedocs.io/en/latest/). 
+Test coverage is now 100%. Please make sure to keep it at 100%.
+If you have an awesome pull request and need help with getting coverage back up, let me know.
+
 
 ## License
 

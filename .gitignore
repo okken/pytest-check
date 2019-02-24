@@ -9,3 +9,4 @@ cov_html/
 venv/
 README.html
 build/
+htmlcov/
