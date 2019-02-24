@@ -144,19 +144,19 @@ from pytest_check import check
 
 
 def test_context_manager():
-    with check():
+    with check:
         x = 3
         assert 1 < x < 4
 ```
 
-Within any `with check():`, however, you still won't get past the assert statement,
-so you will need to use multiple `with check():` blocks for multiple asserts:
+Within any `with check:`, however, you still won't get past the assert statement,
+so you will need to use multiple `with check:` blocks for multiple asserts:
 
 ```python
     def test_multiple_failures():
-        with check(): assert 1 == 0
-        with check(): assert 1 > 2
-        with check(): assert 1 < 5 < 4
+        with check: assert 1 == 0
+        with check: assert 1 > 2
+        with check: assert 1 < 5 < 4
 
 ```
 
