@@ -178,11 +178,8 @@ def log_failure(msg):
     func = ""
     while "test_" not in func:
         (file, line, func, context) = get_full_context(level)
-        if 'contextlib.py' in file:
-            pass
-        else:
-            line = "  {}, line {}, in {}() -> {}".format(file, line, func, context)
-            pseudo_trace.append(line)
+        line = "  {}, line {}, in {}() -> {}".format(file, line, func, context)
+        pseudo_trace.append(line)
         level += 1
     pseudo_trace_str = "\n".join(reversed(pseudo_trace))
     entry = "FAILURE: {}\n{}".format(msg if msg else "", pseudo_trace_str)
