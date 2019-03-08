@@ -16,8 +16,6 @@ setup(
     name="pytest-check",
     version="0.3.4",
     author="Brian Okken",
-    author_email="brian@pythontesting.net",
-    maintainer="Brian Okken",
     license="MIT",
     url="https://github.com/okken/pytest-check",
     description="A pytest plugin that allows multiple failures per test.",
