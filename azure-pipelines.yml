@@ -1,0 +1,45 @@
+# Python package
+# Create and test a Python package on multiple Python versions.
+# Add steps that analyze code, save the dist with the build record, publish to a PyPI-compatible index, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/python
+
+trigger:
+  branches:
+    include: [master, azure-pipelines, test-me-*]
+
+jobs:
+- job: tox
+  strategy:
+    matrix:
+      py27:
+        TOXENV: py27
+        py: '2.7'
+      py36:
+        TOXENV: py36
+        py: '3.6'
+      py37:
+        TOXENV: py37
+        py: '3.7'
+      flake8:
+        TOXENV: flake8
+        py: '3.7'
+
+  pool:
+    vmImage: ubuntu-16.04
+
+  steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: $(py)
+
+  - script: python -m pip install --upgrade tox
+    displayName: install tox
+  - script: tox
+    displayName: run tox
+
+#  - bash: .tox/$(TOXENV)/$(bindir)/coverage xml -o coverage.xml
+#    displayName: generate coverage xml
+#  - task: PublishCodeCoverageResults@1
+#    inputs:
+#      codeCoverageTool: cobertura
+#      summaryFileLocation: coverage.xml

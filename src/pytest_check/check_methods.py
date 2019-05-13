@@ -178,6 +178,8 @@ def log_failure(msg):
     func = ""
     while "test_" not in func:
         (file, line, func, context) = get_full_context(level)
+        if "site-packages" in file:
+            break
         line = "  {}, line {}, in {}() -> {}".format(file, line, func, context)
         pseudo_trace.append(line)
         level += 1

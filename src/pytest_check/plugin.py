@@ -12,7 +12,7 @@ def pytest_runtest_makereport(item, call):
     failures = check_methods.get_failures()
     check_methods.clear_failures()
 
-    if call.when == "call" and failures:
+    if failures:
         if evalxfail and evalxfail.wasvalid() and evalxfail.istrue():
             report.outcome = "skipped"
             report.wasxfail = evalxfail.getexplanation()
