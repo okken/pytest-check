@@ -89,7 +89,7 @@ def test_example(check):
 - **check.is_none** - *x is None*
 - **check.is_not_none** - *x is not None*
 - **check.is_in** - *a in b*
-- **check.not_in** - *a not in b*
+- **check.is_not_in** - *a not in b*
 - **check.is_instance** - *isinstance(a, b)*
 - **check.not_is_instance** - *not isinstance(a, b)*
 - **check.almost_equal** - *a == pytest.approx(b, rel, abs)* see at: [pytest.approx](https://docs.pytest.org/en/latest/reference.html#pytest-approx)
