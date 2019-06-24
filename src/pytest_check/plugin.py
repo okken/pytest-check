@@ -16,6 +16,9 @@ def pytest_runtest_makereport(item, call):
         if evalxfail and evalxfail.wasvalid() and evalxfail.istrue():
             report.outcome = "skipped"
             report.wasxfail = evalxfail.getexplanation()
+        elif outcome._result.longreprtext.startswith("[XPASS(strict)]"):
+            report.outcome = "skipped"
+            report.wasxfail = "\n".join(failures)
         else:
             summary = "Failed Checks: {}".format(len(failures))
             longrepr = ["\n".join(failures)]

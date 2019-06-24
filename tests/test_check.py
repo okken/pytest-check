@@ -178,6 +178,22 @@ def test_check_xfail(testdir):
     result.assert_outcomes(xfailed=1)
     result.stdout.fnmatch_lines(["* 1 xfailed *"])
 
+def test_check_xfail_strict(testdir):
+    testdir.makepyfile(
+        """
+        import pytest_check as check
+        import pytest
+        
+        @pytest.mark.xfail(strict=True)
+        def test_fail():
+            check.equal(1, 2)
+    """
+    )
+
+    result = testdir.runpytest()
+    result.assert_outcomes(xfailed=1)
+    result.stdout.fnmatch_lines(["* 1 xfailed *"])
+
 
 def test_check_xpassed(testdir):
     testdir.makepyfile(
