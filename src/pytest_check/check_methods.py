@@ -180,7 +180,7 @@ def log_failure(msg):
         (file, line, func, context) = get_full_context(level)
         if "site-packages" in file:
             break
-        line = "  {}, line {}, in {}() -> {}".format(file, line, func, context)
+        line = "{}:{} in {}() -> {}".format(file, line, func, context)
         pseudo_trace.append(line)
         level += 1
     pseudo_trace_str = "\n".join(reversed(pseudo_trace))
