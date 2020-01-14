@@ -14,6 +14,10 @@ def test_pass():
     is_five(5)
 
 
+def test_return_val_True():
+    assert True == is_five(5)
+
+
 def test_fail(testdir):
     testdir.makepyfile(
         """
@@ -26,14 +30,18 @@ def test_fail(testdir):
         def test_all_four():
             is_four(1)
             is_four(2)
-            is_four(3)
-            is_four(4)
+            should_be_False = is_four(3)
+            should_be_True = is_four(4)
+            print(f'{should_be_True=}')
+            print(f'{should_be_False=}')
     """
     )
 
-    result = testdir.runpytest()
+    result = testdir.runpytest("-s")
     result.assert_outcomes(failed=1, passed=0)
     result.stdout.fnmatch_lines([
+        "*should_be_True=True*",
+        "*should_be_False=False*",
         "*FAILURE: assert 1 == 4*",
         "*FAILURE: assert 2 == 4*",
         "*FAILURE: assert 3 == 4*",

@@ -67,6 +67,7 @@ def check_func(func):
         __tracebackhide__ = True
         try:
             func(*args, **kwds)
+            return True
         except AssertionError as e:
             if _stop_on_fail:
                 raise e
