@@ -4,7 +4,7 @@ import pytest
 from . import check_methods
 
 
-@pytest.hookimpl(hookwrapper=True, tryfirst=True)
+@pytest.hookimpl(hookwrapper=True, trylast=True)
 def pytest_runtest_makereport(item, call):
     outcome = yield
     report = outcome.get_result()
