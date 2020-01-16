@@ -32,8 +32,8 @@ def test_fail(testdir):
             is_four(2)
             should_be_False = is_four(3)
             should_be_True = is_four(4)
-            print(f'{should_be_True=}')
-            print(f'{should_be_False=}')
+            print('should_be_True={}'.format(should_be_True))
+            print('should_be_False={}'.format(should_be_False))
     """
     )
 

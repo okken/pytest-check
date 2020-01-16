@@ -14,7 +14,7 @@ def read_readme():
 
 setup(
     name="pytest-check",
-    version="0.3.6",
+    version="0.3.7",
     author="Brian Okken",
     license="MIT",
     url="https://github.com/okken/pytest-check",
