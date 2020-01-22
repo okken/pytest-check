@@ -81,3 +81,22 @@ def test_stop_on_fail(testdir):
     result.stdout.fnmatch_lines([
         "*assert 1 == 0*",
     ])
+
+
+def test_stop_on_fail_with_msg(testdir):
+    testdir.makepyfile(
+        """
+        from pytest_check import check
+
+        def test_failures():
+            with check("first fail"): assert 1 == 0
+            with check("second fail"): assert 1 > 2
+            with check("third fail"): assert 1 < 5 < 4
+    """
+    )
+
+    result = testdir.runpytest('-x')
+    result.assert_outcomes(failed=1, passed=0)
+    result.stdout.fnmatch_lines([
+        "*first fail*",
+    ])
