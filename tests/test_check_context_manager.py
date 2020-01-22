@@ -41,7 +41,7 @@ def test_context_manager_fail(testdir):
     ])
 
 
-def test_context_manager_with_msg(testdir):
+def test_context_manager_fail_with_msg(testdir):
     testdir.makepyfile(
         """
         from pytest_check import check
