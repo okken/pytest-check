@@ -64,6 +64,7 @@ class CheckContextManager(object):
                     log_failure(exc_val)
                 self.msg = None
                 return True
+        self.msg = None
 
     def __call__(self, msg=None):
         self.msg = msg
