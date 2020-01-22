@@ -1,2 +1,1 @@
 pytest_plugins = "pytester"
-
