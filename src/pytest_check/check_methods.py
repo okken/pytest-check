@@ -22,7 +22,8 @@ __all__ = [
     "greater_equal",
     "less",
     "less_equal",
-    "check_func"
+    "check_func",
+    "raises"
 ]
 
 
@@ -163,6 +164,37 @@ def less(a, b, msg=""):
 @check_func
 def less_equal(a, b, msg=""):
     assert a <= b, msg
+
+
+def raises(expected_excs, msg=""):
+    return CheckRaisesContext(expected_excs, msg)
+
+
+class CheckRaisesContext:
+    def __init__(self, expected_excs, msg=""):
+        self.expected_excs = expected_excs
+        self.msg = msg
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        __tracebackhide__ = True
+        if exc_type is not None and issubclass(exc_type, self.expected_excs):
+            return True
+        else:
+            try:
+                raise DidNotRaiseException(self.msg)
+            except DidNotRaiseException as e:
+                if _stop_on_fail:
+                    return
+                else:
+                    log_failure(e)
+                    return True
+
+
+class DidNotRaiseException(Exception):
+    pass
 
 
 def get_full_context(level):
