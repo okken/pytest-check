@@ -28,8 +28,18 @@ def pytest_runtest_makereport(item, call):
             report.outcome = "failed"
 
 
+def pytest_addhooks(pluginmanager):
+    from . import hooks
+    pluginmanager.add_hookspecs(hooks)
+
+
+CONFIG = None
+
+
 def pytest_configure(config):
+    global CONFIG
     check_methods.set_stop_on_fail(config.getoption("-x"))
+    CONFIG = config
 
 
 @pytest.fixture(name='check')

@@ -1,8 +1,10 @@
 import functools
 import inspect
 import os
+
 import pytest
 
+from . import plugin
 
 __all__ = [
     "check",
@@ -52,11 +54,14 @@ class CheckContextManager(object):
     def __exit__(self, exc_type, exc_val, exc_tb):
         __tracebackhide__ = True
         if exc_type is not None and issubclass(exc_type, AssertionError):
+            plugin.CONFIG.hook.pytest_check_fail(e=exc_val)
             if _stop_on_fail:
                 return
             else:
                 log_failure(exc_val)
                 return True
+        else:
+            plugin.CONFIG.hook.pytest_check_pass()
 
 
 check = CheckContextManager()
@@ -68,8 +73,10 @@ def check_func(func):
         __tracebackhide__ = True
         try:
             func(*args, **kwds)
+            plugin.CONFIG.hook.pytest_check_pass()
             return True
         except AssertionError as e:
+            plugin.CONFIG.hook.pytest_check_fail(e=e)
             if _stop_on_fail:
                 raise e
             log_failure(e)
@@ -181,11 +188,13 @@ class CheckRaisesContext:
     def __exit__(self, exc_type, exc_val, exc_tb):
         __tracebackhide__ = True
         if exc_type is not None and issubclass(exc_type, self.expected_excs):
+            plugin.CONFIG.hook.pytest_check_pass()
             return True
         else:
             try:
                 raise DidNotRaiseException(self.msg)
             except DidNotRaiseException as e:
+                plugin.CONFIG.hook.pytest_check_fail(e=e)
                 if _stop_on_fail:
                     return
                 else:
