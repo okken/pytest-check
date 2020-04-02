@@ -15,6 +15,9 @@ except ImportError:
     evalxfail_key = None
 
 
+_current_item = None
+
+
 @pytest.hookimpl(hookwrapper=True, trylast=True)
 def pytest_runtest_makereport(item, call):
     outcome = yield
@@ -46,8 +49,37 @@ def pytest_runtest_makereport(item, call):
             report.outcome = "failed"
 
 
+def pytest_addhooks(pluginmanager):
+    from . import hooks
+    pluginmanager.add_hookspecs(hooks)
+
+
 def pytest_configure(config):
     check_methods.set_stop_on_fail(config.getoption("-x"))
+
+
+def pytest_runtest_setup(item):
+    global _current_item
+    _current_item = item
+
+
+def pytest_runtest_call(item):
+    global _current_item
+    _current_item = item
+
+
+def pytest_runtest_teardown(item):
+    global _current_item
+    _current_item = item
+
+
+def fire_pass_hook():
+    _current_item.config.hook.pytest_check_pass(item=_current_item)
+
+
+def fire_fail_hook(exception):
+    _current_item.config.hook.pytest_check_fail(exception=exception,
+                                                item=_current_item)
 
 
 @pytest.fixture(name='check')

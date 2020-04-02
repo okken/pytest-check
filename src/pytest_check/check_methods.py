@@ -1,7 +1,10 @@
 import functools
 import inspect
 import os
+
 import pytest
+
+from .plugin import fire_pass_hook, fire_fail_hook
 
 
 __all__ = [
@@ -54,6 +57,7 @@ class CheckContextManager(object):
     def __exit__(self, exc_type, exc_val, exc_tb):
         __tracebackhide__ = True
         if exc_type is not None and issubclass(exc_type, AssertionError):
+            fire_fail_hook(exc_val)
             if _stop_on_fail:
                 self.msg = None
                 return
@@ -64,6 +68,8 @@ class CheckContextManager(object):
                     log_failure(exc_val)
                 self.msg = None
                 return True
+        elif exc_type is None:
+            fire_pass_hook()
         self.msg = None
 
     def __call__(self, msg=None):
@@ -80,8 +86,10 @@ def check_func(func):
         __tracebackhide__ = True
         try:
             func(*args, **kwds)
+            fire_pass_hook()
             return True
         except AssertionError as e:
+            fire_fail_hook(e)
             if _stop_on_fail:
                 raise e
             log_failure(e)
