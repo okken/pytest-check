@@ -45,6 +45,9 @@ def set_stop_on_fail(stop_on_fail):
 
 
 class CheckContextManager(object):
+
+    msg = None
+
     def __enter__(self):
         return self
 
@@ -52,10 +55,20 @@ class CheckContextManager(object):
         __tracebackhide__ = True
         if exc_type is not None and issubclass(exc_type, AssertionError):
             if _stop_on_fail:
+                self.msg = None
                 return
             else:
-                log_failure(exc_val)
+                if self.msg is not None:
+                    log_failure(self.msg)
+                else:
+                    log_failure(exc_val)
+                self.msg = None
                 return True
+        self.msg = None
+
+    def __call__(self, msg=None):
+        self.msg = msg
+        return self
 
 
 check = CheckContextManager()
