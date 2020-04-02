@@ -214,6 +214,24 @@ def test_check_xpassed(testdir):
     result.stdout.fnmatch_lines(["* 1 xpassed *"])
 
 
+def test_check_xpassed_strict(testdir):
+    testdir.makepyfile(
+        """
+        import pytest_check as check
+        import pytest
+
+        @pytest.mark.xfail(strict=True)
+        def test_pass():
+            check.equal(1, 1)
+    """
+    )
+
+    result = testdir.runpytest()
+
+    result.assert_outcomes(failed=1)
+
+    result.stdout.fnmatch_lines(["* 1 failed *"])
+
 def test_check_and_assert(testdir):
     testdir.makepyfile(
         """
