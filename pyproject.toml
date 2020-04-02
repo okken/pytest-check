@@ -5,6 +5,7 @@ build-backend = "flit_core.buildapi"
 [tool.flit.metadata]
 module = "pytest_check"
 author = "Brian Okken"
+author-email = "brian+pypi@pythontest.com"
 home-page = "https://github.com/okken/pytest-check"
 description-file="README.md"
 requires = ["pytest>=3.1.1"]

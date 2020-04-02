@@ -14,6 +14,7 @@ try:
 except ImportError:
     evalxfail_key = None
 
+
 @pytest.hookimpl(hookwrapper=True, trylast=True)
 def pytest_runtest_makereport(item, call):
     outcome = yield
@@ -21,7 +22,7 @@ def pytest_runtest_makereport(item, call):
     if evalxfail_key is not None:
         try:
             evalxfail = item._store[evalxfail_key]
-        except:
+        except KeyError:
             evalxfail = None
     else:
         evalxfail = getattr(item, "_evalxfail", None)
