@@ -7,7 +7,9 @@ import pytest
 __all__ = [
     "check",
     "equal",
+    "all_equal",
     "not_equal",
+    "all_not_equal",
     "is_true",
     "is_false",
     "is_none",
@@ -97,8 +99,18 @@ def equal(a, b, msg=""):
 
 
 @check_func
+def all_equal(*args, msg=""):
+    assert len(set(args)) == 1, msg
+
+
+@check_func
 def not_equal(a, b, msg=""):
     assert a != b, msg
+
+
+@check_func
+def all_not_equal(*args, msg=""):
+    assert len(set(args)) == len(args), msg
 
 
 @check_func

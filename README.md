@@ -83,7 +83,9 @@ def test_example(check):
 ## validation functions
 
 - **check.equal** - *a == b*
+- **check.all_equal** - *len(set(a, b, c...)) == 1*
 - **check.not_equal** - *a != b*
+- **check.all_not_equal** - *len(set(a, b, c...)) == len(a, b, c...)*
 - **check.is_true** - *bool(x) is True*
 - **check.is_false** - *bool(x) is False*
 - **check.is_none** - *x is None*

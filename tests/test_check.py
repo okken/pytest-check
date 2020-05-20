@@ -12,8 +12,16 @@ def test_equal():
     check.equal(1, 1)
 
 
+def test_all_equal():
+    check.all_equal(1, 1, 1, 1)
+
+
 def test_not_equal():
     check.not_equal(1, 2)
+
+
+def test_all_not_equal():
+    check.all_not_equal(1, 2, 3, 4)
 
 
 def test_is_true():
