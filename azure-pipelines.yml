@@ -20,6 +20,9 @@ jobs:
       py37:
         TOXENV: py37
         py: '3.7'
+      py38:
+        TOXENV: py38
+        py: '3.8'
       flake8:
         TOXENV: flake8
         py: '3.7'
