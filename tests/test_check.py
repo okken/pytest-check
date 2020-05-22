@@ -80,11 +80,6 @@ def test_less_equal():
     check.less_equal(1, 1)
 
 
-def test_raises():
-    with check.raises(AssertionError):
-        assert 0
-
-
 def test_watch_them_all_fail(testdir):
     testdir.makepyfile(
         """
