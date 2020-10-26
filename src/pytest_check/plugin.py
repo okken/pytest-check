@@ -28,6 +28,8 @@ def pytest_runtest_makereport(item, call):
         evalxfail = getattr(item, "_evalxfail", None)
 
     failures = check_methods.get_failures()
+    # clones failures to request's node item
+    item.failures = failures[:]
     check_methods.clear_failures()
 
     if failures:
