@@ -8,6 +8,8 @@ __all__ = [
     "check",
     "equal",
     "not_equal",
+    "is_",
+    "is_not",
     "is_true",
     "is_false",
     "is_none",
@@ -98,6 +100,16 @@ def equal(a, b, msg=""):
 @check_func
 def not_equal(a, b, msg=""):
     assert a != b, msg
+
+
+@check_func
+def is_(a, b, msg=""):
+    assert a is b, msg
+
+
+@check_func
+def is_not(a, b, msg=""):
+    assert a is not b, msg
 
 
 @check_func

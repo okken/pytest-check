@@ -8,7 +8,7 @@ author = "Brian Okken"
 author-email = "brian+pypi@pythontest.com"
 home-page = "https://github.com/okken/pytest-check"
 description-file="README.md"
-requires = ["pytest>=3.1.1"]
+requires = ["pytest>=6.0.0"]
 classifiers = [
         "Development Status :: 4 - Beta",
         "Framework :: Pytest",
@@ -17,6 +17,8 @@ classifiers = [
         "Programming Language :: Python",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: Implementation :: CPython",
         "Operating System :: OS Independent",
         "License :: OSI Approved :: MIT License",

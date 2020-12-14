@@ -16,6 +16,18 @@ def test_not_equal():
     check.not_equal(1, 2)
 
 
+def test_is():
+    x = ["foo"]
+    y = x
+    check.is_(x, y)
+
+
+def test_is_not():
+    x = ["foo"]
+    y = ["foo"]
+    check.is_not(x, y)
+
+
 def test_is_true():
     check.is_true(True)
 
@@ -91,6 +103,15 @@ def test_watch_them_all_fail(testdir):
         def test_not_equal():
             check.not_equal(1,1)
         
+        def test_is():
+            x = ["foo"]
+            y = ["foo"]
+            check.is_(x, y)
+            
+        def test_is_not():
+            x = ["foo"]
+            y = x
+            check.is_not(x, y)
         
         def test_is_true():
             check.is_true(False)
@@ -152,14 +173,14 @@ def test_watch_them_all_fail(testdir):
         
         
         def test_less_equal():
-            #check.less_equal(2, 1) 
-            check.equal(2, 1) 
+            check.less_equal(2, 1) 
+            #check.equal(2, 1) 
             
     """
     )
 
     result = testdir.runpytest()
-    result.assert_outcomes(failed=16, passed=0)
+    result.assert_outcomes(failed=18, passed=0)
 
 
 def test_check_xfail(testdir):

@@ -11,6 +11,8 @@ rename of [pytest-expect](https://github.com/okken/pytest-expect).
 
 ## Installation
 
+Note: Requires pytest 6.0 or above.
+
 From PPI:
 
 ```
@@ -84,6 +86,8 @@ def test_example(check):
 
 - **check.equal** - *a == b*
 - **check.not_equal** - *a != b*
+- **check.is_** - *a is b*
+- **check.is_not** - *a is not b*
 - **check.is_true** - *bool(x) is True*
 - **check.is_false** - *bool(x) is False*
 - **check.is_none** - *x is None*
@@ -171,8 +175,13 @@ If you have an awesome pull request and need help with getting coverage back up,
 
 Distributed under the terms of the [MIT](http://opensource.org/licenses/MIT) license, "pytest-check" is free and open source software
 
-
 ## Issues
 
 If you encounter any problems, please [file an issue](https://github.com/okken/pytest-check/issues) along with a detailed description.
 
+## Changelog
+
+* 0.4.0 
+    * added `is_()` and `is_not()` 
+    * Requires pytest 6.0 or above. (Removed some cruft to support pytest 5.x)
+    

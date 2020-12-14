@@ -13,7 +13,7 @@ def test_setup_failure(testdir):
         """
     )
     result = testdir.runpytest()
-    result.assert_outcomes(error=1)
+    result.assert_outcomes(errors=1)
     result.stdout.fnmatch_lines(["* check.equal(1, 2)*"])
 
 
@@ -33,5 +33,5 @@ def test_teardown_failure(testdir):
          """
     )
     result = testdir.runpytest()
-    result.assert_outcomes(passed=1, error=1)
+    result.assert_outcomes(passed=1, errors=1)
     result.stdout.fnmatch_lines(["* check.equal(1, 2)*"])
