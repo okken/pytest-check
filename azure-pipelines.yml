@@ -11,9 +11,6 @@ jobs:
 - job: tox
   strategy:
     matrix:
-      py27:
-        TOXENV: py27
-        py: '2.7'
       py36:
         TOXENV: py36
         py: '3.6'
