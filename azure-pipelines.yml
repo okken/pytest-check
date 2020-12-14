@@ -23,9 +23,12 @@ jobs:
       py38:
         TOXENV: py38
         py: '3.8'
+      py39:
+        TOXENV: py39
+        py: '3.9'
       flake8:
         TOXENV: flake8
-        py: '3.7'
+        py: '3.9'
 
   pool:
     vmImage: ubuntu-16.04
