@@ -35,10 +35,10 @@ jobs:
     inputs:
       versionSpec: $(py)
 
-  - script: python -m pip install --upgrade tox
-    displayName: install tox
-  - script: tox
-    displayName: run tox
+  - script: python -m pip install --upgrade pytest
+    displayName: install pytest
+  - script: pytest tests
+    displayName: run pytest
 
 #  - bash: .tox/$(TOXENV)/$(bindir)/coverage xml -o coverage.xml
 #    displayName: generate coverage xml
