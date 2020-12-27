@@ -181,6 +181,11 @@ If you encounter any problems, please [file an issue](https://github.com/okken/p
 
 ## Changelog
 
+* 1.0.1 
+    * Remove Beta Classifier
+    * Status is now "Development Status :: 5 - Production/Stable"
+* 1.0.0 
+    * Jump to 1.0 version, API is fairly stable.
 * 0.4.1 
     * Fix #43/#44 tests with failing checks and failing asserts now report all issues.
 * 0.4.0 
