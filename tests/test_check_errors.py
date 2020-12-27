@@ -51,5 +51,3 @@ def test_mix(testdir):
     result.assert_outcomes(failed=1, passed=0)
     result.stdout.fnmatch_lines(["* check.equal(1, 2)*",
                                  "* assert 2 == 3*"])
-
-
