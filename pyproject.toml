@@ -10,7 +10,7 @@ home-page = "https://github.com/okken/pytest-check"
 description-file="README.md"
 requires = ["pytest>=6.0.0"]
 classifiers = [
-        "Development Status :: 4 - Beta",
+        "Development Status :: 5 - Production/Stable",
         "Framework :: Pytest",
         "Intended Audience :: Developers",
         "Topic :: Software Development :: Testing",
