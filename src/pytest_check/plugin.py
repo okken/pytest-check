@@ -21,11 +21,18 @@ def pytest_runtest_makereport(item, call):
             report.outcome = "skipped"
             report.wasxfail = item._store[xfailed_key].reason
         else:
+
             summary = "Failed Checks: {}".format(len(failures))
             longrepr = ["\n".join(failures)]
             longrepr.append("-" * 60)
             longrepr.append(summary)
-            report.longrepr = "\n".join(longrepr)
+
+            if report.longrepr:
+                longrepr.append("-" * 60)
+                longrepr.append(report.longreprtext)
+                report.longrepr = "\n".join(longrepr)
+            else:
+                report.longrepr = "\n".join(longrepr)
             report.outcome = "failed"
 
 

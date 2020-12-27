@@ -181,6 +181,8 @@ If you encounter any problems, please [file an issue](https://github.com/okken/p
 
 ## Changelog
 
+* 0.4.1 
+    * Fix #43/#44 tests with failing checks and failing asserts now report all issues.
 * 0.4.0 
     * added `is_()` and `is_not()` 
     * Requires pytest 6.0 or above. (Removed some cruft to support pytest 5.x)
