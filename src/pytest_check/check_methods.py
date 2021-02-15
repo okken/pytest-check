@@ -2,6 +2,7 @@ import functools
 import inspect
 import os
 import pytest
+import logging
 
 
 __all__ = [
@@ -62,8 +63,10 @@ class CheckContextManager(object):
             else:
                 if self.msg is not None:
                     log_failure(self.msg)
+                    logging.error(self.msg)
                 else:
                     log_failure(exc_val)
+                    logging.error(exc_val)
                 self.msg = None
                 return True
         self.msg = None
