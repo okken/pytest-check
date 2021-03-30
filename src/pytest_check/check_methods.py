@@ -192,7 +192,7 @@ def less_equal(a, b, msg=""):
 
 def get_full_context(level):
     (_, filename, line, funcname, contextlist) = inspect.stack()[level][0:5]
-    filename = os.path.relpath(filename)
+    filename = os.path.abspath(filename)
     context = contextlist[0].strip()
     return (filename, line, funcname, context)
 
