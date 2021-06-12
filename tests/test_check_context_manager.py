@@ -5,10 +5,12 @@ from pytest_check import check
 
 # flake8: noqa
 
+
 def test_context_manager():
     with check:
         x = 3
         assert 1 < x < 4
+
 
 def test_context_manager_with_msg():
     assert check.msg is None
@@ -17,6 +19,7 @@ def test_context_manager_with_msg():
         x = 3
         assert 1 < x < 4
     assert check.msg is None
+
 
 def test_context_manager_fail(testdir):
     testdir.makepyfile(
@@ -32,13 +35,15 @@ def test_context_manager_fail(testdir):
 
     result = testdir.runpytest()
     result.assert_outcomes(failed=1, passed=0)
-    result.stdout.fnmatch_lines([
-        "*FAILURE: assert 1 == 0*",
-        "*FAILURE: assert 1 > 2*",
-        "*FAILURE: assert 5 < 4*",
-        "* assert 1 < 5 < 4*",
-        "*Failed Checks: 3*",
-    ])
+    result.stdout.fnmatch_lines(
+        [
+            "*FAILURE: assert 1 == 0*",
+            "*FAILURE: assert 1 > 2*",
+            "*FAILURE: assert 5 < 4*",
+            "* assert 1 < 5 < 4*",
+            "*Failed Checks: 3*",
+        ]
+    )
 
 
 def test_context_manager_fail_with_msg(testdir):
@@ -55,13 +60,15 @@ def test_context_manager_fail_with_msg(testdir):
 
     result = testdir.runpytest()
     result.assert_outcomes(failed=1, passed=0)
-    result.stdout.fnmatch_lines([
-        "*FAILURE: first fail*",
-        "*FAILURE: second fail*",
-        "*FAILURE: third fail*",
-        "* assert 1 < 5 < 4*",
-        "*Failed Checks: 3*",
-    ])
+    result.stdout.fnmatch_lines(
+        [
+            "*FAILURE: first fail*",
+            "*FAILURE: second fail*",
+            "*FAILURE: third fail*",
+            "* assert 1 < 5 < 4*",
+            "*Failed Checks: 3*",
+        ]
+    )
 
 
 def test_stop_on_fail(testdir):
@@ -76,11 +83,9 @@ def test_stop_on_fail(testdir):
     """
     )
 
-    result = testdir.runpytest('-x')
+    result = testdir.runpytest("-x")
     result.assert_outcomes(failed=1, passed=0)
-    result.stdout.fnmatch_lines([
-        "*assert 1 == 0*",
-    ])
+    result.stdout.fnmatch_lines(["*assert 1 == 0*"])
 
 
 def test_stop_on_fail_with_msg(testdir):
@@ -95,8 +100,6 @@ def test_stop_on_fail_with_msg(testdir):
     """
     )
 
-    result = testdir.runpytest('-x')
+    result = testdir.runpytest("-x")
     result.assert_outcomes(failed=1, passed=0)
-    result.stdout.fnmatch_lines([
-        "*first fail*",
-    ])
+    result.stdout.fnmatch_lines(["*first fail*"])

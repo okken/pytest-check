@@ -40,6 +40,10 @@ def pytest_configure(config):
     check_methods.set_stop_on_fail(config.getoption("-x"))
 
 
-@pytest.fixture(name='check')
+@pytest.fixture(name="check")
 def check_fixture():
     return check_methods
+
+
+# add --log-check-level flag
+# and log_check_level setting

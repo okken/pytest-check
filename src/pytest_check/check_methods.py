@@ -3,7 +3,6 @@ import inspect
 import os
 import pytest
 
-
 __all__ = [
     "check",
     "equal",
@@ -24,7 +23,7 @@ __all__ = [
     "greater_equal",
     "less",
     "less_equal",
-    "check_func"
+    "check_func",
 ]
 
 

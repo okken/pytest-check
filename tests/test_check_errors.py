@@ -19,7 +19,7 @@ def test_setup_failure(testdir):
 
 def test_teardown_failure(testdir):
     testdir.makepyfile(
-         """
+        """
          import pytest
          import pytest_check as check
 
@@ -49,5 +49,4 @@ def test_mix(testdir):
     )
     result = testdir.runpytest()
     result.assert_outcomes(failed=1, passed=0)
-    result.stdout.fnmatch_lines(["* check.equal(1, 2)*",
-                                 "* assert 2 == 3*"])
+    result.stdout.fnmatch_lines(["* check.equal(1, 2)*", "* assert 2 == 3*"])

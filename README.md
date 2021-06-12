@@ -166,7 +166,7 @@ so you will need to use multiple `with check:` blocks for multiple asserts:
 
 ## Contributing
 
-Contributions are very welcome. Tests can be run with [tox](https://tox.readthedocs.io/en/latest/). 
+Contributions are very welcome. Tests can be run with [tox](https://tox.readthedocs.io/en/latest/).
 Test coverage is now 100%. Please make sure to keep it at 100%.
 If you have an awesome pull request and need help with getting coverage back up, let me know.
 
@@ -181,14 +181,13 @@ If you encounter any problems, please [file an issue](https://github.com/okken/p
 
 ## Changelog
 
-* 1.0.1 
+* 1.0.1
     * Remove Beta Classifier
     * Status is now "Development Status :: 5 - Production/Stable"
-* 1.0.0 
+* 1.0.0
     * Jump to 1.0 version, API is fairly stable.
-* 0.4.1 
+* 0.4.1
     * Fix #43/#44 tests with failing checks and failing asserts now report all issues.
-* 0.4.0 
-    * added `is_()` and `is_not()` 
+* 0.4.0
+    * added `is_()` and `is_not()`
     * Requires pytest 6.0 or above. (Removed some cruft to support pytest 5.x)
-    
