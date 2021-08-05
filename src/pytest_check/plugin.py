@@ -42,7 +42,6 @@ def pytest_runtest_makereport(item, call):
             call.excinfo = excinfo
 
 
-
 def pytest_configure(config):
     check_methods.set_stop_on_fail(config.getoption("-x"))
 
