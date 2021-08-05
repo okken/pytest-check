@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import pytest
+from _pytest._code.code import ExceptionInfo
 from . import check_methods
 
 # This is ugly.
@@ -34,6 +35,12 @@ def pytest_runtest_makereport(item, call):
             else:
                 report.longrepr = "\n".join(longrepr)
             report.outcome = "failed"
+            try:
+                raise AssertionError(report.longrepr)
+            except AssertionError:
+                excinfo = ExceptionInfo.from_current()
+            call.excinfo = excinfo
+
 
 
 def pytest_configure(config):
