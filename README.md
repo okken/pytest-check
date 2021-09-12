@@ -191,6 +191,9 @@ If you encounter any problems, please [file an issue](https://github.com/okken/p
 
 ## Changelog
 
+* 1.0.4
+  * Require Python >= 3.6
+  * Remove old Manifest.in file.
 * 1.0.3
     * Fix #64, modifications to maxfail behavior.
 * 1.0.2

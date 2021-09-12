@@ -9,6 +9,7 @@ author-email = "brian+pypi@pythontest.com"
 home-page = "https://github.com/okken/pytest-check"
 description-file="README.md"
 requires = ["pytest>=6.0.0"]
+requires-python = ">=3.6"
 classifiers = [
         "Development Status :: 5 - Production/Stable",
         "Framework :: Pytest",
