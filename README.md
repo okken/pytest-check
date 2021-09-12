@@ -13,7 +13,7 @@ rename of [pytest-expect](https://github.com/okken/pytest-expect).
 
 Note: Requires pytest 6.0 or above.
 
-From PPI:
+From PyPI:
 
 ```
 $ pip install pytest-check
