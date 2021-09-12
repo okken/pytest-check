@@ -43,13 +43,13 @@ def pytest_runtest_makereport(item, call):
 
 
 def pytest_configure(config):
-    check_methods.set_stop_on_fail(config.getoption("-x"))
+    maxfail = config.getvalue("maxfail")
+    stop_on_fail = maxfail == 1
+    # If -x or --maxfail=1, then stop on the first failed check
+    # Otherwise, let pytest stop on the maxfail-th test function failure
+    check_methods.set_stop_on_fail(stop_on_fail)
 
 
 @pytest.fixture(name="check")
 def check_fixture():
     return check_methods
-
-
-# add --log-check-level flag
-# and log_check_level setting

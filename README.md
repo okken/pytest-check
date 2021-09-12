@@ -164,6 +164,16 @@ so you will need to use multiple `with check:` blocks for multiple asserts:
 
 ```
 
+## maxfail behavior
+
+Setting `-x` or `--maxfail=1` will cause this plugin to abort testing after the first failed check.
+
+Setting `-maxfail=2` or greater will turn off any handling of maxfail within this plugin and the behavior is controlled by pytest.
+
+In other words, the `maxfail` count is counting tests, not checks.
+The exception is the case of `1`, where we want to stop on the very first failed check.
+
+
 ## Contributing
 
 Contributions are very welcome. Tests can be run with [tox](https://tox.readthedocs.io/en/latest/).
@@ -181,6 +191,11 @@ If you encounter any problems, please [file an issue](https://github.com/okken/p
 
 ## Changelog
 
+* 1.0.3
+    * Fix #64, modifications to maxfail behavior.
+* 1.0.2
+    * Add `excinfo` to call object in `pytest_runtest_makereport()`.
+    * Intended to help with some report systems.
 * 1.0.1
     * Remove Beta Classifier
     * Status is now "Development Status :: 5 - Production/Stable"
