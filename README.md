@@ -87,7 +87,7 @@ def test_example(check):
 - **check.equal** - *a == b*
 - **check.not_equal** - *a != b*
 - **check.strictly_equal** - *a == b and type(a) == type(b)*
-- **check.stirctly_not_equal** - *a != b and type(a) != type(b)*
+- **check.stirctly_not_equal** - *a != b or type(a) != type(b)*
 - **check.is_** - *a is b*
 - **check.is_not** - *a is not b*
 - **check.is_true** - *bool(x) is True*
