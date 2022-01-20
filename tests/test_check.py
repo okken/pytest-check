@@ -91,6 +91,16 @@ def test_less_equal():
     check.less_equal(1, 2)
     check.less_equal(1, 1)
 
+def test_strictly_equal():
+    a = 'true'
+    b = 'true'
+    check.strictly_equal(a, b)
+
+def test_strictly_not_equal():
+    a = 'true'
+    b = True
+    check.strictly_not_equal(a, b)
+
 
 def test_watch_them_all_fail(testdir):
     testdir.makepyfile(
@@ -119,6 +129,14 @@ def test_watch_them_all_fail(testdir):
 
         def test_is_false():
             check.is_false(True)
+
+
+        def test_strictly_equal():
+            check.strictly_equal('', True)
+
+
+        def test_strictly_not_equal():
+            check.strictly_not_equal(False, False)
 
 
         def test_is_none():
@@ -180,7 +198,7 @@ def test_watch_them_all_fail(testdir):
     )
 
     result = testdir.runpytest()
-    result.assert_outcomes(failed=18, passed=0)
+    result.assert_outcomes(failed=20, passed=0)
 
 
 def test_check_xfail(testdir):

@@ -24,6 +24,8 @@ __all__ = [
     "less",
     "less_equal",
     "check_func",
+    "strictly_equal",
+    "strictly_not_equal",
 ]
 
 
@@ -149,6 +151,14 @@ def is_instance(a, b, msg=""):
 @check_func
 def is_not_instance(a, b, msg=""):
     assert not isinstance(a, b), msg
+
+@check_func
+def strictly_equal(a, b, msg=""):
+    assert (type(a), a) == (type(b), b), msg
+
+@check_func
+def strictly_not_equal(a, b, msg=""):
+    assert (type(a), a) != (type(b), b), msg
 
 
 @check_func
