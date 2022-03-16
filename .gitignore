@@ -10,3 +10,4 @@ venv/
 README.html
 build/
 htmlcov/
+*.swp
