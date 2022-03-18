@@ -26,10 +26,10 @@ def test_raises_with_assertion_error():
 
 
 def test_raises_with_multiple_errors(testdir):
-    with raises(TestException, AnotherTestException):
+    with raises((TestException, AnotherTestException)):
         raise TestException
 
-    with raises(TestException, AnotherTestException):
+    with raises((TestException, AnotherTestException)):
         raise AnotherTestException
 
     testdir.makepyfile(
@@ -48,7 +48,7 @@ def test_raises_with_multiple_errors(testdir):
             pass
 
         def test_failures():
-            with raises(TestException, AnotherTestException):
+            with raises((TestException, AnotherTestException)):
                 raise AssertionError
     """
     )
@@ -64,10 +64,10 @@ def test_raises_with_parents_and_children(testdir):
     with raises(BaseTestException):
         raise TestException
 
-    with raises(BaseTestException, TestException):
+    with raises((BaseTestException, TestException)):
         raise BaseTestException
 
-    with raises(BaseTestException, TestException):
+    with raises((BaseTestException, TestException)):
         raise TestException
 
     # Children shouldn't catch their parents, only vice versa.
@@ -87,7 +87,7 @@ def test_raises_with_parents_and_children(testdir):
             pass
 
         def test_failures():
-            with raises(TestException, AnotherTestException):
+            with raises((TestException, AnotherTestException)):
                 raise BaseTestException
     """
     )
@@ -182,3 +182,56 @@ def test_can_mix_assertions_and_checks(testdir):
 
     # Regular assert errors are reported as usual.
     result.stdout.fnmatch_lines(["E * assert 1 == 2"])
+
+
+def test_msg_kwarg_with_raises_context_manager(testdir):
+    testdir.makepyfile(
+        """
+        from pytest_check import raises
+
+        def raise_valueerror():
+            raise ValueError
+
+        def test():
+            with raises(AssertionError, msg="hello, world!"):
+                raise_valueerror()
+    """
+    )
+
+    result = testdir.runpytest()
+    result.assert_outcomes(failed=1)
+    result.stdout.fnmatch_lines(["FAILURE: hello, world!"])
+
+
+def test_raises_function(testdir):
+    def raise_error():
+        raise TestException
+
+    # Single exception
+    raises(TestException, raise_error)
+
+    # Multiple exceptions
+    raises((TestException, AnotherTestException), raise_error)
+
+    def assert_foo_equals_bar(foo, bar=None):
+        assert foo == bar
+
+    # Test args and kwargs are passed to callable
+    raises(AssertionError, assert_foo_equals_bar, 1, bar=2)
+
+    # Kwarg `msg` is special and can be found in failure output.
+    testdir.makepyfile(
+        """
+        from pytest_check import raises
+
+        def raise_valueerror():
+            raise ValueError
+
+        def test():
+            raises(AssertionError, raise_valueerror, msg="hello, world!")
+    """
+    )
+
+    result = testdir.runpytest()
+    result.assert_outcomes(failed=1)
+    result.stdout.fnmatch_lines(["FAILURE: hello, world!"])
