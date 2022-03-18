@@ -250,14 +250,12 @@ def raises(expected_exception, *args, **kwargs):
 
 class CheckRaisesContext:
     """
-    TODO: docstring
+    Helper context for `raises` that can be parameterized by error type.
 
-    Within this context or when using as a called method, CheckRaisesContext
-    will only catch one error, the first one, and return it.  It cannot resume
-    control flow after an exception in the code being tested and accumulate
-    other errors.  Use multiple calls to `raises` on subsections of that code
-    that raise only one error apiece if you'd like to accomplish something like
-    that.
+    Note that CheckRaisesContext is instantiated whenever needed; it is not a
+    global variable like `check`.  Therefore, we don't need to curate
+    `self.msg` in `__exit__` for this class like we do with
+    CheckContextManager.
     """
 
     def __init__(self, *expected_excs, msg=None):
@@ -276,9 +274,6 @@ class CheckRaisesContext:
             # context.
             return True
 
-
-class DidNotRaiseException(Exception):
-    pass
         if not _stop_on_fail:
             # Returning something falsey here will cause the context
             # manager to *not* suppress an exception not in
@@ -301,17 +296,6 @@ def get_full_context(level):
 
 
 def log_failure(msg):
-    """
-    Add a fail notice and "pseudo-traceback" to the global list of failures
-
-    A pseudo-traceback looks like a traceback and is constructed similarly to
-    one, but it only references client code, not library code.  We don't have
-    full access to Pytest's traceback machinery here.
-    """
-
-    # TODO: Do I need this?  Could I rewrite to use `traceback` library, since
-    # catching exceptions will give me a traceback object?
-
     __tracebackhide__ = True
     level = 3
     pseudo_trace = []
