@@ -102,6 +102,7 @@ def test_example(check):
 - **check.greater_equal** - *a >= b*
 - **check.less** - *a < b*
 - **check.less_equal** - *a <= b*
+- **check.raises** - *func raises given exception* similar to [pytest.raises](https://docs.pytest.org/en/latest/reference/reference.html#pytest-raises)
 
 ## Defining your own check functions
 
@@ -163,6 +164,23 @@ so you will need to use multiple `with check:` blocks for multiple asserts:
         with check: assert 1 < 5 < 4
 
 ```
+
+## Using raises as a context manager
+
+`raises` can also be used as a context manager:
+
+```python
+from pytest_check import raises
+
+
+def test_context_manager():
+    with raises(AssertionError):
+        x = 3
+        assert 1 < x < 4
+```
+
+Just like with `check` as a context manager, execution won't proceed past the first line that throws an error, even if it is successfully captured and logged by Pytest Check.
+Break your assertions over multiple uses of `raises` if you encounter this problem.
 
 ## maxfail behavior
 
