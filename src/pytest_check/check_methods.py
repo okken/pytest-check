@@ -24,6 +24,7 @@ __all__ = [
     "less",
     "less_equal",
     "check_func",
+    "raises",
 ]
 
 
@@ -189,6 +190,65 @@ def less_equal(a, b, msg=""):
     assert a <= b, msg
 
 
+def raises(*args, **kwargs):
+    return CheckRaisesContext(*args, **kwargs)
+
+
+class CheckRaisesContext:
+    """
+    TODO: docstring
+
+    Within this context or when using as a called method, CheckRaisesContext
+    will only catch one error, the first one, and return it.  It cannot resume
+    control flow after an exception in the code being tested and accumulate
+    other errors.  Use multiple calls to `raises` on subsections of that code
+    that raise only one error apiece if you'd like to accomplish something like
+    that.
+    """
+
+    def __init__(self, *expected_excs, msg=None):
+        self.expected_excs = expected_excs
+        self.msg = msg
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        __tracebackhide__ = True
+        # FIXME: DeMorgan-ize this.
+        if exc_type is not None and issubclass(exc_type, self.expected_excs):
+            self.msg = None
+            return True
+        else:
+            # FIXME: why not `if not _stop_on_fail` and no return?
+            if _stop_on_fail:
+                # Returning something falsey here will cause the context
+                # manager to *not* suppress an exception not in
+                # `expected_excs`, thus allowing the higher-level Pytest
+                # context to handle it like any other unhandle exception during
+                # test execution, including display and tracebacks.
+                self.msg = None
+                return
+            else:
+                # FIXME: use `or` statement for `log_failure` to shorten
+                if self.msg is not None:
+                    log_failure(self.msg)
+                else:
+                    log_failure(exc_val)
+                self.msg = None
+                return True
+
+    def __call__(self, callable_, *args, msg=None, **kwargs):
+        self.msg = msg
+        callable_(*args, **kwargs)
+
+        return self
+
+
+class DidNotRaiseException(Exception):
+    pass
+
+
 def get_full_context(level):
     (_, filename, line, funcname, contextlist) = inspect.stack()[level][0:5]
     filename = os.path.relpath(filename)
@@ -197,6 +257,17 @@ def get_full_context(level):
 
 
 def log_failure(msg):
+    """
+    Add a fail notice and "pseudo-traceback" to the global list of failures
+
+    A pseudo-traceback looks like a traceback and is constructed similarly to
+    one, but it only references client code, not library code.  We don't have
+    full access to Pytest's traceback machinery here.
+    """
+
+    # TODO: Do I need this?  Could I rewrite to use `traceback` library, since
+    # catching exceptions will give me a traceback object?
+
     __tracebackhide__ = True
     level = 3
     pseudo_trace = []
