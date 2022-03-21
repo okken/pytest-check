@@ -55,8 +55,14 @@ def test_raises_with_multiple_errors(testdir):
 
     result = testdir.runpytest()
     result.assert_outcomes(failed=1, passed=0)
-    result.stdout.fnmatch_lines(
-        ["*FAILURE: ", "*raise AssertionError*"], consecutive=True,
+    result.stdout.re_match_lines(
+        [
+            "FAILURE: ",
+            # Python < 3.10 reports error at `raise` but 3.10 reports at `with`
+            r".*raise AssertionError.*"
+            r"|.*with raises\(\(TestException, AnotherTestException\)\):.*",
+        ],
+        consecutive=True,
     )
 
 
@@ -94,8 +100,14 @@ def test_raises_with_parents_and_children(testdir):
 
     result = testdir.runpytest()
     result.assert_outcomes(failed=1, passed=0)
-    result.stdout.fnmatch_lines(
-        ["*FAILURE: ", "*raise BaseTestException*"], consecutive=True,
+    result.stdout.re_match_lines(
+        [
+            "FAILURE: ",
+            # Python < 3.10 reports error at `raise` but 3.10 reports at `with`
+            r".*raise BaseTestException.*"
+            r"|.*with raises\(\(TestException, AnotherTestException\)\):.*",
+        ],
+        consecutive=True,
     )
 
 
