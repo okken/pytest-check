@@ -7,17 +7,33 @@ class BaseTestException(Exception):
     pass
 
 
-class TestException(BaseTestException):
-    __test__ = False
+class _TestException(BaseTestException):
+    pass
 
 
 class AnotherTestException(BaseTestException):
     pass
 
 
+BASE_IMPORTS_AND_EXCEPTIONS = """
+from pytest_check import raises
+
+class BaseTestException(Exception):
+    pass
+
+
+class _TestException(BaseTestException):
+    pass
+
+
+class AnotherTestException(BaseTestException):
+    pass
+"""
+
+
 def test_raises():
-    with raises(TestException):
-        raise TestException
+    with raises(_TestException):
+        raise _TestException
 
 
 def test_raises_with_assertion_error():
@@ -26,31 +42,19 @@ def test_raises_with_assertion_error():
 
 
 def test_raises_with_multiple_errors(testdir):
-    with raises((TestException, AnotherTestException)):
-        raise TestException
+    with raises((_TestException, AnotherTestException)):
+        raise _TestException
 
-    with raises((TestException, AnotherTestException)):
+    with raises((_TestException, AnotherTestException)):
         raise AnotherTestException
 
     testdir.makepyfile(
-        """
-        from pytest_check import raises
-
-        class BaseTestException(Exception):
-            pass
-
-
-        class TestException(BaseTestException):
-            __test__ = False
-
-
-        class AnotherTestException(BaseTestException):
-            pass
-
-        def test_failures():
-            with raises((TestException, AnotherTestException)):
-                raise AssertionError
-    """
+        BASE_IMPORTS_AND_EXCEPTIONS
+        + """
+def test_failures():
+  with raises((_TestException, AnotherTestException)):
+      raise AssertionError
+"""
     )
 
     result = testdir.runpytest()
@@ -60,7 +64,7 @@ def test_raises_with_multiple_errors(testdir):
             "FAILURE: ",
             # Python < 3.10 reports error at `raise` but 3.10 reports at `with`
             r".*raise AssertionError.*"
-            r"|.*with raises\(\(TestException, AnotherTestException\)\):.*",
+            r"|.*with raises\(\(_TestException, AnotherTestException\)\):.*",
         ],
         consecutive=True,
     )
@@ -68,34 +72,22 @@ def test_raises_with_multiple_errors(testdir):
 
 def test_raises_with_parents_and_children(testdir):
     with raises(BaseTestException):
-        raise TestException
+        raise _TestException
 
-    with raises((BaseTestException, TestException)):
+    with raises((BaseTestException, _TestException)):
         raise BaseTestException
 
-    with raises((BaseTestException, TestException)):
-        raise TestException
+    with raises((BaseTestException, _TestException)):
+        raise _TestException
 
     # Children shouldn't catch their parents, only vice versa.
     testdir.makepyfile(
-        """
-        from pytest_check import raises
-
-        class BaseTestException(Exception):
-            pass
-
-
-        class TestException(BaseTestException):
-            __test__ = False
-
-
-        class AnotherTestException(BaseTestException):
-            pass
-
-        def test_failures():
-            with raises((TestException, AnotherTestException)):
-                raise BaseTestException
-    """
+        BASE_IMPORTS_AND_EXCEPTIONS
+        + """
+def test_failures():
+    with raises((_TestException, AnotherTestException)):
+        raise BaseTestException
+"""
     )
 
     result = testdir.runpytest()
@@ -105,7 +97,7 @@ def test_raises_with_parents_and_children(testdir):
             "FAILURE: ",
             # Python < 3.10 reports error at `raise` but 3.10 reports at `with`
             r".*raise BaseTestException.*"
-            r"|.*with raises\(\(TestException, AnotherTestException\)\):.*",
+            r"|.*with raises\(\(_TestException, AnotherTestException\)\):.*",
         ],
         consecutive=True,
     )
@@ -114,7 +106,7 @@ def test_raises_with_parents_and_children(testdir):
 @pytest.mark.parametrize(
     "run_flags,match_lines",
     [
-        ("--exitfirst", ["test_raises_stop_on_fail.py:15: ValueError"]),
+        ("--exitfirst", ["test_raises_stop_on_fail.py:19: ValueError"]),
         ("", ["*Failed Checks: 2*"]),
     ],
 )
@@ -131,28 +123,20 @@ def test_raises_stop_on_fail(run_flags, match_lines, testdir):
     # that flag, two failures should be counted and reported, and the last
     # success should be executed.
     testdir.makepyfile(
-        """
-        from pytest_check import raises
+        BASE_IMPORTS_AND_EXCEPTIONS
+        + """
+def test_failures():
+    with raises(BaseTestException):
+        raise BaseTestException
 
-        class BaseTestException(Exception):
-            pass
+    with raises(BaseTestException):
+        raise ValueError
 
+    with raises(BaseTestException):
+        raise ValueError
 
-        class TestException(BaseTestException):
-            __test__ = False
-
-        def test_failures():
-            with raises(BaseTestException):
-                raise BaseTestException
-
-            with raises(BaseTestException):
-                raise ValueError
-
-            with raises(BaseTestException):
-                raise ValueError
-
-            with raises(BaseTestException):
-                raise BaseTestException
+    with raises(BaseTestException):
+        raise BaseTestException
     """
     )
 
@@ -217,13 +201,13 @@ def test_msg_kwarg_with_raises_context_manager(testdir):
 
 def test_raises_function(testdir):
     def raise_error():
-        raise TestException
+        raise _TestException
 
     # Single exception
-    raises(TestException, raise_error)
+    raises(_TestException, raise_error)
 
     # Multiple exceptions
-    raises((TestException, AnotherTestException), raise_error)
+    raises((_TestException, AnotherTestException), raise_error)
 
     def assert_foo_equals_bar(foo, bar=None):
         assert foo == bar
