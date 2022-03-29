@@ -209,6 +209,8 @@ If you encounter any problems, please [file an issue](https://github.com/okken/p
 
 ## Changelog
 
+* 1.0.5
+  * Add `raises`
 * 1.0.4
   * Require Python >= 3.6
   * Remove old Manifest.in file.
