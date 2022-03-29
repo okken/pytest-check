@@ -11,3 +11,5 @@ README.html
 build/
 htmlcov/
 *.swp
+.python-version
+.vscode/
