@@ -1,3 +1,4 @@
+from pytest import LineMatcher
 from pytest_check import check
 
 # properly formatted tests in
@@ -103,3 +104,50 @@ def test_stop_on_fail_with_msg(testdir):
     result = testdir.runpytest("-x")
     result.assert_outcomes(failed=1, passed=0)
     result.stdout.fnmatch_lines(["*first fail*"])
+
+
+def test_traceback_style_no(testdir):
+    testdir.makepyfile(
+        """
+        from pytest_check import check
+
+        def run_helper1():
+            with check("first fail"): assert 1 == 0
+            with check("second fail"): assert 1 > 2
+            with check("third fail"): assert 1 < 5 < 4
+
+        def test_failures():
+            run_helper1()
+    """
+    )
+
+    result = testdir.runpytest("--junitxml=output.xml", "--tb=no")
+    result.assert_outcomes(failed=1, passed=0)
+    with open("output.xml") as f:
+        lines = LineMatcher(f.readlines())
+        lines.no_fnmatch_line("*run_helper1()*")
+
+
+def test_traceback_style_default(testdir):
+    testdir.makepyfile(
+        """
+        from pytest_check import check
+
+        def run_helper2():
+            with check("first fail"): assert 1 == 0
+            with check("second fail"): assert 1 > 2
+            with check("third fail"): assert 1 < 5 < 4
+
+        def run_helper1():
+            run_helper2()
+
+        def test_failures():
+            run_helper1()
+    """
+    )
+
+    result = testdir.runpytest("--junitxml=output.xml")
+    result.assert_outcomes(failed=1, passed=0)
+    with open("output.xml") as f:
+        lines = LineMatcher(f.readlines())
+        lines.fnmatch_lines("*run_helper1()*")
