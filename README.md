@@ -209,6 +209,9 @@ If you encounter any problems, please [file an issue](https://github.com/okken/p
 
 ## Changelog
 
+* 1.0.6
+  * Update pyproject.toml to use newer flit
+  * Attempt to fix plugin name from pytest_check to pytest-check.
 * 1.0.5
   * Add `raises`
 * 1.0.4
