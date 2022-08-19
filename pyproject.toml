@@ -1,32 +1,30 @@
+[project]
+name = "pytest-check"
+authors = [{name = "Brian Okken", email = "brian+pypi@pythontest.com"}]
+readme = "README.md"
+license = {file = "LICENSE.txt"}
+requires-python = ">3.7"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Framework :: Pytest" ,
+    "Topic :: Software Development :: Testing",
+]
+dynamic = ["version", "description"]
+
+[project.urls]
+Home = "https://github.com/okken/pytest-check"
+
+[project.entry-points.pytest11]
+check = "pytest_check.plugin"
+
 [build-system]
-requires = ["flit_core >=2,<3"]
+requires = ["flit_core >=3.2,<4"]
 build-backend = "flit_core.buildapi"
 
-[tool.flit.metadata]
-module = "pytest_check"
-author = "Brian Okken"
-author-email = "brian+pypi@pythontest.com"
-home-page = "https://github.com/okken/pytest-check"
-description-file="README.md"
-requires = ["pytest>=6.0.0"]
-requires-python = ">=3.6"
-classifiers = [
-        "Development Status :: 5 - Production/Stable",
-        "Framework :: Pytest",
-        "Intended Audience :: Developers",
-        "Topic :: Software Development :: Testing",
-        "Programming Language :: Python",
-        "Programming Language :: Python :: 3.6",
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
-        "Programming Language :: Python :: 3.9",
-        "Programming Language :: Python :: Implementation :: CPython",
-        "Operating System :: OS Independent",
-        "License :: OSI Approved :: MIT License",
-    ]
+[tool.flit.module]
+name = "pytest_check"
 
-[tool.flit.metadata.requires-extra]
-test = ["tox"]
-
-[tool.flit.entrypoints."pytest11"]
-check = "pytest_check.plugin"
