@@ -209,4 +209,4 @@ If you encounter any problems, please [file an issue](https://github.com/okken/p
 
 ## Changelog
 
-See [changelog.md](changelog.md)
+See [changelog.md](https://github.com/okken/pytest-check/blob/main/changelog.md)
