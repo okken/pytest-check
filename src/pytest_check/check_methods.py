@@ -291,7 +291,7 @@ class CheckRaisesContext:
 def get_full_context(level):
     (_, filename, line, funcname, contextlist) = inspect.stack()[level][0:5]
     filename = os.path.relpath(filename)
-    context = contextlist[0].strip()
+    context = contextlist[0].strip() if contextlist else ""
     return (filename, line, funcname, context)
 
 
