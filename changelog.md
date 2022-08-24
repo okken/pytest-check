@@ -10,7 +10,7 @@ All notable changes to this project  be documented in this file.
 
 ### Fixed
 
-- nothing so far
+- Support check failures not blowing up if called outside of a test.
 
 ### Changed
 
