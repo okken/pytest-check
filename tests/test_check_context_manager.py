@@ -7,33 +7,27 @@ from pytest_check import check
 
 
 def test_context_manager():
+    """
+    passing check
+    """
     with check:
         x = 3
         assert 1 < x < 4
 
 
 def test_context_manager_with_msg():
-    assert check.msg is None
+    """
+    check.msg only valid during with block
+    really a unit test
+    """
     with check("Hello"):
         assert check.msg == "Hello"
-        x = 3
-        assert 1 < x < 4
     assert check.msg is None
 
 
-def test_context_manager_fail(testdir):
-    testdir.makepyfile(
-        """
-        from pytest_check import check
-
-        def test_failures():
-            with check: assert 1 == 0
-            with check: assert 1 > 2
-            with check: assert 1 < 5 < 4
-    """
-    )
-
-    result = testdir.runpytest()
+def test_context_manager_fail(pytester):
+    pytester.copy_example("examples/test_example_context_manager_fail.py")
+    result = pytester.runpytest()
     result.assert_outcomes(failed=1, passed=0)
     result.stdout.fnmatch_lines(
         [

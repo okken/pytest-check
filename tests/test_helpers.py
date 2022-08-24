@@ -1,34 +1,9 @@
-
-import pytest
-
-# flake8: noqa
-
-
-@pytest.fixture()
-def example(testdir):
-    testdir.makepyfile(
-        """
-        from pytest_check import check
-
-        def test_func():
-            helper1()
-
-
-        def helper1():
-            helper2()
-
-        def helper2():
-            with check("first"): assert 1 == 0
-            with check("second"): assert 1 > 2
-        """
-    )
-
-
-def test_sequence_with_helper_funcs(testdir, example):
+def test_sequence_with_helper_funcs(pytester):
     """
-    Should show a sequence of calls 
+    Should show a sequence of calls
     """
-    result = testdir.runpytest()
+    pytester.copy_example("examples/test_example_helpers.py")
+    result = pytester.runpytest()
     result.assert_outcomes(failed=1, passed=0)
     result.stdout.fnmatch_lines(
         [
