@@ -302,7 +302,11 @@ def log_failure(msg):
     func = ""
     while "test_" not in func:
         (file, line, func, context) = get_full_context(level)
+        # we want to trace through user code, not 3rd party or builtin libs
         if "site-packages" in file:
+            break
+        # if called outside of a test, we might hit this
+        if "<module>" in func:
             break
         line = "{}:{} in {}() -> {}".format(file, line, func, context)
         pseudo_trace.append(line)

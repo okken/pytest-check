@@ -145,39 +145,18 @@ def test_failures():
     result.stdout.fnmatch_lines(match_lines)
 
 
-def test_can_mix_assertions_and_checks(testdir):
+def test_can_mix_assertions_and_checks(pytester):
     """
     You can mix checks and asserts, but a failing assert stops test execution.
     """
-    testdir.makepyfile(
-        """
-        import pytest_check as check
-
-        from pytest_check import raises
-
-        def test_failures():
-            assert 0 == 0
-
-            check.equal(1, 1)
-
-            check.equal(0, 1)
-
-            assert 1 == 2
-
-            check.equal(2, 3)
-    """
-    )
-
-    result = testdir.runpytest()
+    pytester.copy_example("examples/test_example_mix_checks_and_assertions.py")
+    result = pytester.runpytest()
     result.assert_outcomes(failed=1)
-    # Accumulated check fails are reported up to assert failure, but not after.
-    result.stdout.fnmatch_lines(["*Failed Checks: 1*"])
-    result.stdout.fnmatch_lines(
-        ["*FAILURE: ", "assert 0 == 1"], consecutive=True,
-    )
-
-    # Regular assert errors are reported as usual.
-    result.stdout.fnmatch_lines(["E * assert 1 == 2"])
+    result.stdout.fnmatch_lines([
+        "*FAILURE:*",
+        "*Failed Checks: 1*",
+        "*assert 1 == 2*",
+        ])
 
 
 def test_msg_kwarg_with_raises_context_manager(testdir):
