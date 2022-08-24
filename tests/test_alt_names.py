@@ -16,7 +16,7 @@ def test_alt_names(pytester):
     result.stdout.fnmatch_lines([
         "*FAILURE: assert 1 == 0*",
         "*test_example_alt_names.py:* in ends_with_test() -> helper_func()*",
-        "*test_example_alt_names.py:* in helper_func() -> with check:*",
+        "*test_example_alt_names.py:* in helper_func() -> *",
         "*Failed Checks: 1*",
     ])
     result.assert_outcomes(failed=1, passed=1)

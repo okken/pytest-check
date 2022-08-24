@@ -1,3 +1,17 @@
+"""
+The error caused by our example is on purpose.
+However, the import system in some versions of Python (such as 3.7)
+don't like it, even when running as a test.
+
+Python 3.10 handles it fine. So that's where we'll test it.
+"""
+import pytest
+import sys
+
+
+@pytest.mark.skipif(
+    sys.version_info < (3, 10),
+    reason="requires python3.10 or higher")
 def test_check_not_in_a_test(pytester):
     """
     should error
