@@ -10,6 +10,16 @@ All notable changes to this project  be documented in this file.
 
 ### Fixed
 
+- nothing so far
+
+### Changed
+
+- nothing so far
+
+## [1.0.8] - 2022-08-24
+
+### Fixed
+
 - Support check failures not blowing up if called outside of a test.
   - should also fix [85](https://github.com/okken/pytest-check/issues/85)
 
