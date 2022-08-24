@@ -11,6 +11,7 @@ All notable changes to this project  be documented in this file.
 ### Fixed
 
 - Support check failures not blowing up if called outside of a test.
+  - should also fix [85](https://github.com/okken/pytest-check/issues/85)
 
 ### Changed
 
