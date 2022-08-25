@@ -292,8 +292,14 @@ def get_full_context(level):
     (_, filename, line, funcname, contextlist) = inspect.stack()[level][0:5]
     try:
         filename = os.path.relpath(filename)
-    except ValueError:
-        filename = os.path.abspath(filename)
+    except ValueError:  # pragma: no cover
+        # this is necessary if we're tracing to a different drive letter
+        # such as C: to D:
+        #
+        # Turning off coverage for abspath, for now,
+        # since that path requires testing with an odd setup.
+        # But.... we'll keep looking for a way to test it. :)
+        filename = os.path.abspath(filename)  # pragma: no cover
     context = contextlist[0].strip() if contextlist else ""
     return (filename, line, funcname, context)
 
