@@ -16,6 +16,15 @@ All notable changes to this project  be documented in this file.
 
 - nothing so far
 
+## [1.0.9] - 2022-08-24
+
+### Fixed 
+
+- [issue 55](https://github.com/okken/pytest-check/issues/55) a problem with multiple drive letters.
+  - code is using `os.path.relpath()`, but sometimes it can fail.
+  - when it does fail, fall back to `os.path.abspath()`.
+  - thanks [rloutrel](https://github.com/rloutrel) and [kr1zo](https://github.com/kr1zo) for your patience and persistence, and for the solution. 
+
 ## [1.0.8] - 2022-08-24
 
 ### Fixed
