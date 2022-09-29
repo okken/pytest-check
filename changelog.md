@@ -2,7 +2,7 @@
 
 All notable changes to this project  be documented in this file.
 
-## [Unreleased]
+## [Unreleased] - yyyy-mm-dd
 
 ### Added
 
@@ -15,6 +15,12 @@ All notable changes to this project  be documented in this file.
 ### Changed
 
 - nothing so far
+
+## [1.0.10] - 2022-09-29
+
+### Fixed
+
+- [issue 80](https://github.com/okken/pytest-check/issues/80) --tb=no should remove tracebacks from xml output
 
 ## [1.0.9] - 2022-08-24
 
