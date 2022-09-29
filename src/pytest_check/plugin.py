@@ -49,6 +49,9 @@ def pytest_configure(config):
     # Otherwise, let pytest stop on the maxfail-th test function failure
     check_methods.set_stop_on_fail(stop_on_fail)
 
+    traceback_style = config.getvalue("tbstyle")
+    check_methods.set_traceback_style(traceback_style)
+
 
 @pytest.fixture(name="check")
 def check_fixture():

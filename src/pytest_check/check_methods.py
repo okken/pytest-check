@@ -29,6 +29,7 @@ __all__ = [
 
 
 _stop_on_fail = False
+_traceback_style = "auto"
 _failures = []
 
 
@@ -44,6 +45,11 @@ def get_failures():
 def set_stop_on_fail(stop_on_fail):
     global _stop_on_fail
     _stop_on_fail = stop_on_fail
+
+
+def set_traceback_style(traceback_style):
+    global _traceback_style
+    _traceback_style = traceback_style
 
 
 class CheckContextManager(object):
@@ -304,9 +310,16 @@ def get_full_context(level):
     return (filename, line, funcname, context)
 
 
-def log_failure(msg):
-    __tracebackhide__ = True
-    level = 3
+def _build_pseudo_trace_str():
+    """
+    built traceback styles for better error message, only supports no / others for now
+    traceback print mode (auto/long/short/line/native/no) see:
+    See https://docs.pytest.org/en/7.0.x/how-to/output.html#modifying-python-traceback-printing
+    """
+    if _traceback_style == "no":
+        return ""
+
+    level = 4
     pseudo_trace = []
     func = ""
     while "test_" not in func:
@@ -320,6 +333,12 @@ def log_failure(msg):
         line = "{}:{} in {}() -> {}".format(file, line, func, context)
         pseudo_trace.append(line)
         level += 1
-    pseudo_trace_str = "\n".join(reversed(pseudo_trace))
+
+    return "\n".join(reversed(pseudo_trace)) + "\n"
+
+
+def log_failure(msg):
+    __tracebackhide__ = True
+    pseudo_trace_str = _build_pseudo_trace_str()
     entry = "FAILURE: {}\n{}".format(msg if msg else "", pseudo_trace_str)
     _failures.append(entry)
