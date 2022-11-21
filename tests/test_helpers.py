@@ -10,11 +10,11 @@ def test_sequence_with_helper_funcs(pytester):
             "*FAILURE: first",
             "*in test_func() -> helper1()",
             "*in helper1() -> helper2()",
-            '*in helper2() -> with check("first"): assert 1 == 0',
+            '*in helper2() -> with check("first"):',
             "*FAILURE: second",
             "*in test_func() -> helper1()",
             "*in helper1() -> helper2()",
-            '*in helper2() -> with check("second"): assert 1 > 2',
+            '*in helper2() -> with check("second"):',
             "*Failed Checks: 2*",
         ]
     )
