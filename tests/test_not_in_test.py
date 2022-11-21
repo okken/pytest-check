@@ -10,7 +10,8 @@ import sys
 
 
 @pytest.mark.skipif(
-    sys.version_info < (3, 10), reason="requires python3.10 or higher"
+    sys.version_info < (3, 10),
+    reason="requires python3.10 or higher"
 )
 def test_check_not_in_a_test(pytester):
     """
