@@ -1,5 +1,5 @@
 """A pytest plugin that allows multiple failures per test."""
-__version__ = "1.1.0"
+__version__ = "1.1.1"
 
 import pytest
 

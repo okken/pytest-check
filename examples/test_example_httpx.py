@@ -20,3 +20,9 @@ def test_httpx_get():
     with check: 
         assert 'Example Domain' in r.text
 
+def test_httpx_get_with_helpers():
+    r = httpx.get('https://www.example.org/')
+    assert r.status_code == 200
+    check.is_false(r.is_redirect)
+    check.equal(r.encoding, 'utf-8')
+    check.is_in('Example Domain', r.text)
