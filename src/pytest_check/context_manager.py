@@ -1,10 +1,9 @@
-_stop_on_fail = False
 from .check_log import log_failure
-from . import check_functions
+
+_stop_on_fail = False
 
 
 class CheckContextManager(object):
-
     def __init__(self):
         self.msg = None
 
@@ -32,5 +31,3 @@ class CheckContextManager(object):
 
 
 check = CheckContextManager()
-
-#check.equal = check_functions.equal

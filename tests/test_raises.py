@@ -152,11 +152,13 @@ def test_can_mix_assertions_and_checks(pytester):
     pytester.copy_example("examples/test_example_mix_checks_and_assertions.py")
     result = pytester.runpytest()
     result.assert_outcomes(failed=1)
-    result.stdout.fnmatch_lines([
-        "*FAILURE:*",
-        "*Failed Checks: 1*",
-        "*assert 1 == 2*",
-        ])
+    result.stdout.fnmatch_lines(
+        [
+            "*FAILURE:*",
+            "*Failed Checks: 1*",
+            "*assert 1 == 2*",
+        ]
+    )
 
 
 def test_msg_kwarg_with_raises_context_manager(testdir):

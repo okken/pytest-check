@@ -3,6 +3,7 @@ import os
 
 _traceback_style = "auto"
 
+
 def get_full_context(level):
     (_, filename, line, funcname, contextlist) = inspect.stack()[level][0:5]
     try:
@@ -21,9 +22,8 @@ def get_full_context(level):
 
 def _build_pseudo_trace_str():
     """
-    built traceback styles for better error message, only supports no / others for now
-    traceback print mode (auto/long/short/line/native/no) see:
-    See https://docs.pytest.org/en/7.0.x/how-to/output.html#modifying-python-traceback-printing
+    built traceback styles for better error message
+    only supports no
     """
     if _traceback_style == "no":
         return ""

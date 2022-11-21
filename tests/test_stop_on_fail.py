@@ -1,6 +1,3 @@
-import pytest_check as check
-
-
 def test_stop_on_fail(pytester):
     pytester.copy_example("examples/test_example_stop_on_fail.py")
     result = pytester.runpytest("-x")

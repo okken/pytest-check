@@ -1,8 +1,5 @@
 import functools
-import inspect
-import os
 import pytest
-from . import check_log
 from .check_log import log_failure
 
 __all__ = [
@@ -31,7 +28,6 @@ __all__ = [
 _stop_on_fail = False
 
 
-
 def set_stop_on_fail(stop_on_fail):
     global _stop_on_fail
     _stop_on_fail = stop_on_fail
@@ -49,6 +45,7 @@ def check_func(func):
                 raise e
             log_failure(e)
             return False
+
     return wrapper
 
 

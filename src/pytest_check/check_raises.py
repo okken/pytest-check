@@ -1,5 +1,7 @@
-_stop_on_fail = False
 from .check_log import log_failure
+
+_stop_on_fail = False
+
 
 def raises(expected_exception, *args, **kwargs):
     """
@@ -48,9 +50,9 @@ def raises(expected_exception, *args, **kwargs):
 
     msg = kwargs.pop("msg", None)
     if not args:
-        assert not kwargs, (
-            f"Unexpected kwargs for pytest_check.raises: {kwargs}"
-        )
+        assert (
+            not kwargs
+        ), f"Unexpected kwargs for pytest_check.raises: {kwargs}"
         return CheckRaisesContext(expected_exception, msg=msg)
     else:
         func = args[0]

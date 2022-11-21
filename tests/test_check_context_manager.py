@@ -1,10 +1,8 @@
-from pytest import LineMatcher
-from pytest_check import check
-
 def test_context_manager_pass(pytester):
     pytester.copy_example("examples/test_example_context_manager_pass.py")
     result = pytester.runpytest()
     result.assert_outcomes(passed=2)
+
 
 def test_context_manager_fail(pytester):
     pytester.copy_example("examples/test_example_context_manager_fail.py")
@@ -20,6 +18,7 @@ def test_context_manager_fail(pytester):
         ]
     )
 
+
 def test_context_manager_fail_with_msg(pytester):
     pytester.copy_example("examples/test_example_context_manager_fail.py")
     result = pytester.runpytest("-k", "test_messages")
@@ -33,4 +32,3 @@ def test_context_manager_fail_with_msg(pytester):
             "*Failed Checks: 3*",
         ]
     )
-

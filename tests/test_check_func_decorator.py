@@ -1,5 +1,3 @@
-from pytest_check import check_func
-
 def test_passing_check_helper_functions(pytester):
     pytester.copy_example("examples/test_example_check_func_decorator.py")
     result = pytester.runpytest("-k", "test_pass")
