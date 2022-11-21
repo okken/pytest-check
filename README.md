@@ -58,7 +58,8 @@ def test_httpx_get(check):
 
 ## Validation functions
 
-`check` also helper functions for common checks:
+`check` also helper functions for common checks.  
+These methods do NOT need to be inside of a `with check:` block.
 
 - **check.equal** - *a == b*
 - **check.not_equal** - *a != b*
@@ -80,22 +81,18 @@ def test_httpx_get(check):
 - **check.less_equal** - *a <= b*
 - **check.raises** - *func raises given exception* similar to [pytest.raises](https://docs.pytest.org/en/latest/reference/reference.html#pytest-raises)
 
-## Using raises as a context manager
-
-`raises` can also be used as a context manager:
+The httpx example can be rewritten with helper functions:
 
 ```python
-from pytest_check import raises
-
-
-def test_context_manager():
-    with raises(AssertionError):
-        x = 3
-        assert 1 < x < 4
+def test_httpx_get_with_helpers():
+    r = httpx.get('https://www.example.org/')
+    assert r.status_code == 200
+    check.is_false(r.is_redirect)
+    check.equal(r.encoding, 'utf-8')
+    check.is_in('Example Domain', r.text)
 ```
 
-Just like with `check` as a context manager, execution won't proceed past the first line that throws an error, even if it is successfully captured and logged by `pytest-check`.
-Break your assertions over multiple uses of `raises` if you encounter this problem.
+Which you use is personal preference.
 
 ## Defining your own check functions
 
@@ -116,8 +113,21 @@ def test_all_four():
     is_four(3)
     is_four(4)
 ```
-<!-- # 6 lb 10 oz 4:07 pm Sophia was born
-# Ella 8 lb 7 oz, 8:25 am -->
+
+## Using raises as a context manager
+
+`raises` is used as context manager, much like `pytest.raises`. The main difference being that a failure to raise the right exception won't stop the execution of the test method.
+
+
+```python
+from pytest_check import raises 
+
+
+def test_raises():
+    with raises(AssertionError):
+        x = 3
+        assert 1 < x < 4
+```
 
 ## Pseudo-tracebacks
 

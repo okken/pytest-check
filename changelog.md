@@ -17,7 +17,13 @@ All notable changes to this project  be documented in this file.
 - nothing so far 
 -->
 
-## [1.1.0] - yyyy-mm-dd
+## [1.1.1] - 2022-Nov-21
+
+### Changed 
+
+- README update
+
+## [1.1.0] - 2022-Nov-21
 
 ### Added
 
