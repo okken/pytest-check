@@ -1,7 +1,7 @@
 # Changelog
 
 All notable changes to this project  be documented in this file.
-
+<!-- 
 ## [Unreleased] - yyyy-mm-dd
 
 ### Added
@@ -14,7 +14,27 @@ All notable changes to this project  be documented in this file.
 
 ### Changed
 
-- nothing so far
+- nothing so far 
+-->
+
+## [1.1.0] - yyyy-mm-dd
+
+### Added
+
+- Red output in pseudo-traceback
+
+### Changed 
+
+- Refactored code into more modules
+- All functionality now possible through `check` fixture or `from pytest_check import check`.
+  - The `check` object from either of these methods can be used as either a context manager or to access the check helper functions.
+- Lots of rewrite in README
+
+### Deprecated
+- API change.
+  - Access to check helper functions via `import pytest_check as check` is deprecated.
+  - It still works, but will be removed in a future version.
+  - However, there is no deprecation warning for this.
 
 ## [1.0.10] - 2022-09-29
 
