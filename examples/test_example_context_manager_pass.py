@@ -3,6 +3,7 @@ Context manater with one or multiple blocks.
 """
 from pytest_check import check
 
+
 def test_one_with_block():
     with check:
         x = 3
@@ -11,9 +12,9 @@ def test_one_with_block():
 
 def test_multiple_with_blocks():
     x = 3
-    with check: 
+    with check:
         assert 1 < x
-    with check: 
+    with check:
         assert x < 4
-    with check: 
+    with check:
         assert x == 3

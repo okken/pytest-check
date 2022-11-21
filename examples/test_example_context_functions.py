@@ -14,7 +14,7 @@ or this:
         check.equal(1, 1)
 
 However, it used to work.
-It still works. 
+It still works.
 But this method is deprecated and may be removed in future versions.
 
 Please migrate to this:
@@ -27,16 +27,18 @@ Please migrate to this:
 from pytest_check import check
 import pytest_check
 
+
 def test_old_style():
     pytest_check.equal(1, 1)
+
 
 def test_pass():
     check.equal(1, 1)
     with check:
         assert 1 == 1
 
+
 def test_pass_check(check):
     check.equal(1, 1)
     with check:
         assert 1 == 1
-

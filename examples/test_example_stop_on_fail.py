@@ -11,8 +11,8 @@ Using --maxfail=2 or more counts failing test functions, not check failures.
 
 from pytest_check import check
 
-class TestStopOnFail():
 
+class TestStopOnFail:
     def test_1(self):
         check.equal(1, 1)
         check.equal(1, 2)
