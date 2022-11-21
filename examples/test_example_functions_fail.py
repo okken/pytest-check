@@ -3,21 +3,26 @@ Failing versions of all of the check helper functions.
 """
 from pytest_check import check
 
+
 def test_equal():
-    check.equal(1,2)
+    check.equal(1, 2)
+
 
 def test_not_equal():
-    check.not_equal(1,1)
+    check.not_equal(1, 1)
+
 
 def test_is():
     x = ["foo"]
     y = ["foo"]
     check.is_(x, y)
 
+
 def test_is_not():
     x = ["foo"]
     y = x
     check.is_not(x, y)
+
 
 def test_is_true():
     check.is_true(False)
@@ -51,6 +56,7 @@ def test_is_instance():
 
 def test_is_not_instance():
     check.is_not_instance(1, int)
+
 
 def test_almost_equal():
     check.almost_equal(1, 2)

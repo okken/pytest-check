@@ -16,6 +16,12 @@ All notable changes to this project  be documented in this file.
 
 - nothing so far 
 -->
+## [1.1.2] - 2022-Nov-21
+
+### Added
+
+- Allow `raises` from `check` object. 
+  - Now `with check.raises(Exception):` works.
 
 ## [1.1.1] - 2022-Nov-21
 

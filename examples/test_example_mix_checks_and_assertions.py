@@ -10,6 +10,7 @@ stop the test.
 
 from pytest_check import check
 
+
 def test_failures():
     assert 0 == 0
     check.equal(1, 1)
