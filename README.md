@@ -4,14 +4,13 @@ A pytest plugin that allows multiple failures per test.
 
 ----
 
-This [pytest](https://github.com/pytest-dev/pytest) plugin was a rewrite and a
-rename of [pytest-expect](https://github.com/okken/pytest-expect).
+Normally, a test funcion will fail and stop running with the first failed `assert`.  
+That's totally fine for tons of kinds of software tests.  
+However, there are times where you'd like to check more than one thing, and you'd really like to know the results of each check, even if one of them fails.
 
-
+`pytest-check` allows multiple failed "checks" per test function, so you can see the whole picture of what's going wrong.
 
 ## Installation
-
-Note: Requires pytest 6.0 or above.
 
 From PyPI:
 
@@ -19,70 +18,47 @@ From PyPI:
 $ pip install pytest-check
 ```
 
-Or from github.
 
-```
-$ pip install git+https://github.com/okken/pytest-check
-```
+## Example
 
-
-## Usage
-
-Example using import:
+Quick example of where you might want multiple checks:
 
 ```python
-import pytest_check as check
+import httpx
+from pytest_check import check
 
-
-def test_example():
-    a = 1
-    b = 2
-    c = [2, 4, 6]
-    check.greater(a, b)
-    check.less_equal(b, a)
-    check.is_in(a, c, "Is 1 in the list")
-    check.is_not_in(b, c, "make sure 2 isn't in list")
+def test_httpx_get():
+    r = httpx.get('https://www.example.org/')
+    # bail if bad status code
+    assert r.status_code == 200
+    # but if we get to here
+    # then check everything else without stopping
+    with check: 
+        assert r.is_redirect == False
+    with check: 
+        assert r.encoding == 'utf-8'
+    with check: 
+        assert 'Example Domain' in r.text
 ```
 
+## Import vs fixture
 
-Test results:
+The example above used import: `from pytest_check import check`.
 
-```
-=================================== FAILURES ===================================
-_________________________________ test_example _________________________________
-FAILURE:
-assert 1 > 2
-  test_check.py, line 14, in test_example() -> check.greater(a, b)
-FAILURE:
-assert 2 <= 1
-  test_check.py, line 15, in test_example() -> check.less_equal(b, a)
-FAILURE: Is 1 in the list
-assert 1 in [2, 4, 6]
-  test_check.py, line 16, in test_example() -> check.is_in(a, c, "Is 1 in the list")
-FAILURE: make sure 2 isn't in list
-assert 2 not in [2, 4, 6]
-  test_check.py, line 17, in test_example() -> check.is_not_in(b, c, "make sure 2 isn't in list")
-------------------------------------------------------------
-Failed Checks: 4
-=========================== 1 failed in 0.11 seconds ===========================
-```
-
-
-Example using fixture:
+You can also grab `check` as a fixture with no import:
 
 ```python
-def test_example(check):
-    a = 1
-    b = 2
-    c = [2, 4, 6]
-    check.greater(a, b)
-    check.less_equal(b, a)
-    check.is_in(a, c, "Is 1 in the list")
-    check.is_not_in(b, c, "make sure 2 isn't in list")
+def test_httpx_get(check):
+    r = httpx.get('https://www.example.org/')
+    ...
+    with check: 
+        assert r.is_redirect == False
+    ...
 ```
 
+## Validation functions
 
-## validation functions
+`check` also helper functions for common checks:
 
 - **check.equal** - *a == b*
 - **check.not_equal** - *a != b*
@@ -104,67 +80,6 @@ def test_example(check):
 - **check.less_equal** - *a <= b*
 - **check.raises** - *func raises given exception* similar to [pytest.raises](https://docs.pytest.org/en/latest/reference/reference.html#pytest-raises)
 
-## Defining your own check functions
-
-The `@check_func` decorator allows you to wrap any test helper that has an assert
-statement in it to be a non-blocking assert function.
-
-
-```python
-from pytest_check import check_func
-
-@check_func
-def is_four(a):
-    assert a == 4
-
-def test_all_four():
-    is_four(1)
-    is_four(2)
-    is_four(3)
-    is_four(4)
-```
-
-The above will result in:
-
-```
-...
-________________________________ test_all_four _________________________________
-FAILURE: assert 1 == 4
-  test_fail.py, line 8, in test_all_four() -> is_four(1)
-FAILURE: assert 2 == 4
-  test_fail.py, line 9, in test_all_four() -> is_four(2)
-FAILURE: assert 3 == 4
-  test_fail.py, line 10, in test_all_four() -> is_four(3)
-------------------------------------------------------------
-Failed Checks: 3
-=========================== 1 failed in 0.12 seconds ===========================
-```
-
-## Using check as a context manager
-
-You can use the `check()` context manager to wrap any assert that you want to continue after in a test.
-
-```python
-from pytest_check import check
-
-
-def test_context_manager():
-    with check:
-        x = 3
-        assert 1 < x < 4
-```
-
-Within any `with check:`, however, you still won't get past the assert statement,
-so you will need to use multiple `with check:` blocks for multiple asserts:
-
-```python
-    def test_multiple_failures():
-        with check: assert 1 == 0
-        with check: assert 1 > 2
-        with check: assert 1 < 5 < 4
-
-```
-
 ## Using raises as a context manager
 
 `raises` can also be used as a context manager:
@@ -179,10 +94,82 @@ def test_context_manager():
         assert 1 < x < 4
 ```
 
-Just like with `check` as a context manager, execution won't proceed past the first line that throws an error, even if it is successfully captured and logged by Pytest Check.
+Just like with `check` as a context manager, execution won't proceed past the first line that throws an error, even if it is successfully captured and logged by `pytest-check`.
 Break your assertions over multiple uses of `raises` if you encounter this problem.
 
-## maxfail behavior
+## Defining your own check functions
+
+The `@check.check_func` decorator allows you to wrap any test helper that has an assert
+statement in it to be a non-blocking assert function.
+
+
+```python
+from pytest_check import check
+
+@check.check_func
+def is_four(a):
+    assert a == 4
+
+def test_all_four():
+    is_four(1)
+    is_four(2)
+    is_four(3)
+    is_four(4)
+```
+<!-- # 6 lb 10 oz 4:07 pm Sophia was born
+# Ella 8 lb 7 oz, 8:25 am -->
+
+## Pseudo-tracebacks
+
+With `check`, tests can have multiple failures per test.
+This would possibly make for extensive output if we include the full traceback for 
+every failure.
+To make the output a little more concise, `pytest-check` implements a shorter version, which we call pseudo-tracebacks.
+
+For example, take this test:
+
+```python
+def test_example():
+    a = 1
+    b = 2
+    c = [2, 4, 6]
+    check.greater(a, b)
+    check.less_equal(b, a)
+    check.is_in(a, c, "Is 1 in the list")
+    check.is_not_in(b, c, "make sure 2 isn't in list")
+```
+
+This will result in:
+
+```
+=================================== FAILURES ===================================
+_________________________________ test_example _________________________________
+FAILURE:
+assert 1 > 2
+  test_check.py, line 14, in test_example() -> check.greater(a, b)
+FAILURE:
+assert 2 <= 1
+  test_check.py, line 15, in test_example() -> check.less_equal(b, a)
+FAILURE: Is 1 in the list
+assert 1 in [2, 4, 6]
+  test_check.py, line 16, in test_example() -> check.is_in(a, c, "Is 1 in the list")
+FAILURE: make sure 2 isn't in list
+assert 2 not in [2, 4, 6]
+  test_check.py, line 17, in test_example() -> check.is_not_in(b, c, "make sure 2 isn't in list")
+------------------------------------------------------------
+Failed Checks: 4
+=========================== 1 failed in 0.11 seconds ===========================
+```
+
+## Red output
+
+The failures will also be red, unless you turn that off with pytests `--color=no`.
+
+## No output
+
+You can turn off the failure reports with pytests `--tb=no`.
+
+## Stop on Fail (maxfail behavior)
 
 Setting `-x` or `--maxfail=1` will cause this plugin to abort testing after the first failed check.
 

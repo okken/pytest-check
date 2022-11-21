@@ -1,11 +1,14 @@
-# -*- coding: utf-8 -*-
-
+import sys
 import pytest
+from colorama import just_fix_windows_console
 from _pytest._code.code import ExceptionInfo
-from . import check_methods
+from . import check_functions
+from . import context_manager
+from . import check_log
+from . import pseudo_traceback
+from . import check_raises
 
-# This is ugly.
-# But it seems to be the only way to know about xfail status.
+
 from _pytest.skipping import xfailed_key
 
 
@@ -14,8 +17,8 @@ def pytest_runtest_makereport(item, call):
     outcome = yield
     report = outcome.get_result()
 
-    failures = check_methods.get_failures()
-    check_methods.clear_failures()
+    failures = check_log.get_failures()
+    check_log.clear_failures()
 
     if failures:
         if item._store[xfailed_key]:
@@ -43,16 +46,31 @@ def pytest_runtest_makereport(item, call):
 
 
 def pytest_configure(config):
-    maxfail = config.getvalue("maxfail")
-    stop_on_fail = maxfail == 1
+    # Add some red to the failure output, if stdout can accommodate it.
+    isatty = sys.stdout.isatty()
+    color = config.option.color
+    check_log.should_use_color = (isatty and color == "auto") or (
+        color == "yes"
+    )
+    just_fix_windows_console()
+
     # If -x or --maxfail=1, then stop on the first failed check
     # Otherwise, let pytest stop on the maxfail-th test function failure
-    check_methods.set_stop_on_fail(stop_on_fail)
+    maxfail = config.getvalue("maxfail")
+    stop_on_fail = maxfail == 1
+    check_functions.set_stop_on_fail(stop_on_fail)
+    context_manager._stop_on_fail = stop_on_fail
+    check_raises._stop_on_fail = stop_on_fail
 
+    # Allow for --tb=no to turn off check's pseudo tbs
     traceback_style = config.getvalue("tbstyle")
-    check_methods.set_traceback_style(traceback_style)
+    pseudo_traceback._traceback_style = traceback_style
 
 
+# Allow for tests to grab "check" via fixture:
+# def test_a(check):
+#    check.equal(a, b)
 @pytest.fixture(name="check")
 def check_fixture():
-    return check_methods
+    # return check_functions
+    return context_manager.check

@@ -1,44 +1,12 @@
-from pytest_check import check_func
-
-# properly formatted tests in
-# multiline strings contain blank lines with spaces, freaks out flake8
-
-# flake8: noqa
+def test_passing_check_helper_functions(pytester):
+    pytester.copy_example("examples/test_example_check_func_decorator.py")
+    result = pytester.runpytest("-k", "test_pass")
+    result.assert_outcomes(passed=2)
 
 
-@check_func
-def is_five(a):
-    assert a == 5
-
-
-def test_pass():
-    is_five(5)
-
-
-def test_return_val_True():
-    assert True == is_five(5)
-
-
-def test_fail(testdir):
-    testdir.makepyfile(
-        """
-        from pytest_check import check_func
-
-        @check_func
-        def is_four(a):
-            assert a == 4
-
-        def test_all_four():
-            is_four(1)
-            is_four(2)
-            should_be_False = is_four(3)
-            should_be_True = is_four(4)
-            print('should_be_True={}'.format(should_be_True))
-            print('should_be_False={}'.format(should_be_False))
-    """
-    )
-
-    result = testdir.runpytest("-s")
+def test_failing_check_helper_functions(pytester):
+    pytester.copy_example("examples/test_example_check_func_decorator.py")
+    result = pytester.runpytest("-s", "-k", "test_all_four")
     result.assert_outcomes(failed=1, passed=0)
     result.stdout.fnmatch_lines(
         [
