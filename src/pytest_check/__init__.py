@@ -1,5 +1,5 @@
 """A pytest plugin that allows multiple failures per test."""
-__version__ = "1.1.1"
+__version__ = "1.1.2"
 
 import pytest
 
@@ -21,6 +21,9 @@ from pytest_check.context_manager import check  # noqa: F401, F402, F403
 # with raises(AssertionError):
 #     assert 0
 from pytest_check.check_raises import raises  # noqa: F401, F402, F403
+
+# allow check level raises
+setattr(check, "raises", raises)
 
 # make sure assert rewriting happens
 pytest.register_assert_rewrite("pytest_check.check")

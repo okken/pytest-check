@@ -34,7 +34,7 @@ def test_httpx_get():
     # but if we get to here
     # then check everything else without stopping
     with check: 
-        assert r.is_redirect == False
+        assert r.is_redirect is False
     with check: 
         assert r.encoding == 'utf-8'
     with check: 
@@ -120,11 +120,10 @@ def test_all_four():
 
 
 ```python
-from pytest_check import raises 
-
+from pytest_check import check
 
 def test_raises():
-    with raises(AssertionError):
+    with check.raises(AssertionError):
         x = 3
         assert 1 < x < 4
 ```
