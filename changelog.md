@@ -16,6 +16,15 @@ All notable changes to this project  be documented in this file.
 
 - nothing so far 
 -->
+## [1.1.3] - 2022-Nov-22
+
+### Fixed
+
+- While using the `check` fixture, allow `check.check` as a context manager.
+  - this is unnecessary, the `check` fixture now works as a context manager.
+  - but apparently some people have been using `with check.check:`
+  - so this fix makes that work.
+
 ## [1.1.2] - 2022-Nov-21
 
 ### Added

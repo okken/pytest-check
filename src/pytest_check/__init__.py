@@ -1,5 +1,5 @@
 """A pytest plugin that allows multiple failures per test."""
-__version__ = "1.1.2"
+__version__ = "1.1.3"
 
 import pytest
 
@@ -22,11 +22,16 @@ from pytest_check.context_manager import check  # noqa: F401, F402, F403
 #     assert 0
 from pytest_check.check_raises import raises  # noqa: F401, F402, F403
 
+# make sure assert rewriting happens
+pytest.register_assert_rewrite("pytest_check.check")
+
 # allow check level raises
 setattr(check, "raises", raises)
 
-# make sure assert rewriting happens
-pytest.register_assert_rewrite("pytest_check.check")
+# allow check.check as a context manager.
+# weird, but some people are doing it.
+# decprecate this eventually
+setattr(check, "check", check)
 
 # allow for helper functions to be part of check context
 # manager and check fixture:
