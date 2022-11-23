@@ -4,8 +4,8 @@ A pytest plugin that allows multiple failures per test.
 
 ----
 
-Normally, a test funcion will fail and stop running with the first failed `assert`.  
-That's totally fine for tons of kinds of software tests.  
+Normally, a test funcion will fail and stop running with the first failed `assert`.
+That's totally fine for tons of kinds of software tests.
 However, there are times where you'd like to check more than one thing, and you'd really like to know the results of each check, even if one of them fails.
 
 `pytest-check` allows multiple failed "checks" per test function, so you can see the whole picture of what's going wrong.
@@ -33,11 +33,11 @@ def test_httpx_get():
     assert r.status_code == 200
     # but if we get to here
     # then check everything else without stopping
-    with check: 
+    with check:
         assert r.is_redirect is False
-    with check: 
+    with check:
         assert r.encoding == 'utf-8'
-    with check: 
+    with check:
         assert 'Example Domain' in r.text
 ```
 
@@ -51,14 +51,14 @@ You can also grab `check` as a fixture with no import:
 def test_httpx_get(check):
     r = httpx.get('https://www.example.org/')
     ...
-    with check: 
+    with check:
         assert r.is_redirect == False
     ...
 ```
 
 ## Validation functions
 
-`check` also helper functions for common checks.  
+`check` also helper functions for common checks.
 These methods do NOT need to be inside of a `with check:` block.
 
 - **check.equal** - *a == b*
@@ -131,7 +131,7 @@ def test_raises():
 ## Pseudo-tracebacks
 
 With `check`, tests can have multiple failures per test.
-This would possibly make for extensive output if we include the full traceback for 
+This would possibly make for extensive output if we include the full traceback for
 every failure.
 To make the output a little more concise, `pytest-check` implements a shorter version, which we call pseudo-tracebacks.
 
@@ -187,6 +187,19 @@ Setting `-maxfail=2` or greater will turn off any handling of maxfail within thi
 In other words, the `maxfail` count is counting tests, not checks.
 The exception is the case of `1`, where we want to stop on the very first failed check.
 
+## any_failure()
+Use any_failure in case it has no sense to go on with a second group of checks if any of the first one has failed. E.g:
+
+```python
+from pytest_check import check, any_failures
+
+def test_with_groups_of_checks():
+    check.equal(1, 1)
+    check.equal(2, 3)
+    if not any_failures():
+        check.equal(1, 2)
+        check.equal(2, 2)
+```
 
 ## Contributing
 
