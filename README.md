@@ -4,7 +4,7 @@ A pytest plugin that allows multiple failures per test.
 
 ----
 
-Normally, a test funcion will fail and stop running with the first failed `assert`.
+Normally, a test function will fail and stop running with the first failed `assert`.
 That's totally fine for tons of kinds of software tests.
 However, there are times where you'd like to check more than one thing, and you'd really like to know the results of each check, even if one of them fails.
 
