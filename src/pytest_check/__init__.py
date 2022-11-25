@@ -22,6 +22,9 @@ from pytest_check.context_manager import check  # noqa: F401, F402, F403
 #     assert 0
 from pytest_check.check_raises import raises  # noqa: F401, F402, F403
 
+# allow to know if any_failures due to any previous check
+from pytest_check.check_log import any_failures  # noqa: F401, F402, F403
+
 # make sure assert rewriting happens
 pytest.register_assert_rewrite("pytest_check.check")
 

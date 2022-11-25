@@ -10,6 +10,10 @@ def clear_failures():
     _failures = []
 
 
+def any_failures() -> bool:
+    return bool(get_failures())
+
+
 def get_failures():
     return _failures
 
