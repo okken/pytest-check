@@ -20,7 +20,7 @@ All notable changes to this project  be documented in this file.
 
 ### Added
 
-- Add `any_failures()`. Thank you @alblasco
+- Add `any_failures()`. Thank you [@alblasco](https://github.com/alblasco)
 
 ## [1.1.3] - 2022-Nov-22
 
