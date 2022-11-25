@@ -187,16 +187,20 @@ Setting `-maxfail=2` or greater will turn off any handling of maxfail within thi
 In other words, the `maxfail` count is counting tests, not checks.
 The exception is the case of `1`, where we want to stop on the very first failed check.
 
-## any_failure()
-Use any_failure in case it has no sense to go on with a second group of checks if any of the first one has failed. E.g:
+## any_failures()
+
+Use `any_failures()` to see if there are any failures.  
+One use case is to make a block of checks conditional on not failing in a previous set of checks:
 
 ```python
-from pytest_check import check, any_failures
+from pytest_check import check
 
 def test_with_groups_of_checks():
+    # always check these
     check.equal(1, 1)
     check.equal(2, 3)
-    if not any_failures():
+    if not check.any_failures():
+        # only check these if the above passed
         check.equal(1, 2)
         check.equal(2, 2)
 ```

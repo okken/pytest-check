@@ -1,3 +1,7 @@
+from pytest_check import check
+from pytest_check import any_failures
+
+
 def test_any_failures_false(pytester):
     pytester.copy_example("examples/test_example_any_failures.py")
     result = pytester.runpytest("-k", "test_any_failures_false")
@@ -22,3 +26,15 @@ def test_any_failure_true(pytester):
             "*Failed Checks: 1",
         ]
     )
+
+
+def test_top_level():
+    assert not any_failures()
+
+
+def test_from_imported_check():
+    assert not check.any_failures()
+
+
+def test_from_check_fixture(check):
+    assert not check.any_failures()
