@@ -16,6 +16,12 @@ All notable changes to this project  be documented in this file.
 
 - nothing so far 
 -->
+## [1.2.0] - 2022-Nov-25
+
+### Added
+
+- Add `any_failures()`.
+
 ## [1.1.3] - 2022-Nov-22
 
 ### Fixed
