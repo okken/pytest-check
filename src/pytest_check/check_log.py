@@ -20,6 +20,7 @@ def get_failures():
 
 def log_failure(msg=""):
     __tracebackhide__ = True
+    msg = str(msg).strip()
     pseudo_trace_str = _build_pseudo_trace_str()
     msg_plus_trace = f"{msg}\n{pseudo_trace_str}"
     if should_use_color:
