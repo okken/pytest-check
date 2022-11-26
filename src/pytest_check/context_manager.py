@@ -18,7 +18,7 @@ class CheckContextManager(object):
                 return
             else:
                 if self.msg is not None:
-                    log_failure(self.msg)
+                    log_failure(f"{self.msg}\n{exc_val}")
                 else:
                     log_failure(exc_val)
                 self.msg = None
