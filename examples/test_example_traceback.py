@@ -22,7 +22,7 @@ def helper_func():
     helper2_func()
 
 def helper2_func():
-    check.equal(1, 2)
+    check.equal(1, 2, "custom")
 
 def test_tb_func(check):
         helper_func()
@@ -35,8 +35,8 @@ def helper_ctx():
 
 
 def helper2_ctx():
-    with check:
-        assert 1 == 2
+    with check("check message"):
+        assert 1 == 2, "assert message"
 
 def test_tb_ctx(check):
     helper_ctx()
@@ -48,8 +48,8 @@ def helper_assert():
 
 
 def helper2_assert():
-    assert 1 == 2
+    assert 1 == 2, "assert message"
 
 def test_tb_ctx_assert(check):
-    with check:
+    with check("check message"):
         helper_assert()
