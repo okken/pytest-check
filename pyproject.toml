@@ -16,7 +16,7 @@ classifiers = [
 dynamic = ["version", "description"]
 dependencies = [
     "pytest",
-    "colorama>=0.4.6",
+    "colorama>=0.4.5",
 ]
 
 [project.urls]
