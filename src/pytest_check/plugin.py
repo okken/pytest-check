@@ -1,6 +1,5 @@
 import sys
 import pytest
-from colorama import just_fix_windows_console
 from _pytest._code.code import ExceptionInfo
 from . import check_functions
 from . import context_manager
@@ -52,7 +51,6 @@ def pytest_configure(config):
     check_log.should_use_color = (isatty and color == "auto") or (
         color == "yes"
     )
-    just_fix_windows_console()
 
     # If -x or --maxfail=1, then stop on the first failed check
     # Otherwise, let pytest stop on the maxfail-th test function failure

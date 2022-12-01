@@ -17,9 +17,11 @@ All notable changes to this project  be documented in this file.
 - nothing so far 
 -->
 
-## [Unreleased] - 2022-Nov-25
+## [1.2.1] - 2022-Nov-30
 
 ### Changed
+
+- Remove colorama as a dependency, and simplify how we do "red".
 
 - Change the formatting of context manager checks such that if a msg is included, we see both the message and the assert failure. Previoulsy, the message would replace the assert failure.
 
