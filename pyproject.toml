@@ -14,10 +14,7 @@ classifiers = [
     "Topic :: Software Development :: Testing",
 ]
 dynamic = ["version", "description"]
-dependencies = [
-    "pytest",
-    "colorama>=0.4.6",
-]
+dependencies = ["pytest"]
 
 [project.urls]
 Home = "https://github.com/okken/pytest-check"
