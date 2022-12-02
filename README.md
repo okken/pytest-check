@@ -58,7 +58,7 @@ def test_httpx_get(check):
 
 ## Validation functions
 
-`check` also helper functions for common checks.
+`check` also helper functions for common checks. 
 These methods do NOT need to be inside of a `with check:` block.
 
 - **check.equal** - *a == b*
@@ -79,6 +79,7 @@ These methods do NOT need to be inside of a `with check:` block.
 - **check.greater_equal** - *a >= b*
 - **check.less** - *a < b*
 - **check.less_equal** - *a <= b*
+- **check.between** - *a < b < c*
 - **check.raises** - *func raises given exception* similar to [pytest.raises](https://docs.pytest.org/en/latest/reference/reference.html#pytest-raises)
 
 The httpx example can be rewritten with helper functions:
@@ -203,6 +204,56 @@ def test_with_groups_of_checks():
         # only check these if the above passed
         check.equal(1, 2)
         check.equal(2, 2)
+```
+
+## Speedups
+
+If you have lots of check failures, your tests may not run as fast as you want.  
+There are a few ways to speed things up.
+
+* `--check-no-tb` - report reason for failure, but not pseudo-traceback.
+    * pytest-check uses custom traceback code I'm calling a pseudo-traceback. 
+    * This is visually shorter than normal assert tracebacks.
+    * Internally, it uses introspection, which can be slow.
+    * Turning off pseudo-tracebacks speeds things up quite a bit.
+
+* `--check-max-report=10` - limit reported failures per test.
+    * The example shows `10` but any number can be used.
+    * The test will still have the total nuber of failures reported.
+
+* `--check-max-fail=20` - Stop the test after this many check failures.
+    * This is useful if your code under test is slow-ish and you want to bail early.
+
+* Any of these can be used on their own, or combined.
+
+* Recommendation:
+    * Don't worry about this unless you need to.
+    * If you are using check a lot in tight loops with tons of data points, then speed it up significantly with all of these flags:
+        * `--check-no-tb --check-max-report=10 --check-max-fail=20`.
+
+## Local speedups
+
+The flags above are global settings, and apply to every test in the test run.  
+
+Locally, you can set these values per test.
+
+From `examples/test_example_speedup_funcs.py`:
+
+```python
+def test_no_tb():
+    check.set_no_tb()
+    for i in range(1, 11):
+        check.equal(i, 100)
+
+def test_max_report():
+    check.set_max_report(5)
+    for i in range(1, 11):
+        check.equal(i, 100)
+
+def test_max_fail():
+    check.set_max_fail(5)
+    for i in range(1, 11):
+        check.equal(i, 100)
 ```
 
 ## Contributing

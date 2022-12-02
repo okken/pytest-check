@@ -8,9 +8,9 @@ def test_any_failures_false(pytester):
     result.assert_outcomes(failed=1, passed=0)
     result.stdout.fnmatch_lines(
         [
-            "*assert 1 == 2*",
-            "*assert 1 == 3*",
-            "*assert 1 == 4*",
+            "*check 1 == 2*",
+            "*check 1 == 3*",
+            "*check 1 == 4*",
             "*Failed Checks: 3",
         ]
     )
@@ -22,7 +22,7 @@ def test_any_failure_true(pytester):
     result.assert_outcomes(failed=1, passed=0)
     result.stdout.fnmatch_lines(
         [
-            "*assert 2 == 3*",
+            "*check 2 == 3*",
             "*Failed Checks: 1",
         ]
     )
