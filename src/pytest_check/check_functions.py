@@ -3,6 +3,7 @@ import pytest
 from .check_log import log_failure
 
 __all__ = [
+    "assert_equal",
     "equal",
     "not_equal",
     "is_",
@@ -48,6 +49,9 @@ def check_func(func):
 
     return wrapper
 
+
+def assert_equal(a, b, msg=""):
+    assert a == b, msg
 
 @check_func
 def equal(a, b, msg=""):

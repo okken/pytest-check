@@ -5,10 +5,23 @@ COLOR_RED = "\x1b[31m"
 COLOR_RESET = "\x1b[0m"
 _failures = []
 
+_default_no_tb = False
+_default_max_fail = None
+_default_max_report = None
+
+_no_tb = False
+_max_fail = None
+_max_report = None
+_num_failures = 0
 
 def clear_failures():
-    global _failures
+    # get's called at the beginning of each test function
+    global _failures, _num_failures, _no_tb, _max_fail, _max_report
     _failures = []
+    _num_failures = 0
+    _no_tb = _default_no_tb
+    _max_fail = _default_max_fail
+    _max_report = _default_max_report
 
 
 def any_failures() -> bool:
@@ -20,11 +33,24 @@ def get_failures():
 
 
 def log_failure(msg=""):
+    global _num_failures
     __tracebackhide__ = True
+    _num_failures += 1
+
     msg = str(msg).strip()
-    pseudo_trace_str = _build_pseudo_trace_str()
-    msg_plus_trace = f"{msg}\n{pseudo_trace_str}"
-    if should_use_color:
-        msg_plus_trace = f"{COLOR_RED}{msg_plus_trace}{COLOR_RESET}"
-    entry = f"FAILURE: {msg_plus_trace}"
-    _failures.append(entry)
+
+    if (_max_report is None) or (_num_failures <= _max_report):
+        if not _no_tb:
+            pseudo_trace_str = _build_pseudo_trace_str()
+            msg = f"{msg}\n{pseudo_trace_str}"
+
+        if should_use_color:
+            msg = f"{COLOR_RED}{msg}{COLOR_RESET}"
+
+        msg = f"FAILURE: {msg}"
+        _failures.append(msg)
+
+    if _max_fail and (_num_failures >= _max_fail):
+        assert_msg = f"num failures per test {_num_failures} hit max {_max_fail}" 
+        assert _num_failures < _max_fail, assert_msg
+
