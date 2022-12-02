@@ -17,6 +17,27 @@ All notable changes to this project  be documented in this file.
 - nothing so far 
 -->
 
+## [1.3.0] - 2022-Dec-2
+
+- Most changes are related to speedup improvements.
+- `check.between()` added just for fun
+
+### Changed
+
+- Rewrote `check.equal()` and other helper functions to not use assert.  
+- Check functions report things like `FAILURE: check 1 < 2` now.
+  - It used to say `FAILURE: assert 1 < 2`, but that's not really true anymore.
+
+### Added
+
+- `--check-no-tb` - turn off tracebacks
+- `--check-max-report` - limit reported failures per test function
+- `--check-max-fail` - limit failures per test function
+- `check.set_no_tb()` - turn off tracebacks for one test function
+- `check.set_max_report()` - limit reports for one test function
+- `check.set_max_fail()` - limit failures for one test function
+- `check.between(b, a, c)` - check that a < b < c
+
 ## [1.2.1] - 2022-Nov-30
 
 ### Changed

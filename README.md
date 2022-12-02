@@ -58,7 +58,7 @@ def test_httpx_get(check):
 
 ## Validation functions
 
-`check` also helper functions for common checks.
+`check` also helper functions for common checks. 
 These methods do NOT need to be inside of a `with check:` block.
 
 - **check.equal** - *a == b*
@@ -228,12 +228,13 @@ There are a few ways to speed things up.
 
 ## Local speedups
 
-The flags above are global settings, and apply to every test in the test run.
+The flags above are global settings, and apply to every test in the test run.  
+
 Locally, you can set these values per test.
 
 From `examples/test_example_speedup_funcs.py`:
 
-```
+```python
 def test_no_tb():
     check.set_no_tb()
     for i in range(1, 11):

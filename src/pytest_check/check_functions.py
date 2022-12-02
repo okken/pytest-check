@@ -49,7 +49,7 @@ def equal(a, b, msg=""):
     if a == b:
         return True
     else:
-        log_failure(f"assert {a} == {b}", msg)
+        log_failure(f"check {a} == {b}", msg)
         return False
 
 @check_func
@@ -62,7 +62,7 @@ def not_equal(a, b, msg=""):
     if a != b:
         return True
     else:
-        log_failure(f"assert {a} != {b}", msg)
+        log_failure(f"check {a} != {b}", msg)
         return False
 
 
@@ -71,7 +71,7 @@ def is_(a, b, msg=""):
     if a is b:
         return True
     else:
-        log_failure(f"assert {a} is {b}", msg)
+        log_failure(f"check {a} is {b}", msg)
         return False
 
 def is_not(a, b, msg=""):
@@ -79,7 +79,7 @@ def is_not(a, b, msg=""):
     if a is not b:
         return True
     else:
-        log_failure(f"assert {a} is not {b}", msg)
+        log_failure(f"check {a} is not {b}", msg)
         return False
 
 def is_true(x, msg=""):
@@ -87,7 +87,7 @@ def is_true(x, msg=""):
     if bool(x):
         return True
     else:
-        log_failure(f"assert bool({x})", msg)
+        log_failure(f"check bool({x})", msg)
         return False
 
 
@@ -96,7 +96,7 @@ def is_false(x, msg=""):
     if not bool(x):
         return True
     else:
-        log_failure(f"assert not bool({x})", msg)
+        log_failure(f"check not bool({x})", msg)
         return False
 
 def is_none(x, msg=""):
@@ -104,7 +104,7 @@ def is_none(x, msg=""):
     if x is None:
         return True
     else:
-        log_failure(f"assert {x} is None", msg)
+        log_failure(f"check {x} is None", msg)
         return False
 
 
@@ -113,7 +113,7 @@ def is_not_none(x, msg=""):
     if x is not None:
         return True
     else:
-        log_failure(f"assert {x} is not None", msg)
+        log_failure(f"check {x} is not None", msg)
         return False
 
 
@@ -122,7 +122,7 @@ def is_in(a, b, msg=""):
     if a in b:
         return True
     else:
-        log_failure(f"assert {a} in {b}", msg)
+        log_failure(f"check {a} in {b}", msg)
         return False
 
 
@@ -131,7 +131,7 @@ def is_not_in(a, b, msg=""):
     if a not in b:
         return True
     else:
-        log_failure(f"assert {a} not in {b}", msg)
+        log_failure(f"check {a} not in {b}", msg)
         return False
 
 
@@ -140,7 +140,7 @@ def is_instance(a, b, msg=""):
     if isinstance(a, b):
         return True
     else:
-        log_failure(f"assert isinstance({a}, {b})", msg)
+        log_failure(f"check isinstance({a}, {b})", msg)
         return False
 
 
@@ -149,7 +149,7 @@ def is_not_instance(a, b, msg=""):
     if not isinstance(a, b):
         return True
     else:
-        log_failure(f"assert not isinstance({a}, {b})", msg)
+        log_failure(f"check not isinstance({a}, {b})", msg)
         return False
 
 
@@ -162,7 +162,7 @@ def almost_equal(a, b, rel=None, abs=None, msg=""):
     if a == pytest.approx(b, rel, abs):
         return True
     else:
-        log_failure(f"assert {a} == pytest.approx({b}, rel={rel}, abs={abs})", msg)
+        log_failure(f"check {a} == pytest.approx({b}, rel={rel}, abs={abs})", msg)
         return False
 
 
@@ -175,7 +175,7 @@ def not_almost_equal(a, b, rel=None, abs=None, msg=""):
     if a != pytest.approx(b, rel, abs):
         return True
     else:
-        log_failure(f"assert {a} != pytest.approx({b}, rel={rel}, abs={abs})", msg)
+        log_failure(f"check {a} != pytest.approx({b}, rel={rel}, abs={abs})", msg)
         return False
 
 
@@ -184,7 +184,7 @@ def greater(a, b, msg=""):
     if a > b:
         return True
     else:
-        log_failure(f"assert {a} > {b}", msg)
+        log_failure(f"check {a} > {b}", msg)
         return False
 
 
@@ -193,7 +193,7 @@ def greater_equal(a, b, msg=""):
     if a >= b:
         return True
     else:
-        log_failure(f"assert {a} >= {b}", msg)
+        log_failure(f"check {a} >= {b}", msg)
         return False
 
 
@@ -202,7 +202,7 @@ def less(a, b, msg=""):
     if a < b:
         return True
     else:
-        log_failure(f"assert {a} < {b}", msg)
+        log_failure(f"check {a} < {b}", msg)
         return False
 
 
@@ -211,7 +211,7 @@ def less_equal(a, b, msg=""):
     if a <= b:
         return True
     else:
-        log_failure(f"assert {a} <= {b}", msg)
+        log_failure(f"check {a} <= {b}", msg)
         return False
 
 def between(b, a, c, msg="", ge=False, le=False):
@@ -220,23 +220,23 @@ def between(b, a, c, msg="", ge=False, le=False):
         if a <= b <= c:
             return True
         else:
-            log_failure(f"assert {a} <= {b} <= {c}", msg)
+            log_failure(f"check {a} <= {b} <= {c}", msg)
             return False
     elif ge:
         if a <= b < c:
             return True
         else:
-            log_failure(f"assert {a} <= {b} < {c}", msg)
+            log_failure(f"check {a} <= {b} < {c}", msg)
             return False
     elif le:
         if a < b <= c:
             return True
         else:
-            log_failure(f"assert {a} < {b} <= {c}", msg)
+            log_failure(f"check {a} < {b} <= {c}", msg)
             return False
     else:
         if a < b < c:
             return True
         else:
-            log_failure(f"assert {a} < {b} < {c}", msg)
+            log_failure(f"check {a} < {b} < {c}", msg)
             return False
