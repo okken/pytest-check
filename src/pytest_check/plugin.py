@@ -16,6 +16,7 @@ def pytest_runtest_makereport(item, call):
     outcome = yield
     report = outcome.get_result()
 
+    num_failures = check_log._num_failures
     failures = check_log.get_failures()
     check_log.clear_failures()
 
@@ -25,7 +26,7 @@ def pytest_runtest_makereport(item, call):
             report.wasxfail = item._store[xfailed_key].reason
         else:
 
-            summary = "Failed Checks: {}".format(len(failures))
+            summary = "Failed Checks: {}".format(num_failures)
             longrepr = ["\n".join(failures)]
             longrepr.append("-" * 60)
             longrepr.append(summary)
@@ -59,26 +60,16 @@ def pytest_configure(config):
     check_functions.set_stop_on_fail(stop_on_fail)
     context_manager._stop_on_fail = stop_on_fail
     check_raises._stop_on_fail = stop_on_fail
+    check_log._stop_on_fail = stop_on_fail
 
     # Allow for --tb=no to turn off check's pseudo tbs
     traceback_style = config.getvalue("tbstyle")
     pseudo_traceback._traceback_style = traceback_style
 
     # grab options
-    go_fast = config.getoption("--check-fast")
-    if go_fast:
-        no_tb = True
-        max_fail = 5
-        max_report = 5
-    else:
-        no_tb = config.getoption("--check-no-tb")
-        max_fail = config.getoption("--check-max-fail")
-        max_report = config.getoption("--check-max-report")
-
-    check_log._default_no_tb = no_tb
-    check_log._default_max_fail = max_fail
-    check_log._default_max_report = max_report
-    #print(f'{go_fast=}, {no_tb=}, {max_report=}, {max_fail=}')
+    check_log._default_no_tb = config.getoption("--check-no-tb")
+    check_log._default_max_fail = config.getoption("--check-max-fail") 
+    check_log._default_max_report = config.getoption("--check-max-report")
 
 
 
@@ -92,7 +83,6 @@ def check_fixture():
 
 # add some options
 def pytest_addoption(parser): 
-    parser.addoption("--check-fast", action="store_true", help="run as fast as possible" )
     parser.addoption("--check-no-tb", action="store_true", help="turn off pseudo-tracebacks" )
     parser.addoption("--check-max-report", action="store", type=int, help="max failures to report" )
     parser.addoption("--check-max-fail", action="store", type=int, help="max failures per test" )

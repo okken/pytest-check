@@ -37,7 +37,7 @@ class CheckContextManager(object):
         check_log._max_fail = x
     
     def set_max_report(self, x):
-        check_log._max_fail = x
+        check_log._max_report = x
 
 
 check = CheckContextManager()

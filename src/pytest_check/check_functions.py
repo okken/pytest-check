@@ -22,6 +22,7 @@ __all__ = [
     "greater_equal",
     "less",
     "less_equal",
+    "between",
     "check_func",
 ]
 
@@ -49,103 +50,198 @@ def check_func(func):
 
     return wrapper
 
-
 def assert_equal(a, b, msg=""):
     assert a == b, msg
 
-@check_func
 def equal(a, b, msg=""):
-    assert a == b, msg
+    __tracebackhide__ = True
+    if a == b:
+        return True
+    else:
+        log_failure(f"assert {a} == {b}", msg)
+        return False
 
 
-@check_func
 def not_equal(a, b, msg=""):
-    assert a != b, msg
+    __tracebackhide__ = True
+    if a != b:
+        return True
+    else:
+        log_failure(f"assert {a} != {b}", msg)
+        return False
 
 
-@check_func
 def is_(a, b, msg=""):
-    assert a is b, msg
+    __tracebackhide__ = True
+    if a is b:
+        return True
+    else:
+        log_failure(f"assert {a} is {b}", msg)
+        return False
 
-
-@check_func
 def is_not(a, b, msg=""):
-    assert a is not b, msg
+    __tracebackhide__ = True
+    if a is not b:
+        return True
+    else:
+        log_failure(f"assert {a} is not {b}", msg)
+        return False
 
-
-@check_func
 def is_true(x, msg=""):
-    assert bool(x), msg
+    __tracebackhide__ = True
+    if bool(x):
+        return True
+    else:
+        log_failure(f"assert bool({x})", msg)
+        return False
 
 
-@check_func
 def is_false(x, msg=""):
-    assert not bool(x), msg
+    __tracebackhide__ = True
+    if not bool(x):
+        return True
+    else:
+        log_failure(f"assert not bool({x})", msg)
+        return False
 
-
-@check_func
 def is_none(x, msg=""):
-    assert x is None, msg
+    __tracebackhide__ = True
+    if x is None:
+        return True
+    else:
+        log_failure(f"assert {x} is None", msg)
+        return False
 
 
-@check_func
 def is_not_none(x, msg=""):
-    assert x is not None, msg
+    __tracebackhide__ = True
+    if x is not None:
+        return True
+    else:
+        log_failure(f"assert {x} is not None", msg)
+        return False
 
 
-@check_func
 def is_in(a, b, msg=""):
-    assert a in b, msg
+    __tracebackhide__ = True
+    if a in b:
+        return True
+    else:
+        log_failure(f"assert {a} in {b}", msg)
+        return False
 
 
-@check_func
 def is_not_in(a, b, msg=""):
-    assert a not in b, msg
+    __tracebackhide__ = True
+    if a not in b:
+        return True
+    else:
+        log_failure(f"assert {a} not in {b}", msg)
+        return False
 
 
-@check_func
 def is_instance(a, b, msg=""):
-    assert isinstance(a, b), msg
+    __tracebackhide__ = True
+    if isinstance(a, b):
+        return True
+    else:
+        log_failure(f"assert isinstance({a}, {b})", msg)
+        return False
 
 
-@check_func
 def is_not_instance(a, b, msg=""):
-    assert not isinstance(a, b), msg
+    __tracebackhide__ = True
+    if not isinstance(a, b):
+        return True
+    else:
+        log_failure(f"assert not isinstance({a}, {b})", msg)
+        return False
 
 
-@check_func
 def almost_equal(a, b, rel=None, abs=None, msg=""):
     """
     for rel and abs tolerance, see:
     See https://docs.pytest.org/en/latest/builtin.html#pytest.approx
     """
-    assert a == pytest.approx(b, rel, abs), msg
+    __tracebackhide__ = True
+    if a == pytest.approx(b, rel, abs):
+        return True
+    else:
+        log_failure(f"assert {a} == pytest.approx({b}, rel={rel}, abs={abs})", msg)
+        return False
 
 
-@check_func
 def not_almost_equal(a, b, rel=None, abs=None, msg=""):
     """
     for rel and abs tolerance, see:
     See https://docs.pytest.org/en/latest/builtin.html#pytest.approx
     """
-    assert a != pytest.approx(b, rel, abs), msg
+    __tracebackhide__ = True
+    if a != pytest.approx(b, rel, abs):
+        return True
+    else:
+        log_failure(f"assert {a} != pytest.approx({b}, rel={rel}, abs={abs})", msg)
+        return False
 
 
-@check_func
 def greater(a, b, msg=""):
-    assert a > b, msg
+    __tracebackhide__ = True
+    if a > b:
+        return True
+    else:
+        log_failure(f"assert {a} > {b}", msg)
+        return False
 
 
-@check_func
 def greater_equal(a, b, msg=""):
-    assert a >= b, msg
+    __tracebackhide__ = True
+    if a >= b:
+        return True
+    else:
+        log_failure(f"assert {a} >= {b}", msg)
+        return False
 
 
-@check_func
 def less(a, b, msg=""):
-    assert a < b, msg
+    __tracebackhide__ = True
+    if a < b:
+        return True
+    else:
+        log_failure(f"assert {a} < {b}", msg)
+        return False
 
 
-@check_func
 def less_equal(a, b, msg=""):
-    assert a <= b, msg
+    __tracebackhide__ = True
+    if a <= b:
+        return True
+    else:
+        log_failure(f"assert {a} <= {b}", msg)
+        return False
+
+def between(b, a, c, msg="", ge=False, le=False):
+    __tracebackhide__ = True
+    if ge and le:
+        if a <= b <= c:
+            return True
+        else:
+            log_failure(f"assert {a} <= {b} <= {c}", msg)
+            return False
+    elif ge:
+        if a <= data < b:
+            return True
+        else:
+            log_failure(f"assert {a} <= {b} < {c}", msg)
+            return False
+    elif le:
+        if a <= b < c:
+            return True
+        else:
+            log_failure(f"assert {a} < {b} <= {c}", msg)
+            return False
+    else:
+        if a < b < c:
+            return True
+        else:
+            log_failure(f"assert {a} < {b} < {c}", msg)
+            return False
