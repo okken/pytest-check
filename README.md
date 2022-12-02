@@ -226,6 +226,11 @@ There are a few ways to speed things up.
 
 * Any of these can be used on their own, or combined.
 
+* Recommendation:
+    * Don't worry about this unless you need to.
+    * If you are using check a lot in tight loops with tons of data points, then speed it up significantly with all of these flags:
+        * `--check-no-tb --check-max-report=10 --check-max-fail=20`.
+
 ## Local speedups
 
 The flags above are global settings, and apply to every test in the test run.  

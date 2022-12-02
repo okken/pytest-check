@@ -20,6 +20,7 @@ All notable changes to this project  be documented in this file.
 ## [1.3.0] - 2022-Dec-2
 
 - Most changes are related to speedup improvements.
+  - use `--check-no-tb --check-max-report=10` to get super zippy.
 - `check.between()` added just for fun
 
 ### Changed
