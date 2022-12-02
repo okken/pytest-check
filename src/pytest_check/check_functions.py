@@ -41,8 +41,10 @@ def check_func(func):
 
     return wrapper
 
+
 def assert_equal(a, b, msg=""):  # pragma: no cover
     assert a == b, msg
+
 
 def equal(a, b, msg=""):
     __tracebackhide__ = True
@@ -52,8 +54,9 @@ def equal(a, b, msg=""):
         log_failure(f"check {a} == {b}", msg)
         return False
 
+
 @check_func
-def wrapped_equal(a, b, msg=""): # pragma: no cover
+def wrapped_equal(a, b, msg=""):  # pragma: no cover
     assert a == b, msg
 
 
@@ -74,6 +77,7 @@ def is_(a, b, msg=""):
         log_failure(f"check {a} is {b}", msg)
         return False
 
+
 def is_not(a, b, msg=""):
     __tracebackhide__ = True
     if a is not b:
@@ -81,6 +85,7 @@ def is_not(a, b, msg=""):
     else:
         log_failure(f"check {a} is not {b}", msg)
         return False
+
 
 def is_true(x, msg=""):
     __tracebackhide__ = True
@@ -98,6 +103,7 @@ def is_false(x, msg=""):
     else:
         log_failure(f"check not bool({x})", msg)
         return False
+
 
 def is_none(x, msg=""):
     __tracebackhide__ = True
@@ -213,6 +219,7 @@ def less_equal(a, b, msg=""):
     else:
         log_failure(f"check {a} <= {b}", msg)
         return False
+
 
 def between(b, a, c, msg="", ge=False, le=False):
     __tracebackhide__ = True

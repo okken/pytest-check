@@ -1,7 +1,6 @@
 import sys
 import pytest
 from _pytest._code.code import ExceptionInfo
-from . import check_functions
 from . import context_manager
 from . import check_log
 from . import pseudo_traceback
@@ -49,9 +48,7 @@ def pytest_configure(config):
     # Add some red to the failure output, if stdout can accommodate it.
     isatty = sys.stdout.isatty()
     color = config.option.color
-    check_log.should_use_color = (isatty and color == "auto") or (
-        color == "yes"
-    )
+    check_log.should_use_color = (isatty and color == "auto") or (color == "yes")
 
     # If -x or --maxfail=1, then stop on the first failed check
     # Otherwise, let pytest stop on the maxfail-th test function failure
@@ -69,9 +66,8 @@ def pytest_configure(config):
 
     # grab options
     check_log._default_no_tb = config.getoption("--check-no-tb")
-    check_log._default_max_fail = config.getoption("--check-max-fail") 
+    check_log._default_max_fail = config.getoption("--check-max-fail")
     check_log._default_max_report = config.getoption("--check-max-report")
-
 
 
 # Allow for tests to grab "check" via fixture:
@@ -79,11 +75,17 @@ def pytest_configure(config):
 #    check.equal(a, b)
 @pytest.fixture(name="check")
 def check_fixture():
-    # return check_functions
     return context_manager.check
 
+
 # add some options
-def pytest_addoption(parser): 
-    parser.addoption("--check-no-tb", action="store_true", help="turn off pseudo-tracebacks" )
-    parser.addoption("--check-max-report", action="store", type=int, help="max failures to report" )
-    parser.addoption("--check-max-fail", action="store", type=int, help="max failures per test" )
+def pytest_addoption(parser):
+    parser.addoption(
+        "--check-no-tb", action="store_true", help="turn off pseudo-tracebacks"
+    )
+    parser.addoption(
+        "--check-max-report", action="store", type=int, help="max failures to report"
+    )
+    parser.addoption(
+        "--check-max-fail", action="store", type=int, help="max failures per test"
+    )

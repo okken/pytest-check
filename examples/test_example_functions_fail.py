@@ -91,12 +91,14 @@ def test_less_equal():
 def test_between():
     check.between(0, 0, 20)
 
+
 def test_between_ge():
     check.between(20, 0, 20, ge=True)
+
 
 def test_between_le():
     check.between(0, 0, 20, le=True)
 
+
 def test_between_ge_le():
     check.between(21, 0, 20, ge=True, le=True)
-    

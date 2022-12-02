@@ -8,6 +8,7 @@ _stop_on_fail = False
 # TODO: maybe rename it
 # TODO: maybe pull in extra funcitonality here instead of in plugin.py
 
+
 class CheckContextManager(object):
     def __init__(self):
         self.msg = None
@@ -33,13 +34,13 @@ class CheckContextManager(object):
     def __call__(self, msg=None):
         self.msg = msg
         return self
-    
+
     def set_no_tb(self):
         check_log._no_tb = True
-    
+
     def set_max_fail(self, x):
         check_log._max_fail = x
-    
+
     def set_max_report(self, x):
         check_log._max_report = x
 

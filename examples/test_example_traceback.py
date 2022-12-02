@@ -18,17 +18,21 @@ from pytest_check import check
 
 # check.equal in helper
 
+
 def helper_func():
     helper2_func()
+
 
 def helper2_func():
     check.equal(1, 2, "custom")
 
+
 def test_tb_func(check):
-        helper_func()
+    helper_func()
 
 
 # ctx in helper
+
 
 def helper_ctx():
     helper2_ctx()
@@ -38,10 +42,13 @@ def helper2_ctx():
     with check("check message"):
         assert 1 == 2, "assert message"
 
+
 def test_tb_ctx(check):
     helper_ctx()
 
-# ctx in test func, assert in helper 
+
+# ctx in test func, assert in helper
+
 
 def helper_assert():
     helper2_assert()
@@ -49,6 +56,7 @@ def helper_assert():
 
 def helper2_assert():
     assert 1 == 2, "assert message"
+
 
 def test_tb_ctx_assert(check):
     with check("check message"):

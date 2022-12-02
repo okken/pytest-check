@@ -21,8 +21,6 @@ def test_xpass(pytester):
 
 def test_xpass_strict(pytester):
     pytester.copy_example("examples/test_example_xfail.py")
-    result = pytester.runpytest(
-        "test_example_xfail.py::test_xfail_pass_strict"
-    )
+    result = pytester.runpytest("test_example_xfail.py::test_xfail_pass_strict")
     result.assert_outcomes(failed=1)
     result.stdout.fnmatch_lines(["* 1 failed *"])

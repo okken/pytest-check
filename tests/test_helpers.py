@@ -3,10 +3,7 @@ import pytest
 
 
 # the output is different in prior versions.
-@pytest.mark.skipif(
-    sys.version_info < (3, 10),
-    reason="requires python3.10 or higher"
-)
+@pytest.mark.skipif(sys.version_info < (3, 10), reason="requires python3.10 or higher")
 def test_sequence_with_helper_funcs(pytester):
     """
     Should show a sequence of calls
@@ -41,11 +38,11 @@ def test_sequence_with_helper_funcs_less_checking(pytester):
             "*FAILURE: first",
             "*in test_func() -> helper1()",
             "*in helper1() -> helper2()",
-            '*in helper2()*',
+            "*in helper2()*",
             "*FAILURE: second",
             "*in test_func() -> helper1()",
             "*in helper1() -> helper2()",
-            '*in helper2()*',
+            "*in helper2()*",
             "*Failed Checks: 2*",
         ]
     )

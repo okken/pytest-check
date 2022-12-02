@@ -15,6 +15,7 @@ _max_fail = None
 _max_report = None
 _num_failures = 0
 
+
 def clear_failures():
     # get's called at the beginning of each test function
     global _failures, _num_failures, _no_tb, _max_fail, _max_report
@@ -55,9 +56,8 @@ def log_failure(msg="", check_str=""):
         _failures.append(msg)
 
     if _max_fail and (_num_failures >= _max_fail):
-        assert_msg = f"pytest-check max fail of {_num_failures} reached" 
+        assert_msg = f"pytest-check max fail of {_num_failures} reached"
         assert _num_failures < _max_fail, assert_msg
 
     if _stop_on_fail:
         assert False, "Stopping on first failure"
-
