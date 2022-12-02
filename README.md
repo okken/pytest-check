@@ -208,7 +208,7 @@ def test_with_groups_of_checks():
 
 ## Speedups
 
-If you have lots of check failures, your tests may not run as fast as you want. 
+If you have lots of check failures, your tests may not run as fast as you want.  
 There are a few ways to speed things up.
 
 * `--check-no-tb` - report reason for failure, but not pseudo-traceback.
