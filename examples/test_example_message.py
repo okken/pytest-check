@@ -6,4 +6,4 @@ def test_baseline():
 
 def test_message():
     a, b = 1, 2
-    check.equal(a, b, f"comment about {a=} != {b=}")
+    check.equal(a, b, f"comment about a={a} != b={b}")
