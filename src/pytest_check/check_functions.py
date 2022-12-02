@@ -5,6 +5,7 @@ from .check_log import log_failure
 __all__ = [
     "assert_equal",
     "equal",
+    "wrapped_equal",
     "not_equal",
     "is_",
     "is_not",
@@ -27,14 +28,6 @@ __all__ = [
 ]
 
 
-_stop_on_fail = False
-
-
-def set_stop_on_fail(stop_on_fail):
-    global _stop_on_fail
-    _stop_on_fail = stop_on_fail
-
-
 def check_func(func):
     @functools.wraps(func)
     def wrapper(*args, **kwds):
@@ -43,14 +36,12 @@ def check_func(func):
             func(*args, **kwds)
             return True
         except AssertionError as e:
-            if _stop_on_fail:
-                raise e
             log_failure(e)
             return False
 
     return wrapper
 
-def assert_equal(a, b, msg=""):
+def assert_equal(a, b, msg=""):  # pragma: no cover
     assert a == b, msg
 
 def equal(a, b, msg=""):
@@ -60,6 +51,10 @@ def equal(a, b, msg=""):
     else:
         log_failure(f"assert {a} == {b}", msg)
         return False
+
+@check_func
+def wrapped_equal(a, b, msg=""): # pragma: no cover
+    assert a == b, msg
 
 
 def not_equal(a, b, msg=""):
@@ -228,13 +223,13 @@ def between(b, a, c, msg="", ge=False, le=False):
             log_failure(f"assert {a} <= {b} <= {c}", msg)
             return False
     elif ge:
-        if a <= data < b:
+        if a <= b < c:
             return True
         else:
             log_failure(f"assert {a} <= {b} < {c}", msg)
             return False
     elif le:
-        if a <= b < c:
+        if a < b <= c:
             return True
         else:
             log_failure(f"assert {a} < {b} <= {c}", msg)

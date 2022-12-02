@@ -57,7 +57,8 @@ def pytest_configure(config):
     # Otherwise, let pytest stop on the maxfail-th test function failure
     maxfail = config.getvalue("maxfail")
     stop_on_fail = maxfail == 1
-    check_functions.set_stop_on_fail(stop_on_fail)
+
+    # TODO: perhaps centralize where we're storing stop_on_fail
     context_manager._stop_on_fail = stop_on_fail
     check_raises._stop_on_fail = stop_on_fail
     check_log._stop_on_fail = stop_on_fail

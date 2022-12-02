@@ -3,6 +3,10 @@ from . import check_log
 
 _stop_on_fail = False
 
+# This class has grown into much more than just a context manager.
+# it's really the interface into the system.
+# TODO: maybe rename it
+# TODO: maybe pull in extra funcitonality here instead of in plugin.py
 
 class CheckContextManager(object):
     def __init__(self):
