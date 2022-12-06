@@ -12,7 +12,7 @@ jobs:
         experimental: [false]
         include:
         - python: "3.12-dev"
-          experimental: true
+          experimental: false
 
     steps:
       - uses: actions/checkout@v3
