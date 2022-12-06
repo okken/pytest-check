@@ -4,11 +4,15 @@ on: [push, pull_request]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.experimental }}
     strategy:
       matrix:
-        python: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12-dev"]
+        python: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        experimental: [false]
+        include:
+        - python: "3.12-dev"
+          experimental: true
 
     steps:
       - uses: actions/checkout@v3

@@ -26,6 +26,10 @@ def test_sequence_with_helper_funcs(pytester):
     )
 
 
+def test_fail_on_3_12():
+    assert sys.version_info < (3, 12), "Intentionally failing with Python 3.12"
+
+
 def test_sequence_with_helper_funcs_less_checking(pytester):
     """
     Should show a sequence of calls
