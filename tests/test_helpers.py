@@ -31,7 +31,7 @@ def test_fail_on_3_12():
 
 
 def test_fail_on_3_7():
-    assert sys.version_info > (3, 7), "Intentionally fail Python 3.7"
+    assert sys.version_info > (3, 8), "Intentionally fail Python 3.7"
 
 
 def test_sequence_with_helper_funcs_less_checking(pytester):
