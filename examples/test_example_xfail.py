@@ -3,8 +3,9 @@ Ensure that xfail, both strict and not strict,
 behaves correctly for check passes/failures.
 """
 
-from pytest_check import check
 import pytest
+
+from pytest_check import check
 
 
 @pytest.mark.xfail()

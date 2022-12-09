@@ -5,6 +5,7 @@ To run this example, first `pip install httpx`
 This example is NOT tested by the test suite.
 """
 import httpx
+
 from pytest_check import check
 
 

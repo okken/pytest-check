@@ -1,13 +1,10 @@
 import sys
+
 import pytest
 from _pytest._code.code import ExceptionInfo
-from . import context_manager
-from . import check_log
-from . import pseudo_traceback
-from . import check_raises
-
-
 from _pytest.skipping import xfailed_key
+
+from . import check_log, check_raises, context_manager, pseudo_traceback
 
 
 @pytest.hookimpl(hookwrapper=True, trylast=True)
@@ -25,7 +22,7 @@ def pytest_runtest_makereport(item, call):
             report.wasxfail = item._store[xfailed_key].reason
         else:
 
-            summary = "Failed Checks: {}".format(num_failures)
+            summary = f"Failed Checks: {num_failures}"
             longrepr = ["\n".join(failures)]
             longrepr.append("-" * 60)
             longrepr.append(summary)
@@ -81,11 +78,19 @@ def check_fixture():
 # add some options
 def pytest_addoption(parser):
     parser.addoption(
-        "--check-no-tb", action="store_true", help="turn off pseudo-tracebacks"
+        "--check-no-tb",
+        action="store_true",
+        help="turn off pseudo-tracebacks",
     )
     parser.addoption(
-        "--check-max-report", action="store", type=int, help="max failures to report"
+        "--check-max-report",
+        action="store",
+        type=int,
+        help="max failures to report",
     )
     parser.addoption(
-        "--check-max-fail", action="store", type=int, help="max failures per test"
+        "--check-max-fail",
+        action="store",
+        type=int,
+        help="max failures per test",
     )

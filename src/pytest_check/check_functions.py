@@ -1,5 +1,7 @@
 import functools
+
 import pytest
+
 from .check_log import log_failure
 
 __all__ = [
@@ -161,7 +163,7 @@ def is_not_instance(a, b, msg=""):
 
 def almost_equal(a, b, rel=None, abs=None, msg=""):
     """
-    for rel and abs tolerance, see:
+    For rel and abs tolerance, see:
     See https://docs.pytest.org/en/latest/builtin.html#pytest.approx
     """
     __tracebackhide__ = True
@@ -174,7 +176,7 @@ def almost_equal(a, b, rel=None, abs=None, msg=""):
 
 def not_almost_equal(a, b, rel=None, abs=None, msg=""):
     """
-    for rel and abs tolerance, see:
+    For rel and abs tolerance, see:
     See https://docs.pytest.org/en/latest/builtin.html#pytest.approx
     """
     __tracebackhide__ = True

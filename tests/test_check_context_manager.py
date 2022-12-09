@@ -14,7 +14,7 @@ def test_context_manager_fail(pytester):
             "*FAILURE: assert 1 > 2*",
             "*FAILURE: assert 5 < 4*",
             "*Failed Checks: 3*",
-        ]
+        ],
     )
 
 
@@ -28,5 +28,5 @@ def test_context_manager_fail_with_msg(pytester):
             "*FAILURE: second fail*",
             "*FAILURE: third fail*",
             "*Failed Checks: 3*",
-        ]
+        ],
     )

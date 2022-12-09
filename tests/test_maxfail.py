@@ -21,7 +21,7 @@ def test_maxfail_2_stops_on_two_failed_tests(pytester):
             "*FAILURE: two",
             "*FAILURE: three",
             "*Failed Checks: 3*",
-        ]
+        ],
     )
 
 

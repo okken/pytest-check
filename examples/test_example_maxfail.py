@@ -17,7 +17,7 @@ from pytest_check import check
 
 
 def test_a():
-    "failing test: 3 failed checks"
+    "Failing test: 3 failed checks"
     with check:
         assert False, "one"
     with check:
@@ -27,10 +27,10 @@ def test_a():
 
 
 def test_b():
-    "failing test"
+    "Failing test"
     assert False
 
 
 def test_c():
-    "passing test"
+    "Passing test"
     assert True

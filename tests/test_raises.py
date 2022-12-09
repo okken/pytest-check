@@ -54,7 +54,7 @@ def test_raises_with_multiple_errors(testdir):
 def test_failures():
   with raises((_TestException, AnotherTestException)):
       raise AssertionError
-"""
+""",
     )
 
     result = testdir.runpytest()
@@ -87,7 +87,7 @@ def test_raises_with_parents_and_children(testdir):
 def test_failures():
     with raises((_TestException, AnotherTestException)):
         raise BaseTestException
-"""
+""",
     )
 
     result = testdir.runpytest()
@@ -137,7 +137,7 @@ def test_failures():
 
     with raises(BaseTestException):
         raise BaseTestException
-    """
+    """,
     )
 
     result = testdir.runpytest(run_flags)
@@ -157,7 +157,7 @@ def test_can_mix_assertions_and_checks(pytester):
             "*FAILURE:*",
             "*Failed Checks: 1*",
             "*assert 1 == 2*",
-        ]
+        ],
     )
 
 
@@ -172,7 +172,7 @@ def test_msg_kwarg_with_raises_context_manager(testdir):
         def test():
             with raises(AssertionError, msg="hello, world!"):
                 raise_valueerror()
-    """
+    """,
     )
 
     result = testdir.runpytest()
@@ -206,7 +206,7 @@ def test_raises_function(testdir):
 
         def test():
             raises(AssertionError, raise_valueerror, msg="hello, world!")
-    """
+    """,
     )
 
     result = testdir.runpytest()

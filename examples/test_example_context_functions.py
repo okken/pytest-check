@@ -24,8 +24,8 @@ Please migrate to this:
     def test_pass():
         check.equal(1, 1)
 """
-from pytest_check import check
 import pytest_check
+from pytest_check import check
 
 
 def test_old_style():

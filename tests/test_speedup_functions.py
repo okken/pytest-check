@@ -11,7 +11,7 @@ def test_baseline(pytester):
             "*FAILURE: * 9 == 100",
             "*test_baseline() -> check.equal(i, 100)",
             "Failed Checks: 10",
-        ]
+        ],
     )
 
 
@@ -25,7 +25,7 @@ def test_no_tb(pytester):
             "*FAILURE: * 8 == 100",
             "*FAILURE: * 9 == 100",
             "Failed Checks: 10",
-        ]
+        ],
     )
     result.stdout.no_fnmatch_line("*test_baseline() -> check.equal(i, 100)")
 
@@ -42,7 +42,7 @@ def test_max_report(pytester):
             "*FAILURE: * 4 == 100",
             "*FAILURE: * 5 == 100",
             "Failed Checks: 10",
-        ]
+        ],
     )
     result.stdout.no_fnmatch_line("*FAILURE: * 6 == 100")
 
@@ -60,6 +60,6 @@ def test_max_fail(pytester):
             "*FAILURE: * 5 == 100",
             "Failed Checks: 5",
             "*AssertionError: pytest-check max fail of 5 reached",
-        ]
+        ],
     )
     result.stdout.no_fnmatch_line("*FAILURE: * 6 == 100")
