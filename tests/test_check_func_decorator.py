@@ -16,5 +16,5 @@ def test_failing_check_helper_functions(pytester):
             "*FAILURE: assert 2 == 4*",
             "*FAILURE: assert 3 == 4*",
             "*Failed Checks: 3*",
-        ]
+        ],
     )

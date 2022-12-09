@@ -5,14 +5,15 @@ don't like it, even when running as a test.
 
 Python 3.10 handles it fine. So that's where we'll test it.
 """
-import pytest
 import sys
+
+import pytest
 
 
 @pytest.mark.skipif(sys.version_info < (3, 10), reason="requires python3.10 or higher")
 def test_check_not_in_a_test(pytester):
     """
-    should error
+    Should error
     """
     pytester.copy_example("examples/test_example_check_not_in_test.py")
     result = pytester.runpytest()
@@ -26,5 +27,5 @@ def test_check_not_in_a_test(pytester):
             "*Failed Checks: 1*",
             "* short test summary info *",
             "*ERROR test_example_check_not_in_test.py::test_something*",
-        ]
+        ],
     )

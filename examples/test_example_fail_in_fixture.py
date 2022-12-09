@@ -2,6 +2,7 @@
 Failures in fixture should result in Error, not Fail.
 """
 import pytest
+
 from pytest_check import check
 
 

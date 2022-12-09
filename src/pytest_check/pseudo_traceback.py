@@ -39,7 +39,7 @@ def _build_pseudo_trace_str():
         # if called outside of a test, we might hit this
         if "<module>" in func:
             break
-        line = "{}:{} in {}() -> {}".format(file, line, func, context)
+        line = f"{file}:{line} in {func}() -> {context}"
         pseudo_trace.append(line)
         level += 1
 

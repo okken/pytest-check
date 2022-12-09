@@ -1,5 +1,4 @@
-from pytest_check import check
-from pytest_check import any_failures
+from pytest_check import any_failures, check
 
 
 def test_any_failures_false(pytester):
@@ -12,7 +11,7 @@ def test_any_failures_false(pytester):
             "*check 1 == 3*",
             "*check 1 == 4*",
             "*Failed Checks: 3",
-        ]
+        ],
     )
 
 
@@ -24,7 +23,7 @@ def test_any_failure_true(pytester):
         [
             "*check 2 == 3*",
             "*Failed Checks: 1",
-        ]
+        ],
     )
 
 

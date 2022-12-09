@@ -1,5 +1,4 @@
-from pytest_check import raises
-from pytest_check import check
+from pytest_check import check, raises
 
 
 def test_raises_top_level_fail():

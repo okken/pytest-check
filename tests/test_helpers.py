@@ -1,4 +1,5 @@
 import sys
+
 import pytest
 
 
@@ -22,7 +23,7 @@ def test_sequence_with_helper_funcs(pytester):
             "*in helper1() -> helper2()",
             '*in helper2() -> with check("second"):',
             "*Failed Checks: 2*",
-        ]
+        ],
     )
 
 
@@ -44,5 +45,5 @@ def test_sequence_with_helper_funcs_less_checking(pytester):
             "*in helper1() -> helper2()",
             "*in helper2()*",
             "*Failed Checks: 2*",
-        ]
+        ],
     )

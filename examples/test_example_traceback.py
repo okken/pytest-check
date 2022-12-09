@@ -15,7 +15,6 @@ Possible todo item: Maybe the pseudo-tb could inspect the incoming exception mor
 
 from pytest_check import check
 
-
 # check.equal in helper
 
 

@@ -1,5 +1,5 @@
-from .check_log import log_failure
 from . import check_log
+from .check_log import log_failure
 
 _stop_on_fail = False
 
@@ -9,7 +9,7 @@ _stop_on_fail = False
 # TODO: maybe pull in extra funcitonality here instead of in plugin.py
 
 
-class CheckContextManager(object):
+class CheckContextManager:
     def __init__(self):
         self.msg = None
 

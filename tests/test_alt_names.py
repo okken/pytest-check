@@ -19,6 +19,6 @@ def test_alt_names(pytester):
             "*_alt_names.py:* in ends_with_test() -> helper_func()*",
             "*_alt_names.py:* in helper_func() -> *",
             "*Failed Checks: 1*",
-        ]
+        ],
     )
     result.assert_outcomes(failed=1, passed=1)
