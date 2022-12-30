@@ -32,7 +32,7 @@ All notable changes to this project  be documented in this file.
 
 ### Changed
 
-- Update README.md with conda install instructions. Thanks @bzah.
+- [PR 109](https://github.com/okken/pytest-check/pull/109). Update README.md with conda install instructions. Thanks Abel Aoun.
 
 ## [1.3.0] - 2022-Dec-2
 
