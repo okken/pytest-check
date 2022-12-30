@@ -18,6 +18,10 @@ From PyPI:
 $ pip install pytest-check
 ```
 
+From conda (conda-forge):
+```
+$ conda install -c conda-forge pytest-check
+```
 
 ## Example
 
