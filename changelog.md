@@ -1,7 +1,9 @@
 # Changelog
 
 All notable changes to this project  be documented in this file.
-<!-- 
+
+<!--
+
 ## [Unreleased] - yyyy-mm-dd
 
 ### Added
@@ -14,8 +16,23 @@ All notable changes to this project  be documented in this file.
 
 ### Changed
 
-- nothing so far 
+- nothing so far
+
 -->
+
+## [Unreleased] - yyyy-mm-dd
+
+### Added
+
+- nothing so far
+
+### Fixed
+
+- nothing so far
+
+### Changed
+
+- Update README.md with conda install instructions. Thanks @bzah.
 
 ## [1.3.0] - 2022-Dec-2
 
