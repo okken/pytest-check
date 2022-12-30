@@ -65,6 +65,7 @@ def pytest_configure(config):
     check_log._default_no_tb = config.getoption("--check-no-tb")
     check_log._default_max_fail = config.getoption("--check-max-fail")
     check_log._default_max_report = config.getoption("--check-max-report")
+    check_log._default_max_tb = config.getoption("--check-max-tb")
 
 
 # Allow for tests to grab "check" via fixture:
@@ -93,4 +94,11 @@ def pytest_addoption(parser):
         action="store",
         type=int,
         help="max failures per test",
+    )
+    parser.addoption(
+        "--check-max-tb",
+        action="store",
+        type=int,
+        default=1,
+        help="max pseudo-tracebacks per test",
     )

@@ -43,6 +43,9 @@ class CheckContextManager:
 
     def set_max_report(self, x):
         check_log._max_report = x
+    
+    def set_max_tb(self, x):
+        check_log._max_tb = x
 
 
 check = CheckContextManager()
