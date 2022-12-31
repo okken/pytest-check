@@ -1,3 +1,4 @@
+import warnings
 from . import check_log
 from .check_log import log_failure
 
@@ -36,14 +37,17 @@ class CheckContextManager:
         return self
 
     def set_no_tb(self):
-        check_log._no_tb = True
+        warnings.warn(
+            "set_no_tb() is deprecated; use set_max_tb(0)", DeprecationWarning
+            )
+        check_log._max_tb = 0
 
     def set_max_fail(self, x):
         check_log._max_fail = x
 
     def set_max_report(self, x):
         check_log._max_report = x
-    
+
     def set_max_tb(self, x):
         check_log._max_tb = x
 
