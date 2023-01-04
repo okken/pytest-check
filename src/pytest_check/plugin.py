@@ -65,6 +65,7 @@ def pytest_configure(config):
     check_log._default_no_tb = config.getoption("--check-no-tb")
     check_log._default_max_fail = config.getoption("--check-max-fail")
     check_log._default_max_report = config.getoption("--check-max-report")
+    check_log._default_logging_level = config.getoption("--logging-level")
 
 
 # Allow for tests to grab "check" via fixture:
@@ -93,4 +94,12 @@ def pytest_addoption(parser):
         action="store",
         type=int,
         help="max failures per test",
+    )
+    parser.addoption(
+        "--logging-level",
+        action="store",
+        type=str,
+        help="level to log any failure (in the moment they are raised): "
+             "FATAL, ERROR, WARNING, INFO, DEBUG "
+             "(Note: Logging is disabled for any other value)",
     )
