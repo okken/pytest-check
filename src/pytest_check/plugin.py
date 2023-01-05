@@ -1,4 +1,5 @@
 import sys
+import warnings
 
 import pytest
 from _pytest._code.code import ExceptionInfo
@@ -62,9 +63,15 @@ def pytest_configure(config):
     pseudo_traceback._traceback_style = traceback_style
 
     # grab options
-    check_log._default_no_tb = config.getoption("--check-no-tb")
     check_log._default_max_fail = config.getoption("--check-max-fail")
     check_log._default_max_report = config.getoption("--check-max-report")
+    check_log._default_max_tb = config.getoption("--check-max-tb")
+    no_tb = config.getoption("--check-no-tb")
+    if no_tb:
+        warnings.warn(
+            "--check-no-tb is deprecated; use --check-max-tb=0", DeprecationWarning
+        )
+        check_log._default_max_tb = 0
 
 
 # Allow for tests to grab "check" via fixture:
@@ -93,4 +100,11 @@ def pytest_addoption(parser):
         action="store",
         type=int,
         help="max failures per test",
+    )
+    parser.addoption(
+        "--check-max-tb",
+        action="store",
+        type=int,
+        default=1,
+        help="max pseudo-tracebacks per test",
     )
