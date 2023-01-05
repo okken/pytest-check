@@ -1,5 +1,5 @@
 """
-A test file with both `check` and `assert`, both failing
+A test file to try with without logging-level option
 """
 from pytest_check import check
 import logging
@@ -12,8 +12,6 @@ def test_error_level(caplog):
     check.equal("one", "xxx")
     log.warning("Second check")
     check.equal("two", "yyy")
-
-    print(caplog.record_tuples)
 
     assert len(caplog.record_tuples) == 4
 
@@ -37,8 +35,6 @@ def test_no_level(caplog):
     check.equal("one", "xxx")
     log.warning("Second check")
     check.equal("two", "yyy")
-
-    print(caplog.record_tuples)
 
     assert len(caplog.record_tuples) == 2
 
