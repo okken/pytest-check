@@ -71,6 +71,6 @@ def log_failure(msg="", check_str=""):
 
 
 def log_failure_in_logger(message):
-    level = logging._nameToLevel.get(_logging_level.upper())
+    level = logging._nameToLevel.get(_logging_level)
     if level:
         log.log(level, message)
