@@ -20,20 +20,12 @@ All notable changes to this project  be documented in this file.
 
 -->
 
-## [Unreleased] - yyyy-month-dd
+## [2.1.0] - 2023-Jan-8
 
 ### Added
 
 - New flag `--check-log-level`. Thanks Angel Luis Blasco.
   - with this set to `DEBUG` or above, check failures get reported to logging.
-
-### Fixed
-
-- nothing so far
-
-### Changed
-
-- nothing so far
 
 ## [2.0.0] - 2023-Jan-8
 
