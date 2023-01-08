@@ -9,28 +9,29 @@ COLOR_RESET = "\x1b[0m"
 _failures = []
 _stop_on_fail = False
 
-_default_no_tb = False
 _default_max_fail = None
 _default_max_report = None
+_default_max_tb = None
 _default_logging_level = ""
 
-_no_tb = False
 _max_fail = None
 _max_report = None
+_max_tb = None
 _num_failures = 0
 _logging_level = ""
 
 
 def clear_failures():
     # get's called at the beginning of each test function
-    global _failures, _num_failures, _no_tb, _max_fail, _max_report, _logging_level
+    global _failures, _num_failures
+    global _max_fail, _max_report, _max_tb, _logging_level
     _failures = []
     _num_failures = 0
-    _no_tb = _default_no_tb
     _max_fail = _default_max_fail
     _max_report = _default_max_report
+    _max_tb = _default_max_tb
     _logging_level = _default_logging_level
-
+    
 
 def any_failures() -> bool:
     return bool(get_failures())
@@ -51,7 +52,7 @@ def log_failure(msg="", check_str=""):
         msg = f"{msg}: {check_str}"
 
     if (_max_report is None) or (_num_failures <= _max_report):
-        if not _no_tb:
+        if _num_failures <= _max_tb:
             pseudo_trace_str = _build_pseudo_trace_str()
             msg = f"{msg}\n{pseudo_trace_str}"
 

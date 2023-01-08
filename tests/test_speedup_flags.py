@@ -1,6 +1,6 @@
 def test_baseline(pytester):
     pytester.copy_example("examples/test_example_multiple_failures.py")
-    result = pytester.runpytest()
+    result = pytester.runpytest("--check-max-tb=10")
     result.assert_outcomes(failed=1)
     result.stdout.fnmatch_lines(
         [
@@ -63,3 +63,11 @@ def test_max_fail(pytester):
         ],
     )
     result.stdout.no_fnmatch_line("*FAILURE: * 6 == 100")
+
+
+def test_max_tb(pytester):
+    pytester.copy_example("examples/test_example_multiple_failures.py")
+    result = pytester.runpytest("--check-max-tb=2")
+    result.assert_outcomes(failed=1)
+    num_tb = str(result.stdout).count("test_multiple_failures() -> check.equal(i, 100)")
+    assert num_tb == 2

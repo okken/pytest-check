@@ -20,19 +20,49 @@ All notable changes to this project  be documented in this file.
 
 -->
 
-## [Unreleased] - yyyy-mm-dd
+## [2.0.0] - 2023-Jan-8
 
 ### Added
 
-- nothing so far
+- With the following change, the default is now pretty darn fast, and most people will not need to modify any settings to get most of the speed improvements.
+- `--check-max-tb=<int>` - sets the max number of pseudo-traceback reports per test function.
+  - Default is 1.
+  - After this, error is still reported 
+    - The error reports continue, they just won't have a traceback.
+    - If you set `--check-max-report`, then the reports stop at that number, with or without tracebacks.a
+- `check.set_max_tb(int)` - overrides `--check-max-tb` for the test function it's called from. Value is reset after one test function.
 
-### Fixed
+### Deprecated
 
-- nothing so far
+- `check.set_no_tb` and `--set-no-tb` will be removed in a future release. (probably soon)
+- `check.set_no_tb` is deprecated.
+  - For now, it internally calls `set_max_tb(0)`. See discussion below.
+- `--check-no-tb` is deprecated.
+  - It's also short lived. 
+  - Since `--check-max-tb` is more useful, the default for `--check-max-tb` is 1, which is already pretty fast.
+    And `--check-max-tb=0` has the same effect as `--check-no-tb`.
 
 ### Changed
 
 - [PR 109](https://github.com/okken/pytest-check/pull/109). Update README.md with conda install instructions. Thanks Abel Aoun.
+
+### Reason for major version bump
+
+The default behavior has changed. Since `--check-max-tb=1` is the default, the default behavior is now:
+
+- Show traceback for the first failure per test. (controlled by `--check-max-tb`, default is 1)
+- Show error report for the remaining failures in a test. (controlled by `--check-max-report`, default is None)
+
+Old default behavior was the same except all tracebacks would be reported.
+
+My logic here:
+
+- The actual error message, like `check 1 == 3`, is more useful than the traceback.
+- The first traceback is still useful to point you to the test file, line number, of first failure.
+- Other failures are probably close by. 
+
+If this logic doesn't hold for you, you can always set `--check-max-tb=1000` or some other large number.
+
 
 ## [1.3.0] - 2022-Dec-2
 

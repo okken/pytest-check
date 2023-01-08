@@ -220,25 +220,27 @@ def test_with_groups_of_checks():
 If you have lots of check failures, your tests may not run as fast as you want.
 There are a few ways to speed things up.
 
-* `--check-no-tb` - report reason for failure, but not pseudo-traceback.
-    * pytest-check uses custom traceback code I'm calling a pseudo-traceback.
+* `--check-max=tb` - Only report this many pseudo-tracebacks per test.
+    * pytest-check uses custom traceback code I'm calling a pseudo-traceback. 
     * This is visually shorter than normal assert tracebacks.
     * Internally, it uses introspection, which can be slow.
-    * Turning off pseudo-tracebacks speeds things up quite a bit.
+    * Allowing a limited number of pseudo-tracebacks speeds things up quite a bit.
+    * Default is 1.
 
 * `--check-max-report=10` - limit reported failures per test.
     * The example shows `10` but any number can be used.
     * The test will still have the total nuber of failures reported.
+    * Default is no maximum.
 
 * `--check-max-fail=20` - Stop the test after this many check failures.
     * This is useful if your code under test is slow-ish and you want to bail early.
+    * Default is no maximum.
 
 * Any of these can be used on their own, or combined.
 
 * Recommendation:
-    * Don't worry about this unless you need to.
-    * If you are using check a lot in tight loops with tons of data points, then speed it up significantly with all of these flags:
-        * `--check-no-tb --check-max-report=10 --check-max-fail=20`.
+    * Leave the default, equivelant to `--check-max-tb=1`.
+    * If excessive output is annoying, set `--check-max-report=10` or some tolerable number.
 
 ## Local speedups
 
@@ -249,8 +251,8 @@ Locally, you can set these values per test.
 From `examples/test_example_speedup_funcs.py`:
 
 ```python
-def test_no_tb():
-    check.set_no_tb()
+def test_max_tb():
+    check.set_max_tb()
     for i in range(1, 11):
         check.equal(i, 100)
 
