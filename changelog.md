@@ -4,7 +4,7 @@ All notable changes to this project  be documented in this file.
 
 <!--
 
-## [Unreleased] - yyyy-mm-dd
+## [Unreleased] - yyyy-month-dd
 
 ### Added
 
@@ -20,7 +20,7 @@ All notable changes to this project  be documented in this file.
 
 -->
 
-## [Unreleased] - yyyy-mm-dd
+## [Unreleased] - yyyy-month-dd
 
 ### Added
 
@@ -35,7 +35,7 @@ All notable changes to this project  be documented in this file.
 
 - nothing so far
 
-## [2.0.0b1] - 2022-12-31
+## [2.0.0] - 2023-Jan-8
 
 ### Added
 
