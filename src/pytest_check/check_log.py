@@ -15,7 +15,6 @@ _default_max_report = None
 _default_max_tb = None
 _default_logging_level = ""
 
-_no_tb = False
 _max_fail = None
 _max_report = None
 _max_tb = None
@@ -29,7 +28,6 @@ def clear_failures():
     global _max_fail, _max_report, _max_tb, _logging_level
     _failures = []
     _num_failures = 0
-    _no_tb = _default_no_tb
     _max_fail = _default_max_fail
     _max_report = _default_max_report
     _max_tb = _default_max_tb
