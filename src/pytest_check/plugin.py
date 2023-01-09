@@ -72,7 +72,6 @@ def pytest_configure(config):
             "--check-no-tb is deprecated; use --check-max-tb=0", DeprecationWarning
         )
         check_log._default_max_tb = 0
-    check_log._default_logging_level = config.getoption("--logging-level")
 
 
 # Allow for tests to grab "check" via fixture:
@@ -108,12 +107,4 @@ def pytest_addoption(parser):
         type=int,
         default=1,
         help="max pseudo-tracebacks per test",
-    )
-    parser.addoption(
-        "--logging-level",
-        action="store",
-        type=str,
-        help="level to log any failure (in the moment they are raised): "
-             "FATAL, ERROR, WARNING, INFO, DEBUG "
-             "(Note: Logging is disabled for any other value)",
     )

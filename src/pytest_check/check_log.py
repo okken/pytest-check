@@ -1,7 +1,4 @@
 from .pseudo_traceback import _build_pseudo_trace_str
-import logging
-
-log = logging.getLogger(__name__)
 
 should_use_color = False
 COLOR_RED = "\x1b[31m"
@@ -12,26 +9,23 @@ _stop_on_fail = False
 _default_max_fail = None
 _default_max_report = None
 _default_max_tb = None
-_default_logging_level = ""
 
 _max_fail = None
 _max_report = None
 _max_tb = None
 _num_failures = 0
-_logging_level = ""
 
 
 def clear_failures():
     # get's called at the beginning of each test function
     global _failures, _num_failures
-    global _max_fail, _max_report, _max_tb, _logging_level
+    global _max_fail, _max_report, _max_tb
     _failures = []
     _num_failures = 0
     _max_fail = _default_max_fail
     _max_report = _default_max_report
     _max_tb = _default_max_tb
-    _logging_level = _default_logging_level
-    
+
 
 def any_failures() -> bool:
     return bool(get_failures())
@@ -61,7 +55,6 @@ def log_failure(msg="", check_str=""):
 
         msg = f"FAILURE: {msg}"
         _failures.append(msg)
-        log_failure_in_logger(msg)
 
     if _max_fail and (_num_failures >= _max_fail):
         assert_msg = f"pytest-check max fail of {_num_failures} reached"
@@ -69,9 +62,3 @@ def log_failure(msg="", check_str=""):
 
     if _stop_on_fail:
         assert False, "Stopping on first failure"
-
-
-def log_failure_in_logger(message):
-    level = logging._nameToLevel.get(_logging_level)
-    if level:
-        log.log(level, message)
