@@ -62,7 +62,7 @@ def test_httpx_get(check):
 
 ## Validation functions
 
-`check` also helper functions for common checks. 
+`check` also helper functions for common checks.
 These methods do NOT need to be inside of a `with check:` block.
 
 - **check.equal** - *a == b*
@@ -183,6 +183,11 @@ The failures will also be red, unless you turn that off with pytests `--color=no
 
 You can turn off the failure reports with pytests `--tb=no`.
 
+## Logging
+With `--logging-level=<LEVEL>` option, every individual failure is also logged as they appear, so it can be related with the rest of your logging.
+Valid levels are: CRITICAL, ERROR, WARNING, INFO, DEBUG (note: Any other <LEVEL> disables this option)
+
+
 ## Stop on Fail (maxfail behavior)
 
 Setting `-x` or `--maxfail=1` will cause this plugin to abort testing after the first failed check.
@@ -194,7 +199,7 @@ The exception is the case of `1`, where we want to stop on the very first failed
 
 ## any_failures()
 
-Use `any_failures()` to see if there are any failures.  
+Use `any_failures()` to see if there are any failures.
 One use case is to make a block of checks conditional on not failing in a previous set of checks:
 
 ```python
@@ -212,7 +217,7 @@ def test_with_groups_of_checks():
 
 ## Speedups
 
-If you have lots of check failures, your tests may not run as fast as you want.  
+If you have lots of check failures, your tests may not run as fast as you want.
 There are a few ways to speed things up.
 
 * `--check-max=tb` - Only report this many pseudo-tracebacks per test.
@@ -239,7 +244,7 @@ There are a few ways to speed things up.
 
 ## Local speedups
 
-The flags above are global settings, and apply to every test in the test run.  
+The flags above are global settings, and apply to every test in the test run.
 
 Locally, you can set these values per test.
 
