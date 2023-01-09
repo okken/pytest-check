@@ -5,7 +5,7 @@ def test_logging_error_level(pytester):
     pytester.copy_example("examples/test_example_logging.py")
     result = pytester.runpytest(
         "test_example_logging.py::test_error_level",
-        "--check-log-level=ERROR",
+        "--logging-level=ERROR",
     )
     result.assert_outcomes(failed=1, passed=0)
     result.stdout.fnmatch_lines(["Failed Checks: 2"])

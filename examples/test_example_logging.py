@@ -1,5 +1,5 @@
 """
-A test file to try with without check-log-level option
+A test file to try with without logging-level option
 """
 from pytest_check import check
 import logging
