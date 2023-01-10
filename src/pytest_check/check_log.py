@@ -14,6 +14,7 @@ _max_fail = None
 _max_report = None
 _max_tb = None
 _num_failures = 0
+_fail_function = None
 
 
 def clear_failures():
@@ -55,6 +56,8 @@ def log_failure(msg="", check_str=""):
 
         msg = f"FAILURE: {msg}"
         _failures.append(msg)
+        if _fail_function:
+            _fail_function(msg)
 
     if _max_fail and (_num_failures >= _max_fail):
         assert_msg = f"pytest-check max fail of {_num_failures} reached"

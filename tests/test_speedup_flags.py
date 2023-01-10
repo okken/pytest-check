@@ -67,7 +67,7 @@ def test_max_fail(pytester):
 
 def test_max_tb(pytester):
     pytester.copy_example("examples/test_example_multiple_failures.py")
-    result = pytester.runpytest("--check-max-tb=2")
+    result = pytester.runpytest("--check-max-tb=2", "--show-capture=no")
     result.assert_outcomes(failed=1)
     num_tb = str(result.stdout).count("test_multiple_failures() -> check.equal(i, 100)")
     assert num_tb == 2

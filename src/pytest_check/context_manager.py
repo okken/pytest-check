@@ -51,5 +51,8 @@ class CheckContextManager:
     def set_max_tb(self, x):
         check_log._max_tb = x
 
+    def set_fail_callback(self, func):
+        check_log._fail_function = func
+
 
 check = CheckContextManager()
