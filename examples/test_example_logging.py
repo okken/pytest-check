@@ -15,7 +15,7 @@ def test_with_logging():
     """
     def log_failure(message):
         log.error(message)
-    check.set_fail_callback(log_failure)
+    check.set_failure_callback(log_failure)
     log.debug('debug message')
     check.equal(1, 2, "after debug")
     log.info('info message')
@@ -34,7 +34,7 @@ def test_with_print():
     > pytest examples/test_example_logging.py::test_with_print -s \
       --check-max-tb=2  --no-summary
     """
-    check.set_fail_callback(print)
+    check.set_failure_callback(print)
     print('first message')
     check.equal(1, 2, "after first")
     print('second message')
