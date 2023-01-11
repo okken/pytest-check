@@ -7,7 +7,7 @@ _stop_on_fail = False
 # This class has grown into much more than just a context manager.
 # it's really the interface into the system.
 # TODO: maybe rename it
-# TODO: maybe pull in extra funcitonality here instead of in plugin.py
+# TODO: maybe pull in extra functionality here instead of in plugin.py
 
 
 class CheckContextManager:
@@ -50,6 +50,10 @@ class CheckContextManager:
 
     def set_max_tb(self, x):
         check_log._max_tb = x
+
+    def set_failure_callback(self, func):
+        """Experimental feature - may change with any release"""
+        check_log._fail_function = func
 
 
 check = CheckContextManager()

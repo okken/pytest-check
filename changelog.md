@@ -4,7 +4,7 @@ All notable changes to this project  be documented in this file.
 
 <!--
 
-## [Unreleased] - yyyy-mm-dd
+## [Unreleased] - yyyy-month-dd
 
 ### Added
 
@@ -19,6 +19,21 @@ All notable changes to this project  be documented in this file.
 - nothing so far
 
 -->
+
+## [2.1.0] - 2023-Jan-10
+
+### Added
+
+- `check.set_failure_callback(func)` - ***Experimental***
+  - *Experimental feature - may change with any release, even a minor release*
+  - Function to allow a callback function to be registered. 
+  - This "func" function will be called for each failed check, and needs to accept a string parameter.
+  - Examples:
+    - `print` : `check.set_failure_callback(print)` 
+      - allows stdout printing while test is running (provided `-s` is used).
+    - `logging.error` : `check.set_failure_callback(logging.error)` 
+      - failure reports to logging 
+  - See `examples/test_example_logging.py` for runnable examples
 
 ## [2.0.0] - 2023-Jan-8
 

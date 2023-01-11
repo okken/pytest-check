@@ -55,7 +55,7 @@ def test_max_fail(pytester):
 
 def test_max_tb(pytester):
     pytester.copy_example("examples/test_example_speedup_funcs.py")
-    result = pytester.runpytest("-k max_tb")
+    result = pytester.runpytest("-k max_tb", "--show-capture=no")
     result.assert_outcomes(failed=1)
     num_tb = str(result.stdout).count("in test_max_tb() -> check.equal(i, 100)")
     assert num_tb == 2
