@@ -10,7 +10,7 @@ def test_log(testdir):
     # will fail and produce logs
     def test_logging(caplog):
         global records
-        check.set_failure_callback(log.error)
+        check.call_on_fail(log.error)
         log.error('one')
         check.equal(1, 2, "two")
         log.error('three')
@@ -38,7 +38,7 @@ def test_print(testdir):
         from pytest_check import check
 
         def test_with_print():
-            check.set_failure_callback(print)
+            check.call_on_fail(print)
             print('one')
             check.equal(1, 2, "two")
             print('three')
