@@ -20,6 +20,17 @@ All notable changes to this project  be documented in this file.
 
 -->
 
+## [2.1.1] - 2023-Jan-12
+
+### Modified
+
+- `check.call_on_fail(func)` - ***Experimental***
+  - *Experimental feature - may change with any release, even a minor release*
+  - Name changed from `check.set_failure_callback(func)`.
+  - Also, I warned you I could change that at any time. 
+    - No tomatoes thrown, please.
+    - It's better, right? Thanks to Hynek for the suggestion.
+
 ## [2.1.0] - 2023-Jan-10
 
 ### Added
