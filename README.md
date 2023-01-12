@@ -212,15 +212,16 @@ def test_with_groups_of_checks():
 
 ## Speedups
 
-If you have lots of check failures, your tests may not run as fast as you want.  
+If you have lots of check failures, your tests may not run as fast as you want.
 There are a few ways to speed things up.
 
-* `--check-max=tb` - Only report this many pseudo-tracebacks per test.
-    * pytest-check uses custom traceback code I'm calling a pseudo-traceback. 
+* `--check-max-tb=5` - Only first 5 failures per test will include pseudo-tracebacks (rest without them).
+    * The example shows `5` but any number can be used.
+    * pytest-check uses custom traceback code I'm calling a pseudo-traceback.
     * This is visually shorter than normal assert tracebacks.
     * Internally, it uses introspection, which can be slow.
     * Allowing a limited number of pseudo-tracebacks speeds things up quite a bit.
-    * Default is 1.
+    * Default is 1. Set a large number, e.g: 1000, if you want pseudo-tracebacks for all failures
 
 * `--check-max-report=10` - limit reported failures per test.
     * The example shows `10` but any number can be used.
