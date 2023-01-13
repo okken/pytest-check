@@ -221,7 +221,8 @@ There are a few ways to speed things up.
     * This is visually shorter than normal assert tracebacks.
     * Internally, it uses introspection, which can be slow.
     * Allowing a limited number of pseudo-tracebacks speeds things up quite a bit.
-    * Default is 1. Set a large number, e.g: 1000, if you want pseudo-tracebacks for all failures
+    * Default is 1. 
+        * Set a large number, e.g: 1000, if you want pseudo-tracebacks for all failures
 
 * `--check-max-report=10` - limit reported failures per test.
     * The example shows `10` but any number can be used.
@@ -248,7 +249,7 @@ From `examples/test_example_speedup_funcs.py`:
 
 ```python
 def test_max_tb():
-    check.set_max_tb()
+    check.set_max_tb(2)
     for i in range(1, 11):
         check.equal(i, 100)
 

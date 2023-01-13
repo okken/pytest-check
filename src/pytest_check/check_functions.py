@@ -7,7 +7,6 @@ from .check_log import log_failure
 __all__ = [
     "assert_equal",
     "equal",
-    "wrapped_equal",
     "not_equal",
     "is_",
     "is_not",
@@ -55,11 +54,6 @@ def equal(a, b, msg=""):
     else:
         log_failure(f"check {a} == {b}", msg)
         return False
-
-
-@check_func
-def wrapped_equal(a, b, msg=""):  # pragma: no cover
-    assert a == b, msg
 
 
 def not_equal(a, b, msg=""):

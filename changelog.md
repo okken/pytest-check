@@ -20,6 +20,14 @@ All notable changes to this project  be documented in this file.
 
 -->
 
+## [2.1.2] - 2023-Jan-13
+
+### Changed
+
+- README.md - clean up documentation for `--check-max-tb`. Thanks alblasco.
+- Minor internal cleanup - removed some debug code.
+
+
 ## [2.1.1] - 2023-Jan-12
 
 ### Modified
