@@ -19,6 +19,11 @@ All notable changes to this project  be documented in this file.
 - nothing so far
 
 -->
+## [2.1.3] - 2023-Feb-9
+
+### Added
+
+- publish-to-pypi.yml workflow
 
 ## [2.1.2] - 2023-Jan-13
 
