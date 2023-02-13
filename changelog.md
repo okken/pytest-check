@@ -19,6 +19,12 @@ All notable changes to this project  be documented in this file.
 - nothing so far
 
 -->
+## [2.1.4] - 2023-Feb-13
+
+### Added
+
+- include tests an examples in sdist -  [pr 121](https://github.com/okken/pytest-check/pull/121)
+
 ## [2.1.3] - 2023-Feb-9
 
 ### Added
