@@ -29,3 +29,5 @@ build-backend = "flit_core.buildapi"
 [tool.flit.module]
 name = "pytest_check"
 
+[tool.flit.sdist]
+include = ["changelog.md", "examples", "tests", "tox.ini"]
