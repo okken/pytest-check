@@ -3,17 +3,13 @@ name = "pytest-check"
 authors = [{name = "Brian Okken"}]
 readme = "README.md"
 license = {file = "LICENSE.txt"}
+description="A pytest plugin that allows multiple failures per test."
+version = "2.1.4"
 requires-python = ">3.7"
 classifiers = [
-    "Development Status :: 5 - Production/Stable",
-    "Intended Audience :: Developers",
-    "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
     "Framework :: Pytest" ,
-    "Topic :: Software Development :: Testing",
 ]
-dynamic = ["version", "description"]
 dependencies = ["pytest"]
 
 [project.urls]

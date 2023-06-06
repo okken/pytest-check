@@ -1,6 +1,3 @@
-"""A pytest plugin that allows multiple failures per test."""
-__version__ = "2.1.4"
-
 import pytest
 
 # make sure assert rewriting happens
