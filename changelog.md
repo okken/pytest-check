@@ -19,6 +19,13 @@ All notable changes to this project  be documented in this file.
 - nothing so far
 
 -->
+
+## [2.15] - 2023-June-6
+
+### Fixed
+
+- Fix [127](https://github.com/okken/pytest-check/issues/127) IndexError when running a check in a thread -  Thanks [fperrin](https://github.com/fperrin)
+
 ## [2.1.4] - 2023-Feb-13
 
 ### Added
