@@ -17,7 +17,7 @@ def test_baseline(pytester):
 
 def test_no_tb(pytester):
     pytester.copy_example("examples/test_example_multiple_failures.py")
-    result = pytester.runpytest("--check-no-tb")
+    result = pytester.runpytest("--check-max-tb=0")
     result.assert_outcomes(failed=1)
     result.stdout.fnmatch_lines(
         [

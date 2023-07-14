@@ -60,3 +60,4 @@ def helper2_assert():
 def test_tb_ctx_assert(check):
     with check("check message"):
         helper_assert()
+

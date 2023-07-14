@@ -1,4 +1,5 @@
 import warnings
+import traceback
 from . import check_log
 from .check_log import log_failure
 
@@ -24,10 +25,11 @@ class CheckContextManager:
                 self.msg = None
                 return
             else:
+                fmt_tb = traceback.format_exception(exc_type, exc_val, exc_tb)
                 if self.msg is not None:
-                    log_failure(f"{self.msg}\n{exc_val}")
+                    log_failure(f"{exc_val}, {self.msg}", tb=fmt_tb)
                 else:
-                    log_failure(exc_val)
+                    log_failure(exc_val, tb=fmt_tb)
                 self.msg = None
                 return True
         self.msg = None

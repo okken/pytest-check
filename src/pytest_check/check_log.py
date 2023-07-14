@@ -16,6 +16,7 @@ _max_tb = None
 _num_failures = 0
 _fail_function = None
 
+_showlocals = False
 
 def clear_failures():
     # get's called at the beginning of each test function
@@ -36,7 +37,7 @@ def get_failures():
     return _failures
 
 
-def log_failure(msg="", check_str=""):
+def log_failure(msg="", check_str="", tb=None):
     global _num_failures
     __tracebackhide__ = True
     _num_failures += 1
@@ -48,13 +49,15 @@ def log_failure(msg="", check_str=""):
 
     if (_max_report is None) or (_num_failures <= _max_report):
         if _num_failures <= _max_tb:
-            pseudo_trace_str = _build_pseudo_trace_str()
+            pseudo_trace_str = _build_pseudo_trace_str(_showlocals,
+                                                       tb,
+                                                       should_use_color)
             msg = f"{msg}\n{pseudo_trace_str}"
 
         if should_use_color:
-            msg = f"{COLOR_RED}{msg}{COLOR_RESET}"
-
-        msg = f"FAILURE: {msg}"
+            msg = f"{COLOR_RED}FAILURE: {COLOR_RESET}{msg}"
+        else:
+            msg = f"FAILURE: {msg}"
         _failures.append(msg)
         if _fail_function:
             _fail_function(msg)

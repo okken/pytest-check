@@ -19,6 +19,23 @@ All notable changes to this project  be documented in this file.
 - nothing so far
 
 -->
+## [2.2.0] - 2023-July-14
+
+### Added
+- 
+- pseudo traceback additions
+- `-l` or `--showlocals` shows locals
+- `__tracebackhide__ = True` is honored.
+- if `assert` or other exception is involved,
+  - the exception is included as part of the traceback.
+
+### Changed
+
+- pseudo traceback changes
+- The red color is used more selectively.
+  - this is intended to help readability
+- Other minor formatting changes.
+  - Please let me know if you have any issues with the changes
 
 ## [2.1.5] - 2023-June-6
 

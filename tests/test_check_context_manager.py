@@ -24,9 +24,9 @@ def test_context_manager_fail_with_msg(pytester):
     result.assert_outcomes(failed=1, passed=0)
     result.stdout.fnmatch_lines(
         [
-            "*FAILURE: first fail*",
-            "*FAILURE: second fail*",
-            "*FAILURE: third fail*",
+            "*FAILURE: assert 1 == 0, first fail*",
+            "*FAILURE: assert 1 > 2, second fail*",
+            "*FAILURE: assert 5 < 4, third fail*",
             "*Failed Checks: 3*",
         ],
     )
