@@ -23,7 +23,6 @@ def test_check_not_in_a_test(pytester):
             "* ERROR at setup of test_something *",
             "*FAILURE: assert 1 == 0*",
             "*not_in_test.py:* in not_in_a_test() -> helper_func()*",
-            "*not_in_test.py:* in helper_func() -> with check:*",
             "*Failed Checks: 1*",
             "* short test summary info *",
             "*ERROR test_example_check_not_in_test.py::test_something*",

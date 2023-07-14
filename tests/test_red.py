@@ -7,8 +7,10 @@ def test_red(pytester):
     result.assert_outcomes(failed=1, passed=1)
     result.stdout.fnmatch_lines(
         [
-            "*FAILURE:*[31massert*",  # red before assert
-            "*[0m*",  # reset after
+            "*[31mFAILURE:*[0massert*",
+            "*[31mtest_example_simple.py*[0m:14 in test_fail*",
+            "*[31mAssertionError: assert 1 == 2*",
+            "*[0m*"
         ],
     )
 
