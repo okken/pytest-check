@@ -19,6 +19,12 @@ All notable changes to this project  be documented in this file.
 - nothing so far
 
 -->
+## [2.2.1] - 2023-Aug-11
+
+### Changed
+
+- Increase Python range to include 3.7.0. Thanks [EliahKagan](https://github.com/EliahKagan)
+
 ## [2.2.0] - 2023-July-14
 
 ### Added
