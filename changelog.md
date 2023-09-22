@@ -24,7 +24,7 @@ All notable changes to this project  be documented in this file.
 
 ### fixed
 
-- Issue #137
+- Fix [137](https://github.com/okken/pytest-check/issues/137) 
 
 ## [2.2.1] - 2023-Aug-11
 
