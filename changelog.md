@@ -19,6 +19,13 @@ All notable changes to this project  be documented in this file.
 - nothing so far
 
 -->
+
+## [2.2.2] - 2023-Sept-22
+
+### fixed
+
+- Issue #7
+
 ## [2.2.1] - 2023-Aug-11
 
 ### Changed

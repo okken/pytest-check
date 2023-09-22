@@ -8,11 +8,11 @@ _stop_on_fail = False
 
 _default_max_fail = None
 _default_max_report = None
-_default_max_tb = None
+_default_max_tb = 1
 
-_max_fail = None
-_max_report = None
-_max_tb = None
+_max_fail = _default_max_fail
+_max_report = _default_max_report
+_max_tb = _default_max_tb
 _num_failures = 0
 _fail_function = None
 
