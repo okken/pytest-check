@@ -24,7 +24,7 @@ All notable changes to this project  be documented in this file.
 
 ### fixed
 
-- Issue #7
+- Issue #137
 
 ## [2.2.1] - 2023-Aug-11
 
