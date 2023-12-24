@@ -3,6 +3,8 @@ import sys
 import pytest
 from _pytest._code.code import ExceptionInfo
 from _pytest.skipping import xfailed_key
+from _pytest.reports import ExceptionChainRepr
+from _pytest._code.code import ExceptionRepr, ReprFileLocation
 
 from . import check_log, check_raises, context_manager, pseudo_traceback
 
@@ -36,8 +38,13 @@ def pytest_runtest_makereport(item, call):
             report.outcome = "failed"
             try:
                 raise AssertionError(report.longrepr)
-            except AssertionError:
+            except AssertionError as e:
                 excinfo = ExceptionInfo.from_current()
+                reprcrash = ReprFileLocation(item.nodeid, 0, str(e))
+                reprtraceback = ExceptionRepr(reprcrash, excinfo)
+                chain_repr = ExceptionChainRepr([(reprtraceback, reprcrash, str(e))])
+                report.longrepr = chain_repr
+
             call.excinfo = excinfo
 
 
