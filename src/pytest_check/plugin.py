@@ -40,7 +40,11 @@ def pytest_runtest_makereport(item, call):
                 raise AssertionError(report.longrepr)
             except AssertionError as e:
                 excinfo = ExceptionInfo.from_current()
-                reprcrash = ReprFileLocation(item.nodeid, 0, str(e))
+                e_str = str(e)
+                # will be 5 with color, 0 without
+                if e_str.find('FAILURE: ') in (0, 5):
+                    e_str = e_str.split('FAILURE: ')[1]
+                reprcrash = ReprFileLocation(item.nodeid, 0, e_str)
                 reprtraceback = ExceptionRepr(reprcrash, excinfo)
                 chain_repr = ExceptionChainRepr([(reprtraceback, reprcrash, str(e))])
                 report.longrepr = chain_repr
