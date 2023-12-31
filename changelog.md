@@ -20,6 +20,11 @@ All notable changes to this project  be documented in this file.
 
 -->
 
+## [2.2.3] - 2023-Dec-31
+
+- Check failure info now shows up in summaries.
+- fix [133](https://github.com/okken/pytest-check/issues/133) - thanks [hirotoKirimaru](https://github.com/hirotoKirimaru)
+
 ## [2.2.2] - 2023-Sept-22
 
 ### fixed
