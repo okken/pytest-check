@@ -55,7 +55,7 @@ def pytest_runtest_makereport(item, call):
 def pytest_configure(config):
     # Add some red to the failure output, if stdout can accommodate it.
     isatty = sys.stdout.isatty()
-    color = config.option.color
+    color = getattr(config.option, "color", None)
     check_log.should_use_color = (isatty and color == "auto") or (color == "yes")
 
     # If -x or --maxfail=1, then stop on the first failed check
@@ -69,9 +69,9 @@ def pytest_configure(config):
     check_log._stop_on_fail = stop_on_fail
 
     # Allow for --tb=no to turn off check's pseudo tbs
-    traceback_style = config.getvalue("tbstyle")
+    traceback_style = config.getoption("tbstyle", default=None)
     pseudo_traceback._traceback_style = traceback_style
-    check_log._showlocals = config.getvalue('showlocals')
+    check_log._showlocals = config.getoption("showlocals", default=None)
 
     # grab options
     check_log._default_max_fail = config.getoption("--check-max-fail")
