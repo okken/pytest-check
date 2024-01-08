@@ -20,7 +20,7 @@ All notable changes to this project  be documented in this file.
 
 -->
 
-## [2.2.4] - 2024-Jan-*
+## [2.2.4] - 2024-Jan-8
 
 - fix [153](https://github.com/okken/pytest-check/issues/153)
   - Summaries from 2.2.3 are cool, but don't work for pytest < 7.3
