@@ -40,14 +40,28 @@ def pytest_runtest_makereport(item, call):
                 raise AssertionError(report.longrepr)
             except AssertionError as e:
                 excinfo = ExceptionInfo.from_current()
-                e_str = str(e)
-                # will be 5 with color, 0 without
-                if e_str.find('FAILURE: ') in (0, 5):
-                    e_str = e_str.split('FAILURE: ')[1]
-                reprcrash = ReprFileLocation(item.nodeid, 0, e_str)
-                reprtraceback = ExceptionRepr(reprcrash, excinfo)
-                chain_repr = ExceptionChainRepr([(reprtraceback, reprcrash, str(e))])
-                report.longrepr = chain_repr
+                if pytest.version_tuple >= (7,3,0):
+                    # Build a summary report with failure reason
+                    # Depends on internals of pytest, which changed in 7.3
+                    #
+                    # Example: Before 7.3:
+                    #   =========== short test summary info ===========
+                    #   FAILED test_example_simple.py::test_fail
+                    # Example after 7.3:
+                    #   =========== short test summary info ===========
+                    #   FAILED test_example_simple.py::test_fail - assert 1 == 2
+                    #
+                    e_str = str(e)
+                    e_str = e_str.split('FAILURE: ')[1]  # Remove redundant "Failure: "
+                    reprcrash = ReprFileLocation(item.nodeid, 0, e_str)
+                    reprtraceback = ExceptionRepr(reprcrash, excinfo)
+                    chain_repr = ExceptionChainRepr([(reprtraceback, reprcrash, str(e))])
+                    report.longrepr = chain_repr
+                else:  # pragma: no cover
+                    # coverage is run on latest pytest
+                    # we'll have one test run on an older pytest just to make sure
+                    # it works.
+                    ...
 
             call.excinfo = excinfo
 
@@ -55,7 +69,7 @@ def pytest_runtest_makereport(item, call):
 def pytest_configure(config):
     # Add some red to the failure output, if stdout can accommodate it.
     isatty = sys.stdout.isatty()
-    color = config.option.color
+    color = getattr(config.option, "color", None)
     check_log.should_use_color = (isatty and color == "auto") or (color == "yes")
 
     # If -x or --maxfail=1, then stop on the first failed check
@@ -69,9 +83,9 @@ def pytest_configure(config):
     check_log._stop_on_fail = stop_on_fail
 
     # Allow for --tb=no to turn off check's pseudo tbs
-    traceback_style = config.getvalue("tbstyle")
+    traceback_style = config.getoption("tbstyle", default=None)
     pseudo_traceback._traceback_style = traceback_style
-    check_log._showlocals = config.getvalue('showlocals')
+    check_log._showlocals = config.getoption("showlocals", default=None)
 
     # grab options
     check_log._default_max_fail = config.getoption("--check-max-fail")
