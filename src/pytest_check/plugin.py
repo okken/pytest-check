@@ -40,14 +40,28 @@ def pytest_runtest_makereport(item, call):
                 raise AssertionError(report.longrepr)
             except AssertionError as e:
                 excinfo = ExceptionInfo.from_current()
-                e_str = str(e)
-                # will be 5 with color, 0 without
-                if e_str.find('FAILURE: ') in (0, 5):
-                    e_str = e_str.split('FAILURE: ')[1]
-                reprcrash = ReprFileLocation(item.nodeid, 0, e_str)
-                reprtraceback = ExceptionRepr(reprcrash, excinfo)
-                chain_repr = ExceptionChainRepr([(reprtraceback, reprcrash, str(e))])
-                report.longrepr = chain_repr
+                if pytest.version_tuple >= (7,3,0):
+                    # Build a summary report with failure reason
+                    # Depends on internals of pytest, which changed in 7.3
+                    #
+                    # Example: Before 7.3:
+                    #   =========== short test summary info ===========
+                    #   FAILED test_example_simple.py::test_fail
+                    # Example after 7.3:
+                    #   =========== short test summary info ===========
+                    #   FAILED test_example_simple.py::test_fail - assert 1 == 2
+                    #
+                    e_str = str(e)
+                    e_str = e_str.split('FAILURE: ')[1]  # Remove redundant "Failure: "
+                    reprcrash = ReprFileLocation(item.nodeid, 0, e_str)
+                    reprtraceback = ExceptionRepr(reprcrash, excinfo)
+                    chain_repr = ExceptionChainRepr([(reprtraceback, reprcrash, str(e))])
+                    report.longrepr = chain_repr
+                else:  # pragma: no cover
+                    # coverage is run on latest pytest
+                    # we'll have one test run on an older pytest just to make sure
+                    # it works.
+                    ...
 
             call.excinfo = excinfo
 
