@@ -20,6 +20,13 @@ All notable changes to this project  be documented in this file.
 
 -->
 
+## [2.3.0] - 2024-Jan-17
+
+### Added
+  - `between_equal(b, a c)` 
+    - as a shortcut for `between(b, a, c, ge=True, le=True)`
+  - `fail(msg)` - indicate test failure, but don't stop testing 
+
 ## [2.2.5] - 2024-Jan-17
 
 - fix [155](https://github.com/okken/pytest-check/issues/155)

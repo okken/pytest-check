@@ -25,7 +25,9 @@ __all__ = [
     "less",
     "less_equal",
     "between",
+    "between_equal",
     "check_func",
+    "fail",
 ]
 
 
@@ -243,3 +245,13 @@ def between(b, a, c, msg="", ge=False, le=False):
         else:
             log_failure(f"check {a} < {b} < {c}", msg)
             return False
+
+
+def between_equal(b, a, c, msg=""):
+    __tracebackhide__ = True
+    return between(b, a, c, msg, ge=True, le=True)
+
+
+def fail(msg):
+    __tracebackhide__ = True
+    log_failure(msg)
