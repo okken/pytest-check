@@ -20,6 +20,13 @@ All notable changes to this project  be documented in this file.
 
 -->
 
+## [2.2.5] - 2024-Jan-17
+
+- fix [155](https://github.com/okken/pytest-check/issues/155)
+  - Summaries from 2.2.3 are cool, but don't work with xdist
+  - Turn off summaries while xdist is running
+  - I hope I'm not seeing a pattern here
+
 ## [2.2.4] - 2024-Jan-8
 
 - fix [153](https://github.com/okken/pytest-check/issues/153)
