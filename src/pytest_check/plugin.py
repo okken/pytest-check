@@ -1,4 +1,5 @@
 import sys
+import os
 
 import pytest
 from _pytest._code.code import ExceptionInfo
@@ -40,9 +41,11 @@ def pytest_runtest_makereport(item, call):
                 raise AssertionError(report.longrepr)
             except AssertionError as e:
                 excinfo = ExceptionInfo.from_current()
-                if pytest.version_tuple >= (7,3,0):
+                if (pytest.version_tuple >= (7,3,0)
+                        and not os.getenv('PYTEST_XDIST_WORKER')):
                     # Build a summary report with failure reason
                     # Depends on internals of pytest, which changed in 7.3
+                    # Also, doesn't work with xdist
                     #
                     # Example: Before 7.3:
                     #   =========== short test summary info ===========
