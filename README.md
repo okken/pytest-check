@@ -83,8 +83,10 @@ These methods do NOT need to be inside of a `with check:` block.
 - **check.greater_equal** - *a >= b*
 - **check.less** - *a < b*
 - **check.less_equal** - *a <= b*
-- **check.between** - *a < b < c*
+- **check.between(b, a, c, ge=False, le=False)** - *a < b < c*
+- **check.between_equal(b, a, c)** - *a <= b <= c*
 - **check.raises** - *func raises given exception* similar to [pytest.raises](https://docs.pytest.org/en/latest/reference/reference.html#pytest-raises)
+- **check.fail(msg)** - *Log a failure*
 
 The httpx example can be rewritten with helper functions:
 
