@@ -20,6 +20,13 @@ All notable changes to this project  be documented in this file.
 
 -->
 
+## [2.3.1] - 2024-Jan-18
+
+### Modified
+- Documentation Update, README.md
+  - Turn help function list into a table with param lists
+  - Show an alternative method of creating a helper function using `check.fail()`
+
 ## [2.3.0] - 2024-Jan-17
 
 ### Added

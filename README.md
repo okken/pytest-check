@@ -65,28 +65,33 @@ def test_httpx_get(check):
 `check` also helper functions for common checks. 
 These methods do NOT need to be inside of a `with check:` block.
 
-- **check.equal** - *a == b*
-- **check.not_equal** - *a != b*
-- **check.is_** - *a is b*
-- **check.is_not** - *a is not b*
-- **check.is_true** - *bool(x) is True*
-- **check.is_false** - *bool(x) is False*
-- **check.is_none** - *x is None*
-- **check.is_not_none** - *x is not None*
-- **check.is_in** - *a in b*
-- **check.is_not_in** - *a not in b*
-- **check.is_instance** - *isinstance(a, b)*
-- **check.is_not_instance** - *not isinstance(a, b)*
-- **check.almost_equal** - *a == pytest.approx(b, rel, abs)* see at: [pytest.approx](https://docs.pytest.org/en/latest/reference.html#pytest-approx)
-- **check.not_almost_equal** - *a != pytest.approx(b, rel, abs)* see at: [pytest.approx](https://docs.pytest.org/en/latest/reference.html#pytest-approx)
-- **check.greater** - *a > b*
-- **check.greater_equal** - *a >= b*
-- **check.less** - *a < b*
-- **check.less_equal** - *a <= b*
-- **check.between(b, a, c, ge=False, le=False)** - *a < b < c*
-- **check.between_equal(b, a, c)** - *a <= b <= c*
-- **check.raises** - *func raises given exception* similar to [pytest.raises](https://docs.pytest.org/en/latest/reference/reference.html#pytest-raises)
-- **check.fail(msg)** - *Log a failure*
+| Function                                             | Meaning                           | Notes                                                                                                |
+|------------------------------------------------------|-----------------------------------|------------------------------------------------------------------------------------------------------|
+| `equal(a, b, msg="")`                                | `a == b`                          |                                                                                                      |
+| `not_equal(a, b, msg="")`                            | `a != b`                          |                                                                                                      |
+| `is_(a, b, msg="")`                                  | `a is b`                          |                                                                                                      |
+| `is_not(a, b, msg="")`                               | `a is not b`                      |                                                                                                      |
+| `is_true(x, msg="")`                                 | `bool(x) is True`                 |                                                                                                      |
+| `is_false(x, msg="")`                                | `bool(x) is False`                |                                                                                                      |
+| `is_none(x, msg="")`                                 | `x is None`                       |                                                                                                      |
+| `is_not_none(x, msg="")`                             | `x is not None`                   |                                                                                                      |
+| `is_in(a, b, msg="")`                                | `a in b`                          |                                                                                                      |
+| `is_not_in(a, b, msg="")`                            | `a not in b`                      |                                                                                                      |
+| `is_instance(a, b, msg="")`                          | `isinstance(a, b)`                |                                                                                                      |
+| `is_not_instance(a, b, msg="")`                      | `not isinstance(a, b)`            |                                                                                                      |
+| `almost_equal(a, b, rel=None, abs=None, msg="")`     | `a == pytest.approx(b, rel, abs)` | [pytest.approx](https://docs.pytest.org/en/latest/reference.html#pytest-approx)                      |
+| `not_almost_equal(a, b, rel=None, abs=None, msg="")` | `a != pytest.approx(b, rel, abs)` | [pytest.approx](https://docs.pytest.org/en/latest/reference.html#pytest-approx)                      | 
+| `greater(a, b, msg="")`                              | `a > b`                           |                                                                                                      |
+| `greater_equal(a, b, msg="")`                        | `a >= b`                          |                                                                                                      |
+| `less(a, b, msg="")`                                 | `a < b`                           |                                                                                                      |
+| `less_equal(a, b, msg="")`                           | `a <= b`                          |                                                                                                      |
+| `between(b, a, c, msg="", ge=False, le=False)`       | `a < b < c`                       |                                                                                                      |
+| `between_equal(b, a, c, msg="")`                     | `a <= b <= c`                     | same as `between(b, a, c, msg, ge=True, le=True)`                                                    |
+| `raises(expected_exception, *args, **kwargs)`        | *Raises given exception*          | similar to [pytest.raises](https://docs.pytest.org/en/latest/reference/reference.html#pytest-raises) | 
+| `fail(msg)`                                          | *Log a failure*                   |                                                                                                      |
+
+**Note: This is a list of relatively common logic operators. I'm reluctant to add to the list too much, as it's easy to add your own.**
+
 
 The httpx example can be rewritten with helper functions:
 
@@ -103,8 +108,9 @@ Which you use is personal preference.
 
 ## Defining your own check functions
 
-The `@check.check_func` decorator allows you to wrap any test helper that has an assert
-statement in it to be a non-blocking assert function.
+### Using `@check.check_func`
+
+The `@check.check_func` decorator allows you to wrap any test helper that has an assert statement in it to be a non-blocking assert function.
 
 
 ```python
@@ -119,6 +125,33 @@ def test_all_four():
     is_four(2)
     is_four(3)
     is_four(4)
+```
+
+
+### Using `check.fail()`
+
+Using `@check.check_func` is probably the easiest. 
+However, it does have a bit of overhead in the passing cases 
+that can affect large loops of checks.
+
+If you need a bit of a speedup, use the following style with the help of `check.fail()`.
+
+```python
+from pytest_check import check
+
+def is_four(a):
+    __tracebackhide__ = True
+    if a == 4:
+        return True
+    else: 
+        check.fail(f"check {a} == 4")
+        return False
+
+def test_all_four():
+  is_four(1)
+  is_four(2)
+  is_four(3)
+  is_four(4)
 ```
 
 ## Using raises as a context manager
