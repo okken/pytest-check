@@ -2,7 +2,7 @@ from concurrent.futures.thread import ThreadPoolExecutor
 from threading import Thread
 
 
-import pytest_check as check
+from pytest_check import check
 
 
 def always_pass():

@@ -1,4 +1,4 @@
-import pytest_check as check
+from pytest_check import check
 
 
 def test_one_failure():
