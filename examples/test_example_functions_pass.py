@@ -2,7 +2,7 @@
 Passing versions of all of the check helper functions.
 """
 from pytest_check import check
-
+import math
 
 def test_equal():
     check.equal(1, 1)
@@ -16,6 +16,14 @@ def test_is():
     x = ["foo"]
     y = x
     check.is_(x, y)
+
+
+def test_is_nan():
+    check.is_nan(math.nan)
+
+
+def test_is_not_nan():
+    check.is_not_nan(0)
 
 
 def test_is_not():
