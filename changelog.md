@@ -20,6 +20,13 @@ All notable changes to this project  be documented in this file.
 
 -->
 
+## [2.4.0] - 2024-Aug-27
+
+### Modified
+- Drop Python 3.7
+- Add testing for Python 3.12
+- Add tox-uv to tox.ini and main.yml
+
 ## [2.3.1] - 2024-Jan-18
 
 ### Modified
