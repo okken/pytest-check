@@ -2,7 +2,7 @@
 Failing versions of all of the check helper functions.
 """
 from pytest_check import check
-
+import math
 
 def test_equal():
     check.equal(1, 2)
@@ -22,6 +22,14 @@ def test_is_not():
     x = ["foo"]
     y = x
     check.is_not(x, y)
+
+
+def test_is_nan():
+    check.is_nan(42)
+
+
+def test_is_not_nan():
+    check.is_not_nan(math.nan)
 
 
 def test_is_true():

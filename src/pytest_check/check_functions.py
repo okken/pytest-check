@@ -1,7 +1,7 @@
 import functools
 
 import pytest
-
+import math
 from .check_log import log_failure
 
 __all__ = [
@@ -14,6 +14,8 @@ __all__ = [
     "is_false",
     "is_none",
     "is_not_none",
+    "is_nan",
+    "is_not_nan",
     "is_in",
     "is_not_in",
     "is_instance",
@@ -120,6 +122,23 @@ def is_not_none(x, msg=""):
         log_failure(f"check {x} is not None", msg)
         return False
 
+
+def is_nan(a, msg=""):
+    __tracebackhide__ = True
+    if math.isnan(a):
+        return True
+    else:
+        log_failure(f"check {a} is NaN", msg)
+        return False
+
+
+def is_not_nan(a, msg=""):
+    __tracebackhide__ = True
+    if not math.isnan(a):
+        return True
+    else:
+        log_failure(f"check {a} is not NaN", msg)
+        return False
 
 def is_in(a, b, msg=""):
     __tracebackhide__ = True
