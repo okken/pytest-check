@@ -65,30 +65,32 @@ def test_httpx_get(check):
 `check` also helper functions for common checks. 
 These methods do NOT need to be inside of a `with check:` block.
 
-| Function                                             | Meaning                           | Notes                                                                                                |
+| Function    | Meaning    | Notes    |
 |------------------------------------------------------|-----------------------------------|------------------------------------------------------------------------------------------------------|
-| `equal(a, b, msg="")`                                | `a == b`                          |                                                                                                      |
-| `not_equal(a, b, msg="")`                            | `a != b`                          |                                                                                                      |
-| `is_(a, b, msg="")`                                  | `a is b`                          |                                                                                                      |
-| `is_not(a, b, msg="")`                               | `a is not b`                      |                                                                                                      |
-| `is_true(x, msg="")`                                 | `bool(x) is True`                 |                                                                                                      |
-| `is_false(x, msg="")`                                | `bool(x) is False`                |                                                                                                      |
-| `is_none(x, msg="")`                                 | `x is None`                       |                                                                                                      |
-| `is_not_none(x, msg="")`                             | `x is not None`                   |                                                                                                      |
-| `is_in(a, b, msg="")`                                | `a in b`                          |                                                                                                      |
-| `is_not_in(a, b, msg="")`                            | `a not in b`                      |                                                                                                      |
-| `is_instance(a, b, msg="")`                          | `isinstance(a, b)`                |                                                                                                      |
-| `is_not_instance(a, b, msg="")`                      | `not isinstance(a, b)`            |                                                                                                      |
-| `almost_equal(a, b, rel=None, abs=None, msg="")`     | `a == pytest.approx(b, rel, abs)` | [pytest.approx](https://docs.pytest.org/en/latest/reference.html#pytest-approx)                      |
-| `not_almost_equal(a, b, rel=None, abs=None, msg="")` | `a != pytest.approx(b, rel, abs)` | [pytest.approx](https://docs.pytest.org/en/latest/reference.html#pytest-approx)                      | 
-| `greater(a, b, msg="")`                              | `a > b`                           |                                                                                                      |
-| `greater_equal(a, b, msg="")`                        | `a >= b`                          |                                                                                                      |
-| `less(a, b, msg="")`                                 | `a < b`                           |                                                                                                      |
-| `less_equal(a, b, msg="")`                           | `a <= b`                          |                                                                                                      |
-| `between(b, a, c, msg="", ge=False, le=False)`       | `a < b < c`                       |                                                                                                      |
-| `between_equal(b, a, c, msg="")`                     | `a <= b <= c`                     | same as `between(b, a, c, msg, ge=True, le=True)`                                                    |
-| `raises(expected_exception, *args, **kwargs)`        | *Raises given exception*          | similar to [pytest.raises](https://docs.pytest.org/en/latest/reference/reference.html#pytest-raises) | 
-| `fail(msg)`                                          | *Log a failure*                   |                                                                                                      |
+| `equal(a, b, msg="")`    | `a == b`    |    |
+| `not_equal(a, b, msg="")`    | `a != b`    |    |
+| `is_(a, b, msg="")`    | `a is b`    |    |
+| `is_not(a, b, msg="")`    | `a is not b`    |    |
+| `is_true(x, msg="")`    | `bool(x) is True`    |    |
+| `is_false(x, msg="")`    | `bool(x) is False`    |    |
+| `is_none(x, msg="")`    | `x is None`    |    |
+| `is_not_none(x, msg="")`    | `x is not None`    |    |
+| `is_in(a, b, msg="")`    | `a in b`    |    |
+| `is_not_in(a, b, msg="")`    | `a not in b`    |    |
+| `is_instance(a, b, msg="")`    | `isinstance(a, b)`    |    |
+| `is_not_instance(a, b, msg="")`    | `not isinstance(a, b)`    |    |
+| `is_nan(x, msg="")`    | `math.isnan(x)`    | [math.isnan](https://docs.python.org/3/library/math.html#math.isnan)   |
+| `is_not_nan(x, msg="")`    | `not math.isnan(x) `    | [math.isnan](https://docs.python.org/3/library/math.html#math.isnan)   | 
+| `almost_equal(a, b, rel=None, abs=None, msg="")`    | `a == pytest.approx(b, rel, abs)` | [pytest.approx](https://docs.pytest.org/en/latest/reference.html#pytest-approx)    |
+| `not_almost_equal(a, b, rel=None, abs=None, msg="")` | `a != pytest.approx(b, rel, abs)` | [pytest.approx](https://docs.pytest.org/en/latest/reference.html#pytest-approx)    | 
+| `greater(a, b, msg="")`    | `a > b`    |    |
+| `greater_equal(a, b, msg="")`    | `a >= b`    |    |
+| `less(a, b, msg="")`    | `a < b`    |    |
+| `less_equal(a, b, msg="")`    | `a <= b`    |    |
+| `between(b, a, c, msg="", ge=False, le=False)`    | `a < b < c`    |    |
+| `between_equal(b, a, c, msg="")`    | `a <= b <= c`    | same as `between(b, a, c, msg, ge=True, le=True)`    |
+| `raises(expected_exception, *args, **kwargs)`    | *Raises given exception*    | similar to [pytest.raises](https://docs.pytest.org/en/latest/reference/reference.html#pytest-raises) | 
+| `fail(msg)`    | *Log a failure*    |    |
 
 **Note: This is a list of relatively common logic operators. I'm reluctant to add to the list too much, as it's easy to add your own.**
 

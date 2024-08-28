@@ -20,6 +20,12 @@ All notable changes to this project  be documented in this file.
 
 -->
 
+## [2.4.1] - 2024-Aug-27
+
+### Added
+- `is_nan()`
+- `is_not_nan()`
+
 ## [2.4.0] - 2024-Aug-27
 
 ### Modified
