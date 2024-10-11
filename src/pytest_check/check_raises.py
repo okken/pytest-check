@@ -1,9 +1,18 @@
+from __future__ import annotations
+from typing import Iterable, Any
+
 from .check_log import log_failure
 
 _stop_on_fail = False
 
 
-def raises(expected_exception, *args, **kwargs):
+# TODO: Returning Any isn't ideal, but returning CheckRaisesContext | None
+#  would require callers to type ignore or declare the type when using `with`.
+#  Or, it could always return CheckRaisesContext, just an empty one after
+#  calling the passed function.
+def raises(
+    expected_exception: type | Iterable[type], *args: Any, **kwargs: object
+) -> Any:
     """
     Check that a given callable or context raises an error of a given type.
 
@@ -39,23 +48,23 @@ def raises(expected_exception, *args, **kwargs):
     __tracebackhide__ = True
 
     if isinstance(expected_exception, type):
-        excepted_exceptions = (expected_exception,)
+        expected_exceptions: Iterable[type] = (expected_exception,)
     else:
-        excepted_exceptions = expected_exception
+        expected_exceptions = expected_exception
 
     assert all(
         isinstance(exc, type) or issubclass(exc, BaseException)
-        for exc in excepted_exceptions
+        for exc in expected_exceptions
     )
 
     msg = kwargs.pop("msg", None)
     if not args:
         assert not kwargs, f"Unexpected kwargs for pytest_check.raises: {kwargs}"
-        return CheckRaisesContext(expected_exception, msg=msg)
+        return CheckRaisesContext(*expected_exceptions, msg=msg)
     else:
         func = args[0]
         assert callable(func)
-        with CheckRaisesContext(expected_exception, msg=msg):
+        with CheckRaisesContext(*expected_exceptions, msg=msg):
             func(*args[1:], **kwargs)
 
 
@@ -69,18 +78,18 @@ class CheckRaisesContext:
     CheckContextManager.
     """
 
-    def __init__(self, *expected_excs, msg=None):
+    def __init__(self, *expected_excs: type, msg: object = None) -> None:
         self.expected_excs = expected_excs
         self.msg = msg
 
-    def __enter__(self):
+    def __enter__(self) -> "CheckRaisesContext":
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, exc_type: type, exc_val: object, exc_tb: object) -> bool:
         __tracebackhide__ = True
         if exc_type is not None and issubclass(exc_type, self.expected_excs):
-            # This is the case where an error has occured within the context
-            # but it is the type we're expecting.  Therefore we return True
+            # This is the case where an error has occured within the context,
+            # but it is the type we're expecting.  Therefore, we return True
             # to silence this error and proceed with execution outside the
             # context.
             return True
@@ -97,3 +106,6 @@ class CheckRaisesContext:
             # without raising an error, hence `return True`.
             log_failure(self.msg if self.msg else exc_val)
             return True
+
+        # Stop on fail, so return False
+        return False
