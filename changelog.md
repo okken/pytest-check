@@ -19,6 +19,12 @@ All notable changes to this project  be documented in this file.
 - nothing so far
 
 -->
+## [2.4.2] - 2025-Feb-8
+
+### Modified
+- Add testing for Python 3.13 to GH actions
+- Add testing for Python 3.13 and 3.14 to tox.ini
+- Switch packackaching from flit to hatchling
 
 ## [2.4.1] - 2024-Aug-27
 

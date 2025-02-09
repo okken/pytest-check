@@ -4,7 +4,7 @@ authors = [{name = "Brian Okken"}]
 readme = "README.md"
 license = {file = "LICENSE.txt"}
 description="A pytest plugin that allows multiple failures per test."
-version = "2.4.1"
+version = "2.4.2"
 requires-python = ">=3.8"
 classifiers = [
     "License :: OSI Approved :: MIT License",
@@ -16,6 +16,7 @@ classifiers = [
     'Programming Language :: Python :: 3.10',
     'Programming Language :: Python :: 3.11',
     'Programming Language :: Python :: 3.12',
+    'Programming Language :: Python :: 3.13',
     'Topic :: Software Development :: Testing',
     'Topic :: Utilities',
 ]
@@ -28,11 +29,15 @@ Home = "https://github.com/okken/pytest-check"
 check = "pytest_check.plugin"
 
 [build-system]
-requires = ["flit_core >=3.2,<4"]
-build-backend = "flit_core.buildapi"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-[tool.flit.module]
-name = "pytest_check"
+[project.optional-dependencies]
+dev = [
+  "tox",
+  "tox-uv",
+  "build"
+]
 
 [tool.flit.sdist]
 include = ["changelog.md", "examples", "tests", "tox.ini"]
