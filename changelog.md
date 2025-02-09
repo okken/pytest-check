@@ -19,6 +19,15 @@ All notable changes to this project  be documented in this file.
 - nothing so far
 
 -->
+
+## [Unreleased] - 2025-Feb-9
+
+Probably 2.5.0 
+
+### Fixed
+
+- Fixes #171, check doesn't respect runxfail option, thanks @taylermulligan
+
 ## [2.4.2] - 2025-Feb-8
 
 ### Modified
