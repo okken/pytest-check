@@ -38,6 +38,3 @@ dev = [
   "tox-uv",
   "build"
 ]
-
-[tool.flit.sdist]
-include = ["changelog.md", "examples", "tests", "tox.ini"]
