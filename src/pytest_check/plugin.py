@@ -30,7 +30,7 @@ def pytest_runtest_makereport(
 
     if failures:
         xfailed_value = item._store[xfailed_key]
-        if xfailed_value:
+        if xfailed_value and not item.config.option.runxfail:
             report.outcome = "skipped"
             report.wasxfail = xfailed_value.reason
         else:
