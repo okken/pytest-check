@@ -20,13 +20,16 @@ All notable changes to this project  be documented in this file.
 
 -->
 
-## [Unreleased] - 2025-Feb-9
+## [2.5.0] - 2025-Feb-12
 
-Probably 2.5.0 
+### Changed/Added
+
+- Add type hints, remove support for Python 3.8, resolves #163, thanks @mfulgo
 
 ### Fixed
 
 - Fixes #171, check doesn't respect runxfail option, thanks @taylermulligan
+
 
 ## [2.4.2] - 2025-Feb-8
 
