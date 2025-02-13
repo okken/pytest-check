@@ -1,28 +1,38 @@
 import sys
 import os
+from typing import Generator
 
 import pytest
-from _pytest._code.code import ExceptionInfo
+from pytest import CallInfo, Config, Item, Parser, TestReport
 from _pytest.skipping import xfailed_key
-from _pytest.reports import ExceptionChainRepr
-from _pytest._code.code import ExceptionRepr, ReprFileLocation
+from _pytest._code.code import (
+    ExceptionChainRepr,
+    ExceptionInfo,
+    ExceptionRepr,
+    ReprFileLocation,
+)
+from pluggy import Result
 
 from . import check_log, check_raises, context_manager, pseudo_traceback
+from .context_manager import CheckContextManager
 
 
 @pytest.hookimpl(hookwrapper=True, trylast=True)
-def pytest_runtest_makereport(item, call):
-    outcome = yield
-    report = outcome.get_result()
+def pytest_runtest_makereport(
+    item: Item, call: CallInfo[None]
+) -> Generator[None, Result[TestReport], None]:
+    outcome: Result[TestReport] = yield
+    report: TestReport = outcome.get_result()
 
     num_failures = check_log._num_failures
     failures = check_log.get_failures()
     check_log.clear_failures()
 
     if failures:
-        if item._store[xfailed_key] and not item.config.option.runxfail:
+        xfailed_value = item._store[xfailed_key]
+        if xfailed_value and not item.config.option.runxfail:
             report.outcome = "skipped"
-            report.wasxfail = item._store[xfailed_key].reason
+            report.wasxfail = xfailed_value.reason
         else:
 
             summary = f"Failed Checks: {num_failures}"
@@ -57,8 +67,9 @@ def pytest_runtest_makereport(item, call):
                     e_str = str(e)
                     e_str = e_str.split('FAILURE: ')[1]  # Remove redundant "Failure: "
                     reprcrash = ReprFileLocation(item.nodeid, 0, e_str)
-                    reprtraceback = ExceptionRepr(reprcrash, excinfo)
-                    chain_repr = ExceptionChainRepr([(reprtraceback, reprcrash, str(e))])
+                    # FIXME - the next two lines have broken types
+                    reprtraceback = ExceptionRepr(reprcrash, excinfo)  # type: ignore
+                    chain_repr = ExceptionChainRepr([(reprtraceback, reprcrash, str(e))])  # type: ignore
                     report.longrepr = chain_repr
                 else:  # pragma: no cover
                     # coverage is run on latest pytest
@@ -69,7 +80,7 @@ def pytest_runtest_makereport(item, call):
             call.excinfo = excinfo
 
 
-def pytest_configure(config):
+def pytest_configure(config: Config) -> None:
     # Add some red to the failure output, if stdout can accommodate it.
     isatty = sys.stdout.isatty()
     color = getattr(config.option, "color", None)
@@ -100,12 +111,12 @@ def pytest_configure(config):
 # def test_a(check):
 #    check.equal(a, b)
 @pytest.fixture(name="check")
-def check_fixture():
+def check_fixture() -> CheckContextManager:
     return context_manager.check
 
 
 # add some options
-def pytest_addoption(parser):
+def pytest_addoption(parser: Parser) -> None:
     parser.addoption(
         "--check-max-report",
         action="store",

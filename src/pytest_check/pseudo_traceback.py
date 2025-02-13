@@ -1,15 +1,28 @@
+from __future__ import annotations
 import inspect
 import os
 import re
+import sys
+from collections.abc import Iterable
+from inspect import FrameInfo
 from pprint import pformat
+from typing import AnyStr, Any
+
+if sys.version_info < (3, 11):  # pragma: no cover
+    from typing_extensions import LiteralString
+else:
+    from typing import LiteralString
+
 
 _traceback_style = "auto"
 
 
-def get_full_context(frame):
+def get_full_context(
+    frame: FrameInfo
+) -> tuple[AnyStr | LiteralString, Any, Any, str, Any, bool]:
     (_, filename, line, funcname, contextlist) = frame[0:5]
-    locals = frame.frame.f_locals
-    tb_hide = locals.get("__tracebackhide__", False)
+    locals_ = frame.frame.f_locals
+    tb_hide = locals_.get("__tracebackhide__", False)
     try:
         filename = os.path.relpath(filename)
     except ValueError:  # pragma: no cover
@@ -21,13 +34,13 @@ def get_full_context(frame):
         # But.... we'll keep looking for a way to test it. :)
         filename = os.path.abspath(filename)  # pragma: no cover
     context = contextlist[0].strip() if contextlist else ""
-    return (filename, line, funcname, context, locals, tb_hide)
+    return filename, line, funcname, context, locals_, tb_hide
 
 COLOR_RED = "\x1b[31m"
 COLOR_RESET = "\x1b[0m"
 
-def reformat_raw_traceback(lines, color):
-    formatted = []
+def reformat_raw_traceback(lines: Iterable[str], color: bool) -> str:
+    formatted: list[str] = []
     for line in lines:
         if 'Traceback (most recent call last)' in line:
             continue
@@ -49,12 +62,14 @@ def reformat_raw_traceback(lines, color):
             # I don't have a test case to hit this clause yet
             # And I can't think of one.
             # But it feels weird to not have the if/else.
-            # Thus the "no cover"
+            # Thus, the "no cover"
             formatted.append(line)  # pragma: no cover
     return '\n'.join(formatted)
 
 
-def _build_pseudo_trace_str(showlocals, tb, color):
+def _build_pseudo_trace_str(
+    showlocals: bool, tb: Iterable[str] | None, color: bool
+) -> str:
     """
     built traceback styles for better error message
     only supports no
@@ -76,7 +91,7 @@ def _build_pseudo_trace_str(showlocals, tb, color):
         # we want to trace through user code, not 3rd party or builtin libs
         if "site-packages" in file:
             break
-        # if called outside of a test, we might hit this
+        # if called outside a test, we might hit this
         if "<module>" in func:
             break
         if tb_hide:

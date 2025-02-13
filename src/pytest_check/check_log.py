@@ -1,25 +1,29 @@
+from __future__ import annotations
+from collections.abc import Iterable
+from typing import Callable
+
 from .pseudo_traceback import _build_pseudo_trace_str
 
 should_use_color = False
 COLOR_RED = "\x1b[31m"
 COLOR_RESET = "\x1b[0m"
-_failures = []
+_failures: list[str] = []
 _stop_on_fail = False
 
 _default_max_fail = None
 _default_max_report = None
 _default_max_tb = 1
 
-_max_fail = _default_max_fail
-_max_report = _default_max_report
+_max_fail: int | None = _default_max_fail
+_max_report: int | None = _default_max_report
 _max_tb = _default_max_tb
 _num_failures = 0
-_fail_function = None
+_fail_function: Callable[[str], None] | None = None
 
 _showlocals = False
 
-def clear_failures():
-    # get's called at the beginning of each test function
+def clear_failures() -> None:
+    # gets called at the beginning of each test function
     global _failures, _num_failures
     global _max_fail, _max_report, _max_tb
     _failures = []
@@ -33,11 +37,13 @@ def any_failures() -> bool:
     return bool(get_failures())
 
 
-def get_failures():
+def get_failures() -> list[str]:
     return _failures
 
 
-def log_failure(msg="", check_str="", tb=None):
+def log_failure(
+    msg: object = "", check_str: str = "", tb: Iterable[str] | None = None
+) -> None:
     global _num_failures
     __tracebackhide__ = True
     _num_failures += 1
@@ -60,7 +66,7 @@ def log_failure(msg="", check_str="", tb=None):
             msg = f"FAILURE: {msg}"
         _failures.append(msg)
         if _fail_function:
-            _fail_function(msg)
+            _fail_function(str(msg))
 
     if _max_fail and (_num_failures >= _max_fail):
         assert_msg = f"pytest-check max fail of {_num_failures} reached"
