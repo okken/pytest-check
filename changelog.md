@@ -19,6 +19,12 @@ All notable changes to this project  be documented in this file.
 - nothing so far
 
 -->
+## [2.5.1] - 2025-Mar-18
+
+### Fixed
+
+- Set a minimum pluggy version during type checking. Resolves #176, thanks @d-ryzhykau 
+
 
 ## [2.5.0] - 2025-Feb-12
 
