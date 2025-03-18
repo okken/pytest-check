@@ -1,6 +1,6 @@
 import sys
 import os
-from typing import Generator
+from typing import Generator, TYPE_CHECKING
 
 import pytest
 from pytest import CallInfo, Config, Item, Parser, TestReport
@@ -11,7 +11,8 @@ from _pytest._code.code import (
     ExceptionRepr,
     ReprFileLocation,
 )
-from pluggy import Result
+if TYPE_CHECKING:  # pragma: no cover
+    from pluggy import Result
 
 from . import check_log, check_raises, context_manager, pseudo_traceback
 from .context_manager import CheckContextManager
@@ -20,8 +21,8 @@ from .context_manager import CheckContextManager
 @pytest.hookimpl(hookwrapper=True, trylast=True)
 def pytest_runtest_makereport(
     item: Item, call: CallInfo[None]
-) -> Generator[None, Result[TestReport], None]:
-    outcome: Result[TestReport] = yield
+) -> "Generator[None, Result[TestReport], None]":
+    outcome: "Result[TestReport]" = yield
     report: TestReport = outcome.get_result()
 
     num_failures = check_log._num_failures
