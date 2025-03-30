@@ -1,8 +1,9 @@
 import pytest
-from . import check_functions
 
-# make sure assert rewriting happens
-pytest.register_assert_rewrite("pytest_check.check_functions")
+# We need register rewrites before import
+pytest.register_assert_rewrite("pytest_check.check_functions") 
+
+from . import check_functions # noqa: E402
 
 # allow for top level helper function access:
 # import pytest_check

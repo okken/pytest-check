@@ -30,12 +30,11 @@ def pytest_runtest_makereport(
     check_log.clear_failures()
 
     if failures:
-        xfailed_value = item._store[xfailed_key]
+        xfailed_value = item._store.get(xfailed_key, None)
         if xfailed_value and not item.config.option.runxfail:
             report.outcome = "skipped"
             report.wasxfail = xfailed_value.reason
         else:
-
             summary = f"Failed Checks: {num_failures}"
             longrepr = ["\n".join(failures)]
             longrepr.append("-" * 60)
