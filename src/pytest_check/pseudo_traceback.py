@@ -102,7 +102,6 @@ def _build_pseudo_trace_str(
                    pseudo_trace.append("%-10s = %s" % (name, pformat(val,
                                                                      sort_dicts=False,
                                                                      compact=True)))
-        file = os.path.basename(file)
 
         if color:
             file = f"{COLOR_RED}{file}{COLOR_RESET}"
