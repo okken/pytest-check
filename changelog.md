@@ -19,6 +19,15 @@ All notable changes to this project  be documented in this file.
 - nothing so far
 
 -->
+
+## [2.5.3] - 2025-Apr-3
+
+### Changed
+
+- relative paths in tracebacks
+  - pr #179, thanks @dpinol
+- add testing of Python 3.14
+
 ## [2.5.2] - 2025-Mar-29
 
 ### Fixed
