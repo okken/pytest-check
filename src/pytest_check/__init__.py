@@ -47,3 +47,5 @@ setattr(check, "check", check)
 #        assert 1 == 2
 for func in check_functions.__all__:  # noqa: F405
     setattr(check, func, getattr(check_functions, func))  # noqa: F405
+
+__all__ = ["raises", "any_failures"]
