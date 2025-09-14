@@ -7,15 +7,16 @@ description="A pytest plugin that allows multiple failures per test."
 version = "2.5.2"
 requires-python = ">=3.9"
 classifiers = [
-    "License :: OSI Approved :: MIT License",
-    "Framework :: Pytest" ,
     'Development Status :: 5 - Production/Stable',
+    'Framework :: Pytest',
     'Intended Audience :: Developers',
-    'Programming Language :: Python :: 3.9',
+    "Programming Language :: Python",
     'Programming Language :: Python :: 3.10',
     'Programming Language :: Python :: 3.11',
     'Programming Language :: Python :: 3.12',
     'Programming Language :: Python :: 3.13',
+    'Programming Language :: Python :: 3.14',
+    'Programming Language :: Python :: 3.9',
     'Topic :: Software Development :: Testing',
     'Topic :: Utilities',
 ]
