@@ -19,6 +19,30 @@ All notable changes to this project  be documented in this file.
 - nothing so far
 
 -->
+
+## [Unreleased] - yyyy-month-dd
+
+### Added
+
+- nothing so far
+
+### Fixed
+
+- nothing so far
+
+### Changed
+
+- raises & any_failures exported from top __init__.py module so that mypy does not complain that they are not explicitly exported. - Thanks [@dpinol](https://github.com/dpinol)
+- Make _Comparable* protocols compatible with builtins - Thanks [@SebastianGrans](https://github.com/SebastianGrans)
+
+## [2.5.3] - 2025-Apr-3
+
+### Changed
+
+- relative paths in tracebacks
+  - pr #179, thanks @dpinol
+- add testing of Python 3.14
+
 ## [2.5.2] - 2025-Mar-29
 
 ### Fixed
