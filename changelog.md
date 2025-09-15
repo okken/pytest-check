@@ -32,8 +32,11 @@ All notable changes to this project  be documented in this file.
 
 ### Changed
 
+## [2.5.4] - 2025-Sept-14
+
 - raises & any_failures exported from top __init__.py module so that mypy does not complain that they are not explicitly exported. - Thanks [@dpinol](https://github.com/dpinol)
 - Make _Comparable* protocols compatible with builtins - Thanks [@SebastianGrans](https://github.com/SebastianGrans)
+- Turn on testing for Python 3.14 in CI
 
 ## [2.5.3] - 2025-Apr-3
 

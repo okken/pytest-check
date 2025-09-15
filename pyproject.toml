@@ -4,7 +4,7 @@ authors = [{name = "Brian Okken"}]
 readme = "README.md"
 license = {file = "LICENSE.txt"}
 description="A pytest plugin that allows multiple failures per test."
-version = "2.5.3"
+version = "2.5.4"
 requires-python = ">=3.9"
 classifiers = [
     'Development Status :: 5 - Production/Stable',
@@ -16,6 +16,7 @@ classifiers = [
     'Programming Language :: Python :: 3.12',
     'Programming Language :: Python :: 3.13',
     'Programming Language :: Python :: 3.14',
+    "Programming Language :: Python :: 3.15",
     'Programming Language :: Python :: 3.9',
     'Topic :: Software Development :: Testing',
     'Topic :: Utilities',
