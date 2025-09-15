@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python: ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14-rc.2"]
+        python: ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14", "3.14t"]
 
     steps:
       - uses: actions/checkout@v5
@@ -24,6 +24,7 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python }}
+          allow-prerelease: true # needed for 3.14 and 3.14t
       - name: Install Tox and any other packages
         run: pip install tox tox-uv
       - name: Run Tox
