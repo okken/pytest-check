@@ -172,7 +172,7 @@ def test_raises():
 def test_raises_exception_value():
     with check.raises(ValueError) as e:
         raise ValueError("This is a ValueError")
-    assert str(e.value) == "This is a ValueError"
+    check.equal(str(e.value) == "This is a ValueError")
 ```
 
 ## Pseudo-tracebacks

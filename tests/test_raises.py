@@ -224,3 +224,24 @@ def test_raises_with_empty_exception_value():
     with raises(_TestException) as e:
         raise _TestException
     assert str(e.value) == ""
+
+
+def test_raises_with_none_exception_value(testdir):
+    testdir.makepyfile(
+        """
+        from pytest_check import raises
+
+        def test():
+            with raises(AssertionError) as e:
+                x = 1
+                assert x == 1
+            
+            assert str(e.value) == "None"
+    """,
+    )
+
+    result = testdir.runpytest()
+    result.assert_outcomes(failed=1)
+    result.stdout.fnmatch_lines(["FAILURE: None"])
+    result.stdout.no_fnmatch_line("*assert str(e.value) == 'None'*")
+    result.stdout.no_fnmatch_line("*AssertionError: assert 'None'*")
