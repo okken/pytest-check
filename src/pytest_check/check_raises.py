@@ -81,12 +81,15 @@ class CheckRaisesContext:
     def __init__(self, *expected_excs: type, msg: object = None) -> None:
         self.expected_excs = expected_excs
         self.msg = msg
+        self.value: object | None = None
 
     def __enter__(self) -> "CheckRaisesContext":
         return self
 
     def __exit__(self, exc_type: type, exc_val: object, exc_tb: object) -> bool:
         __tracebackhide__ = True
+
+        self.value = exc_val
         if exc_type is not None and issubclass(exc_type, self.expected_excs):
             # This is the case where an error has occured within the context,
             # but it is the type we're expecting.  Therefore, we return True
