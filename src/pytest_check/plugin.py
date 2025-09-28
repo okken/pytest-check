@@ -3,14 +3,15 @@ import os
 from typing import Generator, TYPE_CHECKING
 
 import pytest
-from pytest import CallInfo, Config, Item, Parser, TestReport
-from _pytest.skipping import xfailed_key
+from pytest import CallInfo, Config, Item, Parser, TestReport, Mark
+from _pytest.skipping import xfailed_key, evaluate_xfail_marks
 from _pytest._code.code import (
     ExceptionChainRepr,
     ExceptionInfo,
     ExceptionRepr,
     ReprFileLocation,
 )
+
 if TYPE_CHECKING:  # pragma: no cover
     from pluggy import Result
 
@@ -30,8 +31,15 @@ def pytest_runtest_makereport(
     check_log.clear_failures()
 
     if failures:
+        is_xfailed_raises_matched = _is_failure_matching_xfail_raises(
+            item=item, failures=failures
+        )
         xfailed_value = item._store.get(xfailed_key, None)
-        if xfailed_value and not item.config.option.runxfail:
+        if (
+            xfailed_value
+            and not item.config.option.runxfail
+            and is_xfailed_raises_matched
+        ):
             report.outcome = "skipped"
             report.wasxfail = xfailed_value.reason
         else:
@@ -51,8 +59,9 @@ def pytest_runtest_makereport(
                 raise AssertionError(report.longrepr)
             except AssertionError as e:
                 excinfo = ExceptionInfo.from_current()
-                if (pytest.version_tuple >= (7,3,0)
-                        and not os.getenv('PYTEST_XDIST_WORKER')):
+                if pytest.version_tuple >= (7, 3, 0) and not os.getenv(
+                    "PYTEST_XDIST_WORKER"
+                ):
                     # Build a summary report with failure reason
                     # Depends on internals of pytest, which changed in 7.3
                     # Also, doesn't work with xdist
@@ -65,7 +74,7 @@ def pytest_runtest_makereport(
                     #   FAILED test_example_simple.py::test_fail - assert 1 == 2
                     #
                     e_str = str(e)
-                    e_str = e_str.split('FAILURE: ')[1]  # Remove redundant "Failure: "
+                    e_str = e_str.split("FAILURE: ")[1]  # Remove redundant "Failure: "
                     reprcrash = ReprFileLocation(item.nodeid, 0, e_str)
                     # FIXME - the next two lines have broken types
                     reprtraceback = ExceptionRepr(reprcrash, excinfo)  # type: ignore
@@ -78,6 +87,24 @@ def pytest_runtest_makereport(
                     ...
 
             call.excinfo = excinfo
+
+
+def _is_failure_matching_xfail_raises(item: Item, failures: list[str]) -> bool:
+    for mark in item.iter_markers(name="xfail"):
+        raises = mark.kwargs.get("raises", None)
+
+        if isinstance(raises, tuple):
+            for exc in raises:
+                for failure in failures:
+                    if exc.__name__ in failure:
+                        return True
+
+        if isinstance(raises, type) and issubclass(raises, BaseException):
+            for failure in failures:
+                if raises.__name__ in failure:
+                    return True
+
+    return False
 
 
 def pytest_configure(config: Config) -> None:
