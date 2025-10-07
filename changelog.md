@@ -20,6 +20,20 @@ All notable changes to this project  be documented in this file.
 
 -->
 
+## [Unreleased] - yyyy-month-dd
+
+### Added
+
+- nothing so far
+
+### Fixed
+
+- nothing so far
+
+### Changed
+
+- (internal) updated publish pipeline: repository_url -> repository-url
+
 ## [2.6.0] - 2025-Oct-6
 
 ### Added
