@@ -24,7 +24,7 @@ All notable changes to this project  be documented in this file.
 
 ### Added
 
-- nothing so far
+- `raises` returns the exception value, so the excpected error message can be verified.
 
 ### Fixed
 
