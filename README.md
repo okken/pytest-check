@@ -168,6 +168,11 @@ def test_raises():
     with check.raises(AssertionError):
         x = 3
         assert 1 < x < 4
+
+def test_raises_exception_value():
+    with check.raises(ValueError) as e:
+        raise ValueError("This is a ValueError")
+    check.equal(str(e.value) == "This is a ValueError")
 ```
 
 ## Pseudo-tracebacks

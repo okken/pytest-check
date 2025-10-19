@@ -32,7 +32,17 @@ All notable changes to this project  be documented in this file.
 
 ### Changed
 
+- (internal) updated publish pipeline: repository_url -> repository-url
+
+## [2.6.0] - 2025-Oct-6
+
+### Added
+
+- `raises` returns the exception value, so the excpected error message can be verified. - Thanks [@shairoth12](https://github.com/shairoth12)
+
 ## [2.5.4] - 2025-Sept-14
+
+### Internal Changes
 
 - raises & any_failures exported from top __init__.py module so that mypy does not complain that they are not explicitly exported. - Thanks [@dpinol](https://github.com/dpinol)
 - Make _Comparable* protocols compatible with builtins - Thanks [@SebastianGrans](https://github.com/SebastianGrans)
