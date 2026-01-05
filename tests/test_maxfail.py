@@ -1,34 +1,47 @@
-def test_maxfail_1_stops_on_first_check(pytester):
-    """
-    Should stop after first failed check
-    """
-    pytester.copy_example("examples/test_example_maxfail.py")
-    result = pytester.runpytest("--maxfail=1")
-    result.assert_outcomes(failed=1, passed=0)
-    result.stdout.fnmatch_lines(["*AssertionError: one*"])
+from typing import Callable, Dict, List, Optional
+
+import pytest
 
 
-def test_maxfail_2_stops_on_two_failed_tests(pytester):
+@pytest.mark.parametrize(
+    "maxfail,expected_outcomes,expected_lines",
+    [
+        (
+            1,
+            {"failed": 1, "passed": 0},
+            ["*AssertionError: one*"],
+        ),
+        (
+            2,
+            {"failed": 2, "passed": 0},
+            [
+                "*FAILURE: one",
+                "*FAILURE: two",
+                "*FAILURE: three",
+                "*Failed Checks: 3*",
+            ],
+        ),
+        (
+            3,
+            {"failed": 2, "passed": 1},
+            None,
+        ),
+    ],
+)
+def test_maxfail_behavior(
+    run_example_test: Callable,
+    maxfail: int,
+    expected_outcomes: Dict[str, int],
+    expected_lines: Optional[List[str]],
+) -> None:
     """
-    Should stop after 2 tests (not checks)
-    """
-    pytester.copy_example("examples/test_example_maxfail.py")
-    result = pytester.runpytest("--maxfail=2")
-    result.assert_outcomes(failed=2, passed=0)
-    result.stdout.fnmatch_lines(
-        [
-            "*FAILURE: one",
-            "*FAILURE: two",
-            "*FAILURE: three",
-            "*Failed Checks: 3*",
-        ],
-    )
+    Test that --maxfail correctly stops after N failed tests (not checks).
 
-
-def test_maxfail_3_runs_at_least_3_tests(pytester):
+    - maxfail=1: Should stop after first failed check
+    - maxfail=2: Should stop after 2 tests (not checks)
+    - maxfail=3: Should not stop on checks, runs at least 3 tests
     """
-    Should not stop on checks.
-    """
-    pytester.copy_example("examples/test_example_maxfail.py")
-    result = pytester.runpytest("--maxfail=3")
-    result.assert_outcomes(failed=2, passed=1)
+    result = run_example_test("test_example_maxfail.py", None, f"--maxfail={maxfail}")
+    result.assert_outcomes(**expected_outcomes)
+    if expected_lines:
+        result.stdout.fnmatch_lines(expected_lines)

@@ -105,7 +105,6 @@ def _build_pseudo_trace_str(
 
         if color:
             file = f"{COLOR_RED}{file}{COLOR_RESET}"
-        #line = f"{file}:{line} in {func}\n    {context}"
         line = f"{file}:{line} in {func}() -> {context}"
         pseudo_trace.append(line)
 

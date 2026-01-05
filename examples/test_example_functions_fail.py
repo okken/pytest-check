@@ -113,4 +113,4 @@ def test_between_ge_le():
 
 
 def test_between_equal():
-    check.between_equal(21, 0, 20, ge=True, le=True)
+    check.between_equal(21, 0, 20)
