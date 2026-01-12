@@ -4,8 +4,8 @@ import re
 from typing import Generator, TYPE_CHECKING
 
 import pytest
-from pytest import CallInfo, Config, Item, Parser, TestReport, Mark
-from _pytest.skipping import xfailed_key, evaluate_xfail_marks
+from pytest import CallInfo, Config, Item, Parser, TestReport
+from _pytest.skipping import xfailed_key
 from _pytest._code.code import (
     ExceptionChainRepr,
     ExceptionInfo,
