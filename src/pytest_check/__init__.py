@@ -48,4 +48,4 @@ setattr(check, "check", check)
 for func in check_functions.__all__:  # noqa: F405
     setattr(check, func, getattr(check_functions, func))  # noqa: F405
 
-__all__ = ["raises", "any_failures"]
+__all__ = ["check", "raises", "any_failures"]
