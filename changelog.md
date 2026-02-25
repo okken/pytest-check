@@ -28,7 +28,10 @@ All notable changes to this project  be documented in this file.
 
 ### Fixed
 
-- nothing so far
+- Fix #190: pyright errors
+-  Update __all__ to include 'check' in pytest_check module - Thanks [@taylermulligan](https://github.com/taylermulligan)
+
+
 
 ### Changed
 
