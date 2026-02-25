@@ -24,7 +24,11 @@ All notable changes to this project  be documented in this file.
 
 ### Added
 
+<<<<<<< HEAD
 - Support for `raises` parameter in `@pytest.mark.xfail` when using check context managers - Fixes #145
+=======
+- nothing so far
+>>>>>>> 96587ae (changelog)
 
 ### Fixed
 
