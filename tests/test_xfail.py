@@ -1,7 +1,3 @@
-import pytest
-
-from pytest_check import check
-
 
 def test_xfail(pytester):
     pytester.copy_example("examples/test_example_xfail.py")
