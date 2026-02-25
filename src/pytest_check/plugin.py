@@ -36,9 +36,7 @@ def pytest_runtest_makereport(
             report.wasxfail = xfailed_value.reason
         else:
             summary = f"Failed Checks: {num_failures}"
-            longrepr = ["\n".join(failures)]
-            longrepr.append("-" * 60)
-            longrepr.append(summary)
+            longrepr = ["\n".join(failures), "-" * 60, summary]
 
             if report.longrepr:
                 longrepr.append("-" * 60)
