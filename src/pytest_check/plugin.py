@@ -1,5 +1,6 @@
 import sys
 import os
+import re
 from typing import Generator, TYPE_CHECKING
 
 import pytest
@@ -11,6 +12,7 @@ from _pytest._code.code import (
     ExceptionRepr,
     ReprFileLocation,
 )
+
 if TYPE_CHECKING:  # pragma: no cover
     from pluggy import Result
 
@@ -30,8 +32,15 @@ def pytest_runtest_makereport(
     check_log.clear_failures()
 
     if failures:
+        is_xfailed_raises_matched_or_no_raises = _is_failure_matching_xfail_raises(
+            item=item, failures=failures
+        )
         xfailed_value = item._store.get(xfailed_key, None)
-        if xfailed_value and not item.config.option.runxfail:
+        if (
+            xfailed_value
+            and not item.config.option.runxfail
+            and is_xfailed_raises_matched_or_no_raises
+        ):
             report.outcome = "skipped"
             report.wasxfail = xfailed_value.reason
         else:
@@ -49,8 +58,9 @@ def pytest_runtest_makereport(
                 raise AssertionError(report.longrepr)
             except AssertionError as e:
                 excinfo = ExceptionInfo.from_current()
-                if (pytest.version_tuple >= (7,3,0)
-                        and not os.getenv('PYTEST_XDIST_WORKER')):
+                if pytest.version_tuple >= (7, 3, 0) and not os.getenv(
+                    "PYTEST_XDIST_WORKER"
+                ):
                     # Build a summary report with failure reason
                     # Depends on internals of pytest, which changed in 7.3
                     # Also, doesn't work with xdist
@@ -63,7 +73,7 @@ def pytest_runtest_makereport(
                     #   FAILED test_example_simple.py::test_fail - assert 1 == 2
                     #
                     e_str = str(e)
-                    e_str = e_str.split('FAILURE: ')[1]  # Remove redundant "Failure: "
+                    e_str = e_str.split("FAILURE: ")[1]  # Remove redundant "Failure: "
                     reprcrash = ReprFileLocation(item.nodeid, 0, e_str)
                     # FIXME - the next two lines have broken types
                     reprtraceback = ExceptionRepr(reprcrash, excinfo)  # type: ignore
@@ -76,6 +86,58 @@ def pytest_runtest_makereport(
                     ...
 
             call.excinfo = excinfo
+
+
+def _is_failure_matching_xfail_raises(item: Item, failures: list[str]) -> bool:
+    """
+    Check if any check failures match the expected exception type(s) from xfail marks.
+
+    Returns True if:
+    - No xfail marks have a 'raises' parameter (backward compatibility)
+    - Any xfail mark's 'raises' exception matches any failure
+
+    Returns False if:
+    - At least one xfail mark has 'raises' but none match the failures
+    """
+
+    has_xfail_with_raises = False
+
+    for mark in item.iter_markers(name="xfail"):
+        raises = mark.kwargs.get("raises", None)
+
+        if raises is None:
+            continue
+
+        has_xfail_with_raises = True
+
+        if isinstance(raises, tuple):
+            for exc in raises:
+                if _match_exception(exc_name=exc.__name__, failures=failures):
+                    return True
+
+        if isinstance(raises, type) and issubclass(raises, BaseException):
+            if _match_exception(exc_name=raises.__name__, failures=failures):
+                return True
+
+    if not has_xfail_with_raises:
+        return True
+
+    return False
+
+
+def _match_exception(exc_name: str, failures: list[str]) -> bool:
+    # Use word boundary matching to avoid false positives
+    # e.g., "AssertionError" won't match "MyCustomAssertionError"
+    # Strip ANSI color codes before matching to avoid interference
+    ansi_pattern = r"\x1b\[[0-9;]*m"
+    pattern = r"\b" + re.escape(exc_name) + r"\b"
+    for failure in failures:
+        # Remove ANSI color codes before matching
+        clean_failure = re.sub(ansi_pattern, "", failure)
+        if re.search(pattern=pattern, string=clean_failure):
+            return True
+
+    return False
 
 
 def pytest_configure(config: Config) -> None:
