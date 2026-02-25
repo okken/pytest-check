@@ -36,10 +36,9 @@ All notable changes to this project  be documented in this file.
 -  Update __all__ to include 'check' in pytest_check module - Thanks [@taylermulligan](https://github.com/taylermulligan)
 
 
-
 ### Changed
 
-- nothing so far
+- Internal: add fixture run_example_test in tests - Thanks [@even-even](https://github.com/even-even)
 
 
 ## [2.6.2] - 2025-Nov-28
