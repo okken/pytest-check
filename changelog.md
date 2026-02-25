@@ -24,21 +24,17 @@ All notable changes to this project  be documented in this file.
 
 ### Added
 
-<<<<<<< HEAD
-- Support for `raises` parameter in `@pytest.mark.xfail` when using check context managers - Fixes #145
-=======
-- nothing so far
->>>>>>> 96587ae (changelog)
+- Support for `raises` parameter in `@pytest.mark.xfail` when using check context managers - Fixes #145 - Thanks [@shairoth12](https://github.com/shairoth12)
 
 ### Fixed
 
 - Fix #190: pyright errors
--  Update __all__ to include 'check' in pytest_check module - Thanks [@taylermulligan](https://github.com/taylermulligan)
-
+- Fix #145: Is the 'raises' parameter in xfail ignored? - not anymore
 
 ### Changed
 
 - Internal: add fixture run_example_test in tests - Thanks [@even-even](https://github.com/even-even)
+-  Update __all__ to include 'check' in pytest_check module - Fixes #190 - Thanks [@taylermulligan](https://github.com/taylermulligan) 
 
 
 ## [2.6.2] - 2025-Nov-28
