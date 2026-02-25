@@ -20,7 +20,7 @@ All notable changes to this project  be documented in this file.
 
 -->
 
-## [Unreleased] - yyyy-month-dd
+## [2.7.0] - 2026-Feb-24
 
 ### Added
 
