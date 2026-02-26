@@ -245,3 +245,9 @@ def test_raises_with_none_exception_value(testdir):
     result.stdout.fnmatch_lines(["FAILURE: None"])
     result.stdout.no_fnmatch_line("*assert str(e.value) == 'None'*")
     result.stdout.no_fnmatch_line("*AssertionError: assert 'None'*")
+
+def test_raises_custom_msg(run_example_test):
+    result = run_example_test("test_example_raises.py", 'test_raises_msg_fail', '-ra')
+    result.assert_outcomes(failed=1)
+    expected_line = 'FAILED test_example_raises.py::test_raises_msg_fail - Custom error message'
+    result.stdout.fnmatch_lines([expected_line])

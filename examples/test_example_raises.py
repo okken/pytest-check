@@ -30,3 +30,9 @@ def test_raises_exception_value():
         raise ValueError("This is a ValueError")
 
     check.equal(str(e.value), "This is a ValueError")
+
+def test_raises_msg_fail():
+    """Should Fail, and the custom message should be in the output."""
+    with check.raises(ValueError, msg="Custom error message"):
+        x = 1 / 0 
+        assert x == 0

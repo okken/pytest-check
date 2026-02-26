@@ -175,6 +175,27 @@ def test_raises_exception_value():
     check.equal(str(e.value) == "This is a ValueError")
 ```
 
+If the exception isn't correct, as in it isn't the exception type raised, the error message reported for the test failure will describe the actual exception.
+
+```python
+def test_raises_fail():
+    with check.raises(ValueError):
+        x = 1 / 0 # division by zero error, NOT ValueError
+        assert x == 0
+```
+
+If you want a custom message instead, you can supply one.   
+Note, this doesn't check that msg matches the exception string.  
+It simply is a custom failure message for your test. 
+
+```python
+def test_raises_and_custom_fail_message():
+    with check.raises(ValueError, msg="custom"):
+        x = 1 / 0 # division by zero error, NOT ValueError
+        assert x == 0
+```
+
+
 ## Pseudo-tracebacks
 
 With `check`, tests can have multiple failures per test.
@@ -324,3 +345,7 @@ If you encounter any problems, please [file an issue](https://github.com/okken/p
 ## Changelog
 
 See [changelog.md](https://github.com/okken/pytest-check/blob/main/changelog.md)
+
+## FAQ
+
+See [faq.md](https://github.com/okken/pytest-check/blob/main/faq.md)
