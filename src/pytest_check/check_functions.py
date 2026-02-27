@@ -55,19 +55,19 @@ _T = TypeVar("_T")
 
 
 class _ComparableGreaterThan(Protocol):
-    def __gt__(self, other: ..., /) -> bool: ...  # pragma: no cover
+    def __gt__(self, other: object, /) -> bool: ...  # pragma: no cover
 
 
 class _ComparableGreaterThanOrEqual(Protocol):
-    def __ge__(self, other: ..., /) -> bool: ...  # pragma: no cover
+    def __ge__(self, other: object, /) -> bool: ...  # pragma: no cover
 
 
 class _ComparableLessThan(Protocol):
-    def __lt__(self, other: ..., /) -> bool: ...  # pragma: no cover
+    def __lt__(self, other: object, /) -> bool: ...  # pragma: no cover
 
 
 class _ComparableLessThanOrEqual(Protocol):
-    def __le__(self, other: ..., /) -> bool: ...  # pragma: no cover
+    def __le__(self, other: object, /) -> bool: ...  # pragma: no cover
 
 
 def check_func(func: Callable[_P, _T]) -> Callable[_P, bool]:

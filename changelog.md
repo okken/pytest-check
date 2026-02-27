@@ -28,6 +28,15 @@ All notable changes to this project will be documented in this file.
 
 -->
 
+## [Unreleased] - 2026-Feb-27
+
+### Changed
+
+- (typing) Update internal `_Comparable*` protocol comparison signatures to satisfy strict mypy checks.
+- (tox) Enable and expand `mypy` env checks to include `examples/`.
+- (tox) Install `httpx` in the `mypy` env so example type checking works without import ignores.
+- (examples) Switch decorator usage in `test_example_check_func_decorator.py` to import `check_func` directly for static type checking.
+
 ## [2.7.1] - 2026-Feb-27
 
 ### Added
