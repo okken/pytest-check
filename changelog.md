@@ -28,7 +28,12 @@ All notable changes to this project will be documented in this file.
 
 -->
 
-## [Unreleased] - 2026-Feb-27
+## [2.7.2] - 2026-Feb-27
+
+### Fixed
+
+- #184: Fix issues with mypy. The example in this issue now passes mypy. Also mypy is now being tested as part of tox.
+- (typing) Allow dynamic helper access on `CheckContextManager` for static analysis, so patterns like `check.equal(...)` type-check in fixture-annotated tests.
 
 ### Changed
 
@@ -36,6 +41,8 @@ All notable changes to this project will be documented in this file.
 - (tox) Enable and expand `mypy` env checks to include `examples/`.
 - (tox) Install `httpx` in the `mypy` env so example type checking works without import ignores.
 - (examples) Switch decorator usage in `test_example_check_func_decorator.py` to import `check_func` directly for static type checking.
+- (examples) Add `test_example_context_manager_type.py` to document and validate context-manager fixture typing behavior.
+- (ci) Add a GitHub Actions quality job to run `tox -e lint,mypy,pytest_earliest,coverage`.
 
 ## [2.7.1] - 2026-Feb-27
 

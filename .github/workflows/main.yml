@@ -29,3 +29,17 @@ jobs:
         run: pip install tox tox-uv
       - name: Run Tox
         run: tox -e py
+
+  quality:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - name: Install Tox and any other packages
+        run: pip install tox tox-uv
+      - name: Run Tox quality checks
+        run: tox -e lint,mypy,pytest_earliest,coverage

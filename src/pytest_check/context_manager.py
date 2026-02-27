@@ -2,7 +2,7 @@ from __future__ import annotations
 import warnings
 import traceback
 from types import TracebackType
-from typing import Callable, Type
+from typing import Any, Callable, Type
 
 from . import check_log
 from .check_log import log_failure
@@ -47,6 +47,10 @@ class CheckContextManager:
     def __call__(self, msg: object = None) -> "CheckContextManager":
         self.msg = msg
         return self
+
+    def __getattr__(self, name: str) -> Any:
+        """Allow type-checkers to accept dynamically attached helper attributes."""
+        raise AttributeError(name)
 
     def set_no_tb(self) -> None:
         warnings.warn(

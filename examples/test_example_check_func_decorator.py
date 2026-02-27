@@ -2,7 +2,7 @@
 Make sure the @check.check_func decorator works.
 """
 
-from pytest_check import check, check_func
+from pytest_check import check_func
 
 
 @check_func
