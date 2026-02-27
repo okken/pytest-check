@@ -129,6 +129,26 @@ def test_all_four():
     is_four(4)
 ```
 
+### Built in check functions return bool
+
+The return value of all the check functions that come pre-written in pytest-check return a bool value.  
+You can use that to determine if it passes or fails. 
+
+So, if you want to perform some action based on success/failure, you can just do something like:
+
+```python
+from pytest_check import check
+
+def test_something()
+    ...
+    if check.equal(a, b):
+        # they are equal
+        ...
+    else
+        # they are not equal
+        # and a failure was registered by the check method
+        ...
+```
 
 ### Using `check.fail()`
 
@@ -201,7 +221,8 @@ def test_raises_and_custom_fail_message():
 With `check`, tests can have multiple failures per test.
 This would possibly make for extensive output if we include the full traceback for
 every failure.
-To make the output a little more concise, `pytest-check` implements a shorter version, which we call pseudo-tracebacks.
+To make the output a little more concise, `pytest-check` implements a shorter version, which we call pseudo-tracebacks. 
+And to further make the output more concise, and speed up the test run, only the first pseudo-traceback is turned on by default.
 
 For example, take this test:
 
@@ -219,23 +240,55 @@ def test_example():
 This will result in:
 
 ```
-=================================== FAILURES ===================================
-_________________________________ test_example _________________________________
-FAILURE:
-assert 1 > 2
-  test_check.py, line 14, in test_example() -> check.greater(a, b)
-FAILURE:
-assert 2 <= 1
-  test_check.py, line 15, in test_example() -> check.less_equal(b, a)
-FAILURE: Is 1 in the list
-assert 1 in [2, 4, 6]
-  test_check.py, line 16, in test_example() -> check.is_in(a, c, "Is 1 in the list")
-FAILURE: make sure 2 isn't in list
-assert 2 not in [2, 4, 6]
-  test_check.py, line 17, in test_example() -> check.is_not_in(b, c, "make sure 2 isn't in list")
+$ pytest test_check.py                 
+...
+================================= FAILURES =================================
+_______________________________ test_example _______________________________
+
+FAILURE: check 1 > 2
+test_check.py:7 in test_example() -> check.greater(a, b)
+
+FAILURE: check 2 <= 1
+FAILURE: check 1 in [2, 4, 6]: Is 1 in the list
+FAILURE: check 2 not in [2, 4, 6]: make sure 2 isn't in list
 ------------------------------------------------------------
 Failed Checks: 4
-=========================== 1 failed in 0.11 seconds ===========================
+========================= short test summary info ==========================
+FAILED test_check.py::test_example - check 1 > 2
+============================ 1 failed in 0.01s =============================
+```
+
+
+If you wish to see more pseudo-tracebacks than just the first, you can set `--check-max-tb=5` or something larger:
+
+
+```
+(.venv) $ pytest test_check.py --check-max-tb=5
+=========================== test session starts ============================
+collected 1 item                                                           
+
+test_check.py F                                                      [100%]
+
+================================= FAILURES =================================
+_______________________________ test_example _______________________________
+
+FAILURE: check 1 > 2
+test_check.py:7 in test_example() -> check.greater(a, b)
+
+FAILURE: check 2 <= 1
+test_check.py:8 in test_example() -> check.less_equal(b, a)
+
+FAILURE: check 1 in [2, 4, 6]: Is 1 in the list
+test_check.py:9 in test_example() -> check.is_in(a, c, "Is 1 in the list")
+
+FAILURE: check 2 not in [2, 4, 6]: make sure 2 isn't in list
+test_check.py:10 in test_example() -> check.is_not_in(b, c, "make sure 2 isn't in list")
+
+------------------------------------------------------------
+Failed Checks: 4
+========================= short test summary info ==========================
+FAILED test_check.py::test_example - check 1 > 2
+============================ 1 failed in 0.01s =============================
 ```
 
 ## Red output
@@ -327,6 +380,83 @@ def test_max_fail():
         check.equal(i, 100)
 ```
 
+## Call on fail
+
+If you want to have a custom action happen for every check failure,
+you can use the method `call_on_fail(func)`.  
+You have to pass it a function that accepts a string.  
+That function will be called with the message from the check failure. 
+
+Example:
+
+```python
+from pytest_check import check
+
+def my_func(msg):
+    ...
+
+check.call_on_fail(my_func)
+...
+
+```
+
+There are other uses for this, but the original use case idea was for logging to a file.
+
+### Logging to a file
+
+The `examples/logging_to_a_file/` directory has an example of how you could set this up. 
+
+In a `conftest.py` file, we:
+
+* Configure a logging logger to write to a file.
+* Create a small `log_failure(message)` function that uses that logger
+* Call `check.call_on_fail(log_failure)` to register the function.
+
+And that's it, all failures will get logged to a file.
+
+```python
+import logging
+import pytest
+from pytest_check import check
+
+@pytest.fixture(scope='session', autouse=True)
+def setup_logging():
+    # logging config
+    log = logging.getLogger(__name__)
+    log.setLevel(logging.DEBUG)
+    fh = logging.FileHandler('session.log')
+    fh.setLevel(logging.DEBUG)
+    fh.setFormatter(logging.Formatter('--- %(asctime)s.%(msecs)03d ---\n%(message)s', 
+                                      datefmt='%Y-%m-%d %H:%M:%S'))
+    log.addHandler(fh)
+    # log start of tests
+    log.info("---------\nStarting test run\n---------")
+    # have check failures log to file
+    def log_failure(message):
+        log.error(message)
+    check.call_on_fail(log_failure)
+```
+
+With that setup, the file will end up looking something like this:
+
+```
+$ cat session.log              
+--- 2026-02-26 09:46:39.822 ---
+---------
+Starting test run
+---------
+--- 2026-02-26 09:46:39.831 ---
+FAILURE: check 1 == 2
+test_log2.py:4 in test_one() -> check.equal(1, 2)
+
+--- 2026-02-26 09:46:39.832 ---
+FAILURE: check 5 == 6
+test_log2.py:7 in test_two() -> check.equal(5, 6)
+```
+
+Of course, you can modify the logging config to make it look however you want.
+
+
 ## Contributing
 
 Contributions are very welcome. Tests can be run with [tox](https://tox.readthedocs.io/en/latest/).
@@ -346,6 +476,3 @@ If you encounter any problems, please [file an issue](https://github.com/okken/p
 
 See [changelog.md](https://github.com/okken/pytest-check/blob/main/changelog.md)
 
-## FAQ
-
-See [faq.md](https://github.com/okken/pytest-check/blob/main/faq.md)

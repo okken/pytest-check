@@ -249,5 +249,7 @@ def test_raises_with_none_exception_value(testdir):
 def test_raises_custom_msg(run_example_test):
     result = run_example_test("test_example_raises.py", 'test_raises_msg_fail', '-ra')
     result.assert_outcomes(failed=1)
-    expected_line = 'FAILED test_example_raises.py::test_raises_msg_fail - Custom error message'
+    expected_line = 'FAILED test_example_raises.py::test_raises_msg_fail'
+    if pytest.version_tuple >= (7, 3, 0):  # pragma: no branch
+        expected_line += ' - Custom error message'
     result.stdout.fnmatch_lines([expected_line])

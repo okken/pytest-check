@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to this project  be documented in this file.
+All notable changes to this project will be documented in this file.
 
 <!--
 
@@ -10,15 +10,38 @@ All notable changes to this project  be documented in this file.
 
 - nothing so far
 
-### Fixed
-
-- nothing so far
-
 ### Changed
 
 - nothing so far
 
+### Deprecated
+
+- nothing so far
+
+### Removed
+
+- nothing so far
+
+### Fixed
+
+- nothing so far
+
 -->
+
+## [2.7.1] - 2026-Feb-27
+
+### Added
+
+- (docs) Document custom message support (`msg`) in `check.raises()`.
+- (tests) Add tests for custom messages in `check.raises()`.
+- (docs) Document that built-in check methods return `bool` values.
+- (docs) Update pseudo-traceback examples to reflect the default single pseudo-traceback and show how to increase it with `--check-max-tb=5`.
+- (docs) Add `check.call_on_fail()` section with usage guidance.
+- (examples) Add runnable logging example in `examples/logging_to_a_file/`.
+
+### Fixed
+
+- (tests) Make `test_raises_custom_msg` compatible with pytest < 7.3 short-summary output.
 
 ## [2.7.0] - 2026-Feb-24
 
@@ -33,29 +56,29 @@ All notable changes to this project  be documented in this file.
 
 ### Changed
 
-- Internal: add fixture run_example_test in tests - Thanks [@even-even](https://github.com/even-even)
--  Update __all__ to include 'check' in pytest_check module - Fixes #190 - Thanks [@taylermulligan](https://github.com/taylermulligan) 
+- Internal: Add fixture run_example_test in tests - Thanks [@even-even](https://github.com/even-even)
+- Update __all__ to include 'check' in pytest_check module - Fixes #190 - Thanks [@taylermulligan](https://github.com/taylermulligan)
 
 
 ## [2.6.2] - 2025-Nov-28
 
 ### Fixed
 
-- greater/less_equal support numpy scalars #189 - Thanks [@dpinol](https://github.com/dpinol)
+- Greater/less_equal support numpy scalars #189 - Thanks [@dpinol](https://github.com/dpinol)
 
 ### Changed
 
-- (internal) updated publish pipeline: repository_url -> repository-url
+- (internal) Updated publish pipeline: repository_url -> repository-url
 
 ## [2.6.0] - 2025-Oct-6
 
 ### Added
 
-- `raises` returns the exception value, so the excpected error message can be verified. - Thanks [@shairoth12](https://github.com/shairoth12)
+- `raises` returns the exception value, so the expected error message can be verified. - Thanks [@shairoth12](https://github.com/shairoth12)
 
 ## [2.5.4] - 2025-Sept-14
 
-### Internal Changes
+### Changed
 
 - raises & any_failures exported from top __init__.py module so that mypy does not complain that they are not explicitly exported. - Thanks [@dpinol](https://github.com/dpinol)
 - Make _Comparable* protocols compatible with builtins - Thanks [@SebastianGrans](https://github.com/SebastianGrans)
@@ -65,9 +88,9 @@ All notable changes to this project  be documented in this file.
 
 ### Changed
 
-- relative paths in tracebacks
-  - pr #179, thanks @dpinol
-- add testing of Python 3.14
+- Relative paths in tracebacks
+  - PR #179, thanks @dpinol
+- Add testing of Python 3.14
 
 ## [2.5.2] - 2025-Mar-29
 
@@ -84,7 +107,7 @@ All notable changes to this project  be documented in this file.
 
 ## [2.5.0] - 2025-Feb-12
 
-### Changed/Added
+### Changed
 
 - Add type hints, remove support for Python 3.8, resolves #163, thanks @mfulgo
 
@@ -95,10 +118,10 @@ All notable changes to this project  be documented in this file.
 
 ## [2.4.2] - 2025-Feb-8
 
-### Modified
+### Changed
 - Add testing for Python 3.13 to GH actions
 - Add testing for Python 3.13 and 3.14 to tox.ini
-- Switch packackaching from flit to hatchling
+- Switch packaging from flit to hatchling
 
 ## [2.4.1] - 2024-Aug-27
 
@@ -108,14 +131,14 @@ All notable changes to this project  be documented in this file.
 
 ## [2.4.0] - 2024-Aug-27
 
-### Modified
+### Changed
 - Drop Python 3.7
 - Add testing for Python 3.12
 - Add tox-uv to tox.ini and main.yml
 
 ## [2.3.1] - 2024-Jan-18
 
-### Modified
+### Changed
 - Documentation Update, README.md
   - Turn help function list into a table with param lists
   - Show an alternative method of creating a helper function using `check.fail()`
@@ -123,20 +146,20 @@ All notable changes to this project  be documented in this file.
 ## [2.3.0] - 2024-Jan-17
 
 ### Added
-  - `between_equal(b, a c)` 
+  - `between_equal(b, a, c)` 
     - as a shortcut for `between(b, a, c, ge=True, le=True)`
   - `fail(msg)` - indicate test failure, but don't stop testing 
 
 ## [2.2.5] - 2024-Jan-17
 
-- fix [155](https://github.com/okken/pytest-check/issues/155)
+- Fix [155](https://github.com/okken/pytest-check/issues/155)
   - Summaries from 2.2.3 are cool, but don't work with xdist
   - Turn off summaries while xdist is running
   - I hope I'm not seeing a pattern here
 
 ## [2.2.4] - 2024-Jan-8
 
-- fix [153](https://github.com/okken/pytest-check/issues/153)
+- Fix [153](https://github.com/okken/pytest-check/issues/153)
   - Summaries from 2.2.3 are cool, but don't work for pytest < 7.3
   - Remove them for earlier pytest
   - Add tox test run for pytest 7.0.0
@@ -146,11 +169,11 @@ All notable changes to this project  be documented in this file.
 ## [2.2.3] - 2023-Dec-31
 
 - Check failure info now shows up in summaries.
-- fix [133](https://github.com/okken/pytest-check/issues/133) - thanks [hirotoKirimaru](https://github.com/hirotoKirimaru)
+- Fix [133](https://github.com/okken/pytest-check/issues/133) - thanks [hirotoKirimaru](https://github.com/hirotoKirimaru)
 
 ## [2.2.2] - 2023-Sept-22
 
-### fixed
+### Fixed
 
 - Fix [137](https://github.com/okken/pytest-check/issues/137) 
 
@@ -164,7 +187,7 @@ All notable changes to this project  be documented in this file.
 
 ### Added
 - 
-- pseudo traceback additions
+- Pseudo traceback additions
 - `-l` or `--showlocals` shows locals
 - `__tracebackhide__ = True` is honored.
 - if `assert` or other exception is involved,
@@ -188,13 +211,13 @@ All notable changes to this project  be documented in this file.
 
 ### Added
 
-- include tests an examples in sdist -  [pr 121](https://github.com/okken/pytest-check/pull/121)
+- Include tests and examples in sdist - [PR 121](https://github.com/okken/pytest-check/pull/121)
 
 ## [2.1.3] - 2023-Feb-9
 
 ### Added
 
-- publish-to-pypi.yml workflow
+- Publish-to-pypi.yml workflow
 
 ## [2.1.2] - 2023-Jan-13
 
@@ -206,7 +229,7 @@ All notable changes to this project  be documented in this file.
 
 ## [2.1.1] - 2023-Jan-12
 
-### Modified
+### Changed
 
 - `check.call_on_fail(func)` - ***Experimental***
   - *Experimental feature - may change with any release, even a minor release*
@@ -302,7 +325,7 @@ If this logic doesn't hold for you, you can always set `--check-max-tb=1000` or 
 
 - Remove colorama as a dependency, and simplify how we do "red".
 
-- Change the formatting of context manager checks such that if a msg is included, we see both the message and the assert failure. Previoulsy, the message would replace the assert failure.
+- Change the formatting of context manager checks such that if a msg is included, we see both the message and the assert failure. Previously, the message would replace the assert failure.
 
 ## [1.2.0] - 2022-Nov-25
 
@@ -328,7 +351,7 @@ If this logic doesn't hold for you, you can always set `--check-max-tb=1000` or 
 
 ## [1.1.1] - 2022-Nov-21
 
-### Changed 
+### Changed
 
 - README update
 
@@ -338,7 +361,7 @@ If this logic doesn't hold for you, you can always set `--check-max-tb=1000` or 
 
 - Red output in pseudo-traceback
 
-### Changed 
+### Changed
 
 - Refactored code into more modules
 - All functionality now possible through `check` fixture or `from pytest_check import check`.
@@ -359,7 +382,7 @@ If this logic doesn't hold for you, you can always set `--check-max-tb=1000` or 
 
 ## [1.0.9] - 2022-08-24
 
-### Fixed 
+### Fixed
 
 - [issue 55](https://github.com/okken/pytest-check/issues/55) a problem with multiple drive letters.
   - code is using `os.path.relpath()`, but sometimes it can fail.
@@ -445,7 +468,7 @@ If this logic doesn't hold for you, you can always set `--check-max-tb=1000` or 
 
 ### Added
 
-- added `is_()` and `is_not()`
+- Add `is_()` and `is_not()`
 
 ### Changed
 
