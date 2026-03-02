@@ -17,119 +17,119 @@ But I make no guarantee that the two files will remain consistent.
 import pytest_check as check
 import math
 
-def test_equal():
+def test_equal() -> None:
     check.equal(1, 1)
 
 
-def test_not_equal():
+def test_not_equal() -> None:
     check.not_equal(1, 2)
 
 
-def test_is():
+def test_is() -> None:
     x = ["foo"]
     y = x
     check.is_(x, y)
 
 
-def test_is_nan():
+def test_is_nan() -> None:
     check.is_nan(math.nan)
 
 
-def test_is_not_nan():
+def test_is_not_nan() -> None:
     check.is_not_nan(0)
 
 
-def test_is_not():
+def test_is_not() -> None:
     x = ["foo"]
     y = ["foo"]
     check.is_not(x, y)
 
 
-def test_is_true():
+def test_is_true() -> None:
     check.is_true(True)
 
 
-def test_is_false():
+def test_is_false() -> None:
     check.is_false(False)
 
 
-def test_is_none():
+def test_is_none() -> None:
     a = None
     check.is_none(a)
 
 
-def test_is_not_none():
+def test_is_not_none() -> None:
     a = 1
     check.is_not_none(a)
 
 
-def test_is_in():
+def test_is_in() -> None:
     check.is_in(2, [1, 2, 3])
 
 
-def test_is_not_in():
+def test_is_not_in() -> None:
     check.is_not_in(4, [1, 2, 3])
 
 
-def test_is_instance():
+def test_is_instance() -> None:
     check.is_instance(1, int)
 
 
-def test_is_not_instance():
+def test_is_not_instance() -> None:
     check.is_not_instance(1, str)
 
 
-def test_almost_equal():
+def test_almost_equal() -> None:
     check.almost_equal(1, 1)
     check.almost_equal(1, 1.1, abs=0.2)
     check.almost_equal(2, 1, rel=1)
 
 
-def test_not_almost_equal():
+def test_not_almost_equal() -> None:
     check.not_almost_equal(1, 2)
     check.not_almost_equal(1, 2.1, abs=0.1)
     check.not_almost_equal(3, 1, rel=1)
 
 
-def test_greater():
+def test_greater() -> None:
     check.greater(2, 1)
 
 
-def test_greater_equal():
+def test_greater_equal() -> None:
     check.greater_equal(2, 1)
     check.greater_equal(1, 1)
 
 
-def test_less():
+def test_less() -> None:
     check.less(1, 2)
 
 
-def test_less_equal():
+def test_less_equal() -> None:
     check.less_equal(1, 2)
     check.less_equal(1, 1)
 
 
-def test_between():
+def test_between() -> None:
     check.between(10, 0, 20)
 
 
-def test_between_ge():
+def test_between_ge() -> None:
     check.between(10, 0, 20, ge=True)
     check.between(0, 0, 20, ge=True)
 
 
-def test_between_le():
+def test_between_le() -> None:
     check.between(10, 0, 20, le=True)
     check.between(20, 0, 20, le=True)
 
 
-def test_between_ge_le():
+def test_between_ge_le() -> None:
     check.between(0, 0, 20, ge=True, le=True)
     check.between(10, 0, 20, ge=True, le=True)
     check.between(20, 0, 20, ge=True, le=True)
 
 
-def test_between_equal():
+def test_between_equal() -> None:
     check.between_equal(0, 0, 20)
     check.between_equal(10, 0, 20)
     check.between_equal(20, 0, 20)

@@ -54,20 +54,23 @@ _P = ParamSpec("_P")
 _T = TypeVar("_T")
 
 
-class _ComparableGreaterThan(Protocol):
-    def __gt__(self, other: object, /) -> bool: ...  # pragma: no cover
+_CmpT = TypeVar("_CmpT", contravariant=True)
 
 
-class _ComparableGreaterThanOrEqual(Protocol):
-    def __ge__(self, other: object, /) -> bool: ...  # pragma: no cover
+class _ComparableGreaterThan(Protocol[_CmpT]):
+    def __gt__(self, other: _CmpT, /) -> bool: ...  # pragma: no cover
 
 
-class _ComparableLessThan(Protocol):
-    def __lt__(self, other: object, /) -> bool: ...  # pragma: no cover
+class _ComparableGreaterThanOrEqual(Protocol[_CmpT]):
+    def __ge__(self, other: _CmpT, /) -> bool: ...  # pragma: no cover
 
 
-class _ComparableLessThanOrEqual(Protocol):
-    def __le__(self, other: object, /) -> bool: ...  # pragma: no cover
+class _ComparableLessThan(Protocol[_CmpT]):
+    def __lt__(self, other: _CmpT, /) -> bool: ...  # pragma: no cover
+
+
+class _ComparableLessThanOrEqual(Protocol[_CmpT]):
+    def __le__(self, other: _CmpT, /) -> bool: ...  # pragma: no cover
 
 
 def check_func(func: Callable[_P, _T]) -> Callable[_P, bool]:
@@ -247,7 +250,7 @@ def not_almost_equal(
         return False
 
 
-def greater(a: _ComparableGreaterThan, b: object, msg: str = "") -> bool:
+def greater(a: _ComparableGreaterThan[_CmpT], b: _CmpT, msg: str = "") -> bool:
     __tracebackhide__ = True
     if a > b:
         return True
@@ -256,7 +259,9 @@ def greater(a: _ComparableGreaterThan, b: object, msg: str = "") -> bool:
         return False
 
 
-def greater_equal(a: _ComparableGreaterThanOrEqual, b: object, msg: str = "") -> bool:
+def greater_equal(
+    a: _ComparableGreaterThanOrEqual[_CmpT], b: _CmpT, msg: str = ""
+) -> bool:
     __tracebackhide__ = True
     if a >= b:
         return True
@@ -265,7 +270,7 @@ def greater_equal(a: _ComparableGreaterThanOrEqual, b: object, msg: str = "") ->
         return False
 
 
-def less(a: _ComparableLessThan, b: object, msg: str = "") -> bool:
+def less(a: _ComparableLessThan[_CmpT], b: _CmpT, msg: str = "") -> bool:
     __tracebackhide__ = True
     if a < b:
         return True
@@ -274,7 +279,9 @@ def less(a: _ComparableLessThan, b: object, msg: str = "") -> bool:
         return False
 
 
-def less_equal(a: _ComparableLessThanOrEqual, b: object, msg: str = "") -> bool:
+def less_equal(
+    a: _ComparableLessThanOrEqual[_CmpT], b: _CmpT, msg: str = ""
+) -> bool:
     __tracebackhide__ = True
     if a <= b:
         return True
@@ -314,9 +321,9 @@ def between(
 
 
 def between_equal(
-    b: _ComparableLessThanOrEqual,
-    a: _ComparableLessThanOrEqual,
-    c: object,
+    b: _ComparableLessThanOrEqual[_CmpT],
+    a: _ComparableLessThanOrEqual[_CmpT],
+    c: _CmpT,
     msg: str = "",
 ) -> bool:
     __tracebackhide__ = True
