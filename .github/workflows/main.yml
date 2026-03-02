@@ -30,7 +30,7 @@ jobs:
       - name: Run Tox
         run: tox -e py
 
-static-analysis:
+  static-analysis:
     runs-on: ubuntu-latest
 
     steps:
@@ -43,7 +43,7 @@ static-analysis:
         run: pip install tox tox-uv
       - name: Run Tox quality checks
         run: tox -e lint,mypy
-  
+ 
   pytest-7-earliest:
     runs-on: ubuntu-latest
 
@@ -58,7 +58,7 @@ static-analysis:
       - name: Run Tox quality checks
         run: tox -e pytest_earliest
 
-  coverage:      :
+  coverage:      
     runs-on: ubuntu-latest
 
     steps:
