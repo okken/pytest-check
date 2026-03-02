@@ -28,6 +28,24 @@ All notable changes to this project will be documented in this file.
 
 -->
 
+## [2.7.3] - 2026-Mar-02
+
+### Added
+
+- Add `__init__.pyi` stub file for IDE intellisense (e.g. VSCode) and static type checkers.
+- Add PEP 561 `py.typed` marker so the package is recognized as typed.
+- (examples) Add `test_example_import_as.py` to validate `import pytest_check as check` with mypy.
+
+### Fixed
+
+- Ignore dist-packages in pseudo stack trace - Fixes #196 - Thanks [@siferati](https://github.com/siferati)
+- (typing) Resolve remaining mypy errors for `import pytest_check as check` usage; internal adjustments in `check_functions.py`.
+
+### Changed
+
+- (ci) Rename "quality" job to "static-analysis"; split into separate jobs for static-analysis, pytest_earliest, and coverage; use Python 3.14 for quality jobs.
+- (tox) Add mypy env coverage for import-as style in examples.
+
 ## [2.7.2] - 2026-Feb-27
 
 ### Fixed
