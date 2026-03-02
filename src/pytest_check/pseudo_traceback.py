@@ -89,7 +89,7 @@ def _build_pseudo_trace_str(
         full_context =  get_full_context(context_stack.pop(0))
         (file, line, func, context, locals, tb_hide) = full_context
         # we want to trace through user code, not 3rd party or builtin libs
-        if "site-packages" in file:
+        if "site-packages" in file or "dist-packages" in file:
             break
         # if called outside a test, we might hit this
         if "<module>" in func:
