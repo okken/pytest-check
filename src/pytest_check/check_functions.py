@@ -256,7 +256,14 @@ def greater(a: float, b: float, msg: str = "") -> bool: ...
 
 
 @overload
+def greater(
+    a: SupportsFloat | SupportsIndex, b: SupportsFloat | SupportsIndex, msg: str = ""
+) -> bool: ...
+
+
+@overload
 def greater(a: _ComparableGreaterThan[_CmpT], b: _CmpT, msg: str = "") -> bool: ...
+
 
 def greater(a: Any, b: Any, msg: str = "") -> bool:
     __tracebackhide__ = True
@@ -272,6 +279,12 @@ def greater(a: Any, b: Any, msg: str = "") -> bool:
 
 @overload
 def greater_equal(a: float, b: float, msg: str = "") -> bool: ...
+
+
+@overload
+def greater_equal(
+    a: SupportsFloat | SupportsIndex, b: SupportsFloat | SupportsIndex, msg: str = ""
+) -> bool: ...
 
 
 @overload
@@ -297,6 +310,12 @@ def less(a: float, b: float, msg: str = "") -> bool: ...
 
 
 @overload
+def less(
+    a: SupportsFloat | SupportsIndex, b: SupportsFloat | SupportsIndex, msg: str = ""
+) -> bool: ...
+
+
+@overload
 def less(a: _ComparableLessThan[_CmpT], b: _CmpT, msg: str = "") -> bool: ...
 
 
@@ -314,6 +333,12 @@ def less(a: Any, b: Any, msg: str = "") -> bool:
 
 @overload
 def less_equal(a: float, b: float, msg: str = "") -> bool: ...
+
+
+@overload
+def less_equal(
+    a: SupportsFloat | SupportsIndex, b: SupportsFloat | SupportsIndex, msg: str = ""
+) -> bool: ...
 
 
 @overload

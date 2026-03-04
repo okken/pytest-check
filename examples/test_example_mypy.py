@@ -7,16 +7,23 @@ Normally you would import the check functions like this:
 We're testing that an old form of import also works:
     import pytest_check as check
 
-However, please be aware that this method of importing is deprecated and 
+However, please be aware that this method of importing is deprecated and
 support may be removed in future versions.
 
 The original content of this file is from test_example_functions_pass.py.
-But I've also added more tests to check for anything I want to get 
+But I've also added more tests to check for anything I want to get
 tested with `mypy --strict`.
 """
 
-import pytest_check as check
 import math
+import pytest
+import pytest_check as check
+
+try:
+    import numpy as np
+except ImportError:
+    np = None
+
 
 def test_equal() -> None:
     check.equal(1, 1)
@@ -100,6 +107,7 @@ def test_greater_equal() -> None:
     check.greater_equal(2, 1)
     check.greater_equal(1, 1)
 
+
 def test_int_float() -> None:
     check.greater(2, 1.9)
     check.greater_equal(2, 1.9)
@@ -141,3 +149,34 @@ def test_between_equal() -> None:
     check.between_equal(0, 0, 20)
     check.between_equal(10, 0, 20)
     check.between_equal(20, 0, 20)
+
+
+@pytest.mark.skipif(np is None, reason="numpy is not installed")
+def test_greater_equal_max_int() -> None:
+    if np is not None:
+        check.greater_equal(np.iinfo(np.int32).max, 0)
+
+
+@pytest.mark.skipif(np is None, reason="numpy is not installed")
+def test_greater_equal_max_float() -> None:
+    if np is not None:
+        check.greater_equal(np.finfo(np.float32).max, 0)
+
+
+@pytest.mark.skipif(np is None, reason="numpy is not installed")
+def test_greater_max_int() -> None:
+    if np is not None:
+        check.greater(np.iinfo(np.int32).max, 0)
+
+
+@pytest.mark.skipif(np is None, reason="numpy is not installed")
+def test_less_min_float() -> None:
+    if np is not None:
+        check.less(np.finfo(np.float32).min, 0)
+
+
+@pytest.mark.skipif(np is None, reason="numpy is not installed")
+def test_less_equal_max_float() -> None:
+    if np is not None:
+        max_f32 = np.finfo(np.float32).max
+        check.less_equal(max_f32, max_f32)
