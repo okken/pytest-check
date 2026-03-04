@@ -28,6 +28,15 @@ All notable changes to this project will be documented in this file.
 
 -->
 
+## [2.7.5] - 2026-Mar-04
+
+### Changed
+
+- Passing `None` to comparison functions like `greater()`, `less()`, etc. used to raise an exception, which caused a test failure and stopped the test. 
+ - That's unexpected with a check function. 
+ - So now the check fails with a meaningful error message and continues with the rest of the test.
+
+
 ## [2.7.4] - 2026-Mar-03
 
 ### Fixed

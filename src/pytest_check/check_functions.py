@@ -258,10 +258,12 @@ def greater(a: float, b: float, msg: str = "") -> bool: ...
 @overload
 def greater(a: _ComparableGreaterThan[_CmpT], b: _CmpT, msg: str = "") -> bool: ...
 
-
 def greater(a: Any, b: Any, msg: str = "") -> bool:
     __tracebackhide__ = True
-    if a > b:
+    if a is None or b is None:
+        log_failure(f"check {a} > {b}: None cannot be compared", msg)
+        return False
+    elif a > b:
         return True
     else:
         log_failure(f"check {a} > {b}", msg)
@@ -280,7 +282,10 @@ def greater_equal(
 
 def greater_equal(a: Any, b: Any, msg: str = "") -> bool:
     __tracebackhide__ = True
-    if a >= b:
+    if a is None or b is None:
+        log_failure(f"check {a} >= {b}: None cannot be compared", msg)
+        return False
+    elif a >= b:
         return True
     else:
         log_failure(f"check {a} >= {b}", msg)
@@ -297,7 +302,10 @@ def less(a: _ComparableLessThan[_CmpT], b: _CmpT, msg: str = "") -> bool: ...
 
 def less(a: Any, b: Any, msg: str = "") -> bool:
     __tracebackhide__ = True
-    if a < b:
+    if a is None or b is None:
+        log_failure(f"check {a} < {b}: None cannot be compared", msg)
+        return False
+    elif a < b:
         return True
     else:
         log_failure(f"check {a} < {b}", msg)
@@ -316,7 +324,10 @@ def less_equal(
 
 def less_equal(a: Any, b: Any, msg: str = "") -> bool:
     __tracebackhide__ = True
-    if a <= b:
+    if a is None or b is None:
+        log_failure(f"check {a} <= {b}: None cannot be compared", msg)
+        return False
+    elif a <= b:
         return True
     else:
         log_failure(f"check {a} <= {b}", msg)
@@ -327,7 +338,10 @@ def between(
     b: Any, a: Any, c: Any, msg: str = "", ge: bool = False, le: bool = False
 ) -> bool:
     __tracebackhide__ = True
-    if ge and le:
+    if a is None or b is None or c is None:
+        log_failure(f"check {a} <= {b} <= {c}: None cannot be compared", msg)
+        return False
+    elif ge and le:
         if a <= b <= c:
             return True
         else:

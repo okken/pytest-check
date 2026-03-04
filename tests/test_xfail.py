@@ -102,3 +102,9 @@ def test_xfail_raises_multiple_marks_one_matches(pytester):
     )
     result.assert_outcomes(xfailed=1)
     result.stdout.fnmatch_lines(["* 1 xfailed *"])
+
+def test_xfail_mypy(pytester):
+    pytester.copy_example("examples/test_example_mypy_fail.py")
+    result = pytester.runpytest("test_example_mypy_fail.py")
+    result.assert_outcomes(xfailed=5)
+    result.stdout.fnmatch_lines(["* 5 xfailed *"])

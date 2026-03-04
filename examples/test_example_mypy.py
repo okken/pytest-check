@@ -100,11 +100,12 @@ def test_greater_equal() -> None:
     check.greater_equal(2, 1)
     check.greater_equal(1, 1)
 
-def test_greater_equal_int_float() -> None:
+def test_int_float() -> None:
     check.greater(2, 1.9)
     check.greater_equal(2, 1.9)
     check.less(1.9, 2)
     check.less_equal(1.9, 2)
+    check.between(10, 4.5, 20)
 
 
 def test_less() -> None:
