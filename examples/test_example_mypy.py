@@ -16,12 +16,14 @@ tested with `mypy --strict`.
 """
 
 import math
+import importlib
+from typing import Any
 import pytest
 import pytest_check as check
 
 try:
-    import numpy as np
-except ImportError:
+    np: Any = importlib.import_module("numpy")
+except ModuleNotFoundError:
     np = None
 
 
