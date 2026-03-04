@@ -10,6 +10,7 @@ from typing import (
     SupportsIndex,
     TypeVar,
     Union,
+    overload,
 )
 
 if sys.version_info < (3, 10):  # pragma: no cover
@@ -250,7 +251,15 @@ def not_almost_equal(
         return False
 
 
-def greater(a: _ComparableGreaterThan[_CmpT], b: _CmpT, msg: str = "") -> bool:
+@overload
+def greater(a: float, b: float, msg: str = "") -> bool: ...
+
+
+@overload
+def greater(a: _ComparableGreaterThan[_CmpT], b: _CmpT, msg: str = "") -> bool: ...
+
+
+def greater(a: Any, b: Any, msg: str = "") -> bool:
     __tracebackhide__ = True
     if a > b:
         return True
@@ -259,9 +268,17 @@ def greater(a: _ComparableGreaterThan[_CmpT], b: _CmpT, msg: str = "") -> bool:
         return False
 
 
+@overload
+def greater_equal(a: float, b: float, msg: str = "") -> bool: ...
+
+
+@overload
 def greater_equal(
     a: _ComparableGreaterThanOrEqual[_CmpT], b: _CmpT, msg: str = ""
-) -> bool:
+) -> bool: ...
+
+
+def greater_equal(a: Any, b: Any, msg: str = "") -> bool:
     __tracebackhide__ = True
     if a >= b:
         return True
@@ -270,7 +287,15 @@ def greater_equal(
         return False
 
 
-def less(a: _ComparableLessThan[_CmpT], b: _CmpT, msg: str = "") -> bool:
+@overload
+def less(a: float, b: float, msg: str = "") -> bool: ...
+
+
+@overload
+def less(a: _ComparableLessThan[_CmpT], b: _CmpT, msg: str = "") -> bool: ...
+
+
+def less(a: Any, b: Any, msg: str = "") -> bool:
     __tracebackhide__ = True
     if a < b:
         return True
@@ -279,9 +304,17 @@ def less(a: _ComparableLessThan[_CmpT], b: _CmpT, msg: str = "") -> bool:
         return False
 
 
+@overload
+def less_equal(a: float, b: float, msg: str = "") -> bool: ...
+
+
+@overload
 def less_equal(
     a: _ComparableLessThanOrEqual[_CmpT], b: _CmpT, msg: str = ""
-) -> bool:
+) -> bool: ...
+
+
+def less_equal(a: Any, b: Any, msg: str = "") -> bool:
     __tracebackhide__ = True
     if a <= b:
         return True

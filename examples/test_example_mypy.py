@@ -11,7 +11,8 @@ However, please be aware that this method of importing is deprecated and
 support may be removed in future versions.
 
 The original content of this file is from test_example_functions_pass.py.
-But I make no guarantee that the two files will remain consistent.
+But I've also added more tests to check for anything I want to get 
+tested with `mypy --strict`.
 """
 
 import pytest_check as check
@@ -98,6 +99,12 @@ def test_greater() -> None:
 def test_greater_equal() -> None:
     check.greater_equal(2, 1)
     check.greater_equal(1, 1)
+
+def test_greater_equal_int_float() -> None:
+    check.greater(2, 1.9)
+    check.greater_equal(2, 1.9)
+    check.less(1.9, 2)
+    check.less_equal(1.9, 2)
 
 
 def test_less() -> None:

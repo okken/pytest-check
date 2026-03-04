@@ -28,13 +28,19 @@ All notable changes to this project will be documented in this file.
 
 -->
 
+## [2.7.4] - 2026-Mar-03
+
+### Fixed
+
+- (typing) Allow mixed `int`/`float` arguments in strict mypy for comparison helpers by adding `float` numeric overloads for `greater()`, `greater_equal()`, `less()`, and `less_equal()` in `check_functions.py`. 
+
 ## [2.7.3] - 2026-Mar-02
 
 ### Added
 
 - Add `__init__.pyi` stub file for IDE intellisense (e.g. VSCode) and static type checkers.
 - Add PEP 561 `py.typed` marker so the package is recognized as typed.
-- (examples) Add `test_example_import_as.py` to validate `import pytest_check as check` with mypy.
+- (examples) Add `test_example_mypy.py` to validate `import pytest_check as check` with mypy.
 
 ### Fixed
 
