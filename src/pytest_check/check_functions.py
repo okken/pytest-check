@@ -54,7 +54,6 @@ __all__ = [
 _P = ParamSpec("_P")
 _T = TypeVar("_T")
 
-
 _CmpT = TypeVar("_CmpT", contravariant=True)
 
 
@@ -359,6 +358,34 @@ def less_equal(a: Any, b: Any, msg: str = "") -> bool:
         return False
 
 
+@overload
+def between(
+    b: float, a: float, c: float, msg: str = "", ge: bool = False, le: bool = False
+) -> bool: ...
+
+
+@overload
+def between(
+    b: SupportsFloat | SupportsIndex,
+    a: SupportsFloat | SupportsIndex,
+    c: SupportsFloat | SupportsIndex,
+    msg: str = "",
+    ge: bool = False,
+    le: bool = False,
+) -> bool: ...
+
+
+@overload
+def between(
+    b: _ComparableLessThanOrEqual[_CmpT],
+    a: _CmpT,
+    c: _CmpT,
+    msg: str = "",
+    ge: bool = False,
+    le: bool = False,
+) -> bool: ...
+
+
 def between(
     b: Any, a: Any, c: Any, msg: str = "", ge: bool = False, le: bool = False
 ) -> bool:
@@ -392,10 +419,32 @@ def between(
             return False
 
 
+@overload
+def between_equal(b: float, a: float, c: float, msg: str = "") -> bool: ...
+
+
+@overload
+def between_equal(
+    b: SupportsFloat | SupportsIndex,
+    a: SupportsFloat | SupportsIndex,
+    c: SupportsFloat | SupportsIndex,
+    msg: str = "",
+) -> bool: ...
+
+
+@overload
 def between_equal(
     b: _ComparableLessThanOrEqual[_CmpT],
-    a: _ComparableLessThanOrEqual[_CmpT],
+    a: _CmpT,
     c: _CmpT,
+    msg: str = "",
+) -> bool: ...
+
+
+def between_equal(
+    b: Any,
+    a: Any,
+    c: Any,
     msg: str = "",
 ) -> bool:
     __tracebackhide__ = True

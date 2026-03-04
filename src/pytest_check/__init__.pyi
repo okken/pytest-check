@@ -1,6 +1,14 @@
 from __future__ import annotations
 
-from typing import Any, Callable
+from typing import (
+    Any,
+    Callable,
+    Protocol,
+    SupportsFloat,
+    SupportsIndex,
+    TypeVar,
+    overload,
+)
 
 from .context_manager import CheckContextManager as _BaseCheck
 from .check_functions import (
@@ -33,6 +41,19 @@ from .check_functions import (
 from .check_raises import raises
 from .check_log import any_failures
 
+_CmpT = TypeVar("_CmpT", contravariant=True)
+
+class _ComparableGreaterThan(Protocol[_CmpT]):
+    def __gt__(self, other: _CmpT, /) -> bool: ...
+
+class _ComparableGreaterThanOrEqual(Protocol[_CmpT]):
+    def __ge__(self, other: _CmpT, /) -> bool: ...
+
+class _ComparableLessThan(Protocol[_CmpT]):
+    def __lt__(self, other: _CmpT, /) -> bool: ...
+
+class _ComparableLessThanOrEqual(Protocol[_CmpT]):
+    def __le__(self, other: _CmpT, /) -> bool: ...
 
 class CheckType(_BaseCheck):
     # Helper functions exposed as attributes on the check object
@@ -53,12 +74,104 @@ class CheckType(_BaseCheck):
     is_not_instance: Callable[..., bool]
     almost_equal: Callable[..., bool]
     not_almost_equal: Callable[..., bool]
-    greater: Callable[..., bool]
-    greater_equal: Callable[..., bool]
-    less: Callable[..., bool]
-    less_equal: Callable[..., bool]
-    between: Callable[..., bool]
-    between_equal: Callable[..., bool]
+    @overload
+    def greater(self, a: float, b: float, msg: str = "") -> bool: ...
+    @overload
+    def greater(
+        self,
+        a: SupportsFloat | SupportsIndex,
+        b: SupportsFloat | SupportsIndex,
+        msg: str = "",
+    ) -> bool: ...
+    @overload
+    def greater(
+        self, a: _ComparableGreaterThan[_CmpT], b: _CmpT, msg: str = ""
+    ) -> bool: ...
+    @overload
+    def greater_equal(self, a: float, b: float, msg: str = "") -> bool: ...
+    @overload
+    def greater_equal(
+        self,
+        a: SupportsFloat | SupportsIndex,
+        b: SupportsFloat | SupportsIndex,
+        msg: str = "",
+    ) -> bool: ...
+    @overload
+    def greater_equal(
+        self, a: _ComparableGreaterThanOrEqual[_CmpT], b: _CmpT, msg: str = ""
+    ) -> bool: ...
+    @overload
+    def less(self, a: float, b: float, msg: str = "") -> bool: ...
+    @overload
+    def less(
+        self,
+        a: SupportsFloat | SupportsIndex,
+        b: SupportsFloat | SupportsIndex,
+        msg: str = "",
+    ) -> bool: ...
+    @overload
+    def less(self, a: _ComparableLessThan[_CmpT], b: _CmpT, msg: str = "") -> bool: ...
+    @overload
+    def less_equal(self, a: float, b: float, msg: str = "") -> bool: ...
+    @overload
+    def less_equal(
+        self,
+        a: SupportsFloat | SupportsIndex,
+        b: SupportsFloat | SupportsIndex,
+        msg: str = "",
+    ) -> bool: ...
+    @overload
+    def less_equal(
+        self, a: _ComparableLessThanOrEqual[_CmpT], b: _CmpT, msg: str = ""
+    ) -> bool: ...
+    @overload
+    def between(
+        self,
+        b: float,
+        a: float,
+        c: float,
+        msg: str = "",
+        ge: bool = False,
+        le: bool = False,
+    ) -> bool: ...
+    @overload
+    def between(
+        self,
+        b: SupportsFloat | SupportsIndex,
+        a: SupportsFloat | SupportsIndex,
+        c: SupportsFloat | SupportsIndex,
+        msg: str = "",
+        ge: bool = False,
+        le: bool = False,
+    ) -> bool: ...
+    @overload
+    def between(
+        self,
+        b: _ComparableLessThanOrEqual[_CmpT],
+        a: _CmpT,
+        c: _CmpT,
+        msg: str = "",
+        ge: bool = False,
+        le: bool = False,
+    ) -> bool: ...
+    @overload
+    def between_equal(self, b: float, a: float, c: float, msg: str = "") -> bool: ...
+    @overload
+    def between_equal(
+        self,
+        b: SupportsFloat | SupportsIndex,
+        a: SupportsFloat | SupportsIndex,
+        c: SupportsFloat | SupportsIndex,
+        msg: str = "",
+    ) -> bool: ...
+    @overload
+    def between_equal(
+        self,
+        b: _ComparableLessThanOrEqual[_CmpT],
+        a: _CmpT,
+        c: _CmpT,
+        msg: str = "",
+    ) -> bool: ...
     check_func: Callable[..., Callable[..., bool]]
     fail: Callable[..., None]
 
@@ -68,7 +181,6 @@ class CheckType(_BaseCheck):
 
     # Some users do check.check, so keep it typed
     check: "CheckType"
-
 
 check: CheckType
 
@@ -104,4 +216,3 @@ __all__ = [
     "check_func",
     "fail",
 ]
-

@@ -28,6 +28,12 @@ All notable changes to this project will be documented in this file.
 
 -->
 
+## [2.7.6] - 2026-Mar-04
+
+### Fixed
+
+- (typing) Set comparison function types such that None is not allowed
+
 ## [2.7.5] - 2026-Mar-04
 
 ### Changed
