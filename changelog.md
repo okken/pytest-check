@@ -28,7 +28,7 @@ All notable changes to this project will be documented in this file.
 
 -->
 
-## [Unreleased] - yyyy-month-dd
+## [2.7.7] - 2026-Mar-20
 
 ### Fixed
 
