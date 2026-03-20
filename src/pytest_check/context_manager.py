@@ -29,7 +29,7 @@ class CheckContextManager:
         exc_tb: TracebackType | None,
     ) -> bool | None:
         __tracebackhide__ = True
-        if exc_type is not None and issubclass(exc_type, AssertionError):
+        if exc_type is not None:
             if _stop_on_fail:
                 self.msg = None
                 return None

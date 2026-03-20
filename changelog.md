@@ -28,6 +28,13 @@ All notable changes to this project will be documented in this file.
 
 -->
 
+## [Unreleased] - yyyy-month-dd
+
+### Fixed
+
+- Allow CheckContextManager to catch any exception, not just AssertionError (#198). 
+  Non-assertion exceptions (IndexError, KeyError, AttributeError, etc.) are now properly caught and reported as check failures.
+
 ## [2.7.6] - 2026-Mar-04
 
 ### Fixed
