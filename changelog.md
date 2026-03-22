@@ -28,6 +28,15 @@ All notable changes to this project will be documented in this file.
 
 -->
 
+## [2.8.0] - 2026-Mar-22
+
+### Added
+
+- Support Request [#122: Feature proposal: Capability to mark checks as xfail](https://github.com/okken/pytest-check/issues/122)
+- Allow check helper functions, including `raises()`, to accept an `xfail` reason. A failing check can now produce an xfailed test result, while a passing check does not produce xpass unless the test is already marked with `@pytest.mark.xfail`.
+- (docs) Document `xfail` support for check helper functions in the README.
+
+
 ## [2.7.7] - 2026-Mar-20
 
 ### Fixed

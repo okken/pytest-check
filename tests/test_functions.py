@@ -29,3 +29,9 @@ def test_failing_check_functions(run_example_test: Callable) -> None:
         f"Expected {NUM_CHECK_FUNCTION_TESTS} 'Failed Checks:' lines (one per test), "
         f"but found {failed_checks_lines}"
     )
+
+
+def test_failing_check_functions_with_xfail(run_example_test: Callable) -> None:
+    result = run_example_test("test_example_functions_xfail.py", None, "-rx")
+    result.assert_outcomes(xfailed=NUM_CHECK_FUNCTION_TESTS, failed=0, passed=0)
+    result.stdout.fnmatch_lines([f"* {NUM_CHECK_FUNCTION_TESTS} xfailed *"])

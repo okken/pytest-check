@@ -22,15 +22,21 @@ _fail_function: Callable[[str], None] | None = None
 
 _showlocals = False
 
+# Track checks with xfail reasons
+_xfailed_failure: str | None = None
+
+
 def clear_failures() -> None:
     # gets called at the beginning of each test function
     global _failures, _num_failures
     global _max_fail, _max_report, _max_tb
+    global _xfailed_failure
     _failures = []
     _num_failures = 0
     _max_fail = _default_max_fail
     _max_report = _default_max_report
     _max_tb = _default_max_tb
+    _xfailed_failure = None
 
 
 def any_failures() -> bool:
@@ -42,9 +48,13 @@ def get_failures() -> list[str]:
 
 
 def log_failure(
-    msg: object = "", check_str: str = "", tb: Iterable[str] | None = None
+    msg: object = "",
+    check_str: str = "",
+    tb: Iterable[str] | None = None,
+    xfail: str | None = None,
 ) -> None:
     global _num_failures
+    global _xfailed_failure
     __tracebackhide__ = True
     _num_failures += 1
 
@@ -55,9 +65,9 @@ def log_failure(
 
     if (_max_report is None) or (_num_failures <= _max_report):
         if _num_failures <= _max_tb:
-            pseudo_trace_str = _build_pseudo_trace_str(_showlocals,
-                                                       tb,
-                                                       should_use_color)
+            pseudo_trace_str = _build_pseudo_trace_str(
+                _showlocals, tb, should_use_color
+            )
             msg = f"{msg}\n{pseudo_trace_str}"
 
         if should_use_color:
@@ -65,6 +75,10 @@ def log_failure(
         else:
             msg = f"FAILURE: {msg}"
         _failures.append(msg)
+
+        if xfail and _xfailed_failure is None:
+            _xfailed_failure = xfail
+
         if _fail_function:
             _fail_function(str(msg))
 
@@ -74,3 +88,8 @@ def log_failure(
 
     if _stop_on_fail:
         assert False, "Stopping on first failure"
+
+
+def get_xfailed_failure() -> str | None:
+    """Return the xfail reason for the first check that failed with xfail."""
+    return _xfailed_failure

@@ -166,12 +166,12 @@ def test_msg_kwarg_with_raises_context_manager(testdir):
         """
         from pytest_check import raises
 
-        def raise_valueerror():
+        def raise_value_error():
             raise ValueError
 
         def test():
             with raises(AssertionError, msg="hello, world!"):
-                raise_valueerror()
+                raise_value_error()
     """,
     )
 
@@ -201,17 +201,72 @@ def test_raises_function(testdir):
         """
         from pytest_check import raises
 
-        def raise_valueerror():
+        def raise_value_error():
             raise ValueError
 
         def test():
-            raises(AssertionError, raise_valueerror, msg="hello, world!")
+            raises(AssertionError, raise_value_error, msg="hello, world!")
     """,
     )
 
     result = testdir.runpytest()
     result.assert_outcomes(failed=1)
     result.stdout.fnmatch_lines(["FAILURE: hello, world!"])
+
+
+def test_raises_context_manager_with_xfail(testdir):
+    testdir.makepyfile(
+        """
+        from pytest_check import raises
+
+        def test():
+            with raises(AssertionError, xfail="known issue"):
+                raise ValueError
+    """,
+    )
+
+    result = testdir.runpytest("-rx")
+    result.assert_outcomes(xfailed=1, failed=0, passed=0, xpassed=0)
+    result.stdout.fnmatch_lines(["* 1 xfailed *"])
+
+
+def test_raises_function_with_xfail(testdir):
+    testdir.makepyfile(
+        """
+        from pytest_check import raises
+
+        def raise_value_error():
+            raise ValueError
+
+        def test():
+            raises(AssertionError, raise_value_error, xfail="known issue")
+    """,
+    )
+
+    result = testdir.runpytest("-rx")
+    result.assert_outcomes(xfailed=1, failed=0, passed=0, xpassed=0)
+    result.stdout.fnmatch_lines(["* 1 xfailed *"])
+
+
+def test_raises_xfail_pass_does_not_xpass(testdir):
+    testdir.makepyfile(
+        """
+        from pytest_check import raises
+
+        def raise_value_error():
+            raise ValueError
+
+        def test_context_manager():
+            with raises(ValueError, xfail="known issue"):
+                raise_value_error()
+
+        def test_function_call():
+            raises(ValueError, raise_value_error, xfail="known issue")
+    """,
+    )
+
+    result = testdir.runpytest()
+    result.assert_outcomes(passed=2, failed=0, xfailed=0, xpassed=0)
 
 
 def test_raises_with_exception_value():
@@ -246,10 +301,11 @@ def test_raises_with_none_exception_value(testdir):
     result.stdout.no_fnmatch_line("*assert str(e.value) == 'None'*")
     result.stdout.no_fnmatch_line("*AssertionError: assert 'None'*")
 
+
 def test_raises_custom_msg(run_example_test):
-    result = run_example_test("test_example_raises.py", 'test_raises_msg_fail', '-ra')
+    result = run_example_test("test_example_raises.py", "test_raises_msg_fail", "-ra")
     result.assert_outcomes(failed=1)
-    expected_line = 'FAILED test_example_raises.py::test_raises_msg_fail'
+    expected_line = "FAILED test_example_raises.py::test_raises_msg_fail"
     if pytest.version_tuple >= (7, 3, 0):  # pragma: no branch
-        expected_line += ' - Custom error message'
+        expected_line += " - Custom error message"
     result.stdout.fnmatch_lines([expected_line])

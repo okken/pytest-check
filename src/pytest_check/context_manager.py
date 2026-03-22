@@ -55,7 +55,7 @@ class CheckContextManager:
     def set_no_tb(self) -> None:
         warnings.warn(
             "set_no_tb() is deprecated; use set_max_tb(0)", DeprecationWarning
-            )
+        )
         check_log._max_tb = 0
 
     def set_max_fail(self, x: int) -> None:
@@ -70,6 +70,5 @@ class CheckContextManager:
     def call_on_fail(self, func: Callable[[str], None]) -> None:
         """Experimental feature - may change with any release"""
         check_log._fail_function = func
-
 
 check = CheckContextManager()

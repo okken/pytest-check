@@ -20,6 +20,22 @@ from . import check_log, check_raises, context_manager, pseudo_traceback
 from .context_manager import CheckContextManager
 
 
+@pytest.hookimpl(trylast=True)
+def pytest_runtest_call(item: Item) -> None:
+    # if there's not any xfailed checks, return
+    xfail_reason = check_log.get_xfailed_failure()
+    if xfail_reason is None:
+        return
+
+    # if there's already a mark, don't bother
+    if item.get_closest_marker("xfail"):
+        return
+    
+    # now we have an xfailed check and the test is not already 
+    # marked, so we need to add the mark
+    item.add_marker(pytest.mark.xfail(reason=xfail_reason))
+
+
 @pytest.hookimpl(hookwrapper=True, trylast=True)
 def pytest_runtest_makereport(
     item: Item, call: CallInfo[None]

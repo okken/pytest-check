@@ -94,6 +94,15 @@ These methods do NOT need to be inside of a `with check:` block.
 
 **Note: This is a list of relatively common logic operators. I'm reluctant to add to the list too much, as it's easy to add your own.**
 
+All built-in check helper functions in this list also accept an optional `xfail` reason, for example:
+
+```python
+check.equal(actual, expected, xfail="known issue #123")
+```
+
+If that check fails, the test can be reported as xfailed.
+If the check passes, this does **not** create an xpass unless the test was already marked with `@pytest.mark.xfail`.
+
 
 The httpx example can be rewritten with helper functions:
 
@@ -211,6 +220,17 @@ It simply is a custom failure message for your test.
 ```python
 def test_raises_and_custom_fail_message():
     with check.raises(ValueError, msg="custom"):
+        x = 1 / 0 # division by zero error, NOT ValueError
+        assert x == 0
+```
+
+`raises()` also accepts an `xfail` reason.
+If the `raises` check fails, the test can be reported as xfailed.
+If it passes, this does **not** create an xpass unless the test is already marked with `@pytest.mark.xfail`.
+
+```python
+def test_raises_and_xfail():
+    with check.raises(ValueError, xfail="known issue #123"):
         x = 1 / 0 # division by zero error, NOT ValueError
         assert x == 0
 ```

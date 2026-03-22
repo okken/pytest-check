@@ -58,13 +58,15 @@ def raises(
     )
 
     msg = kwargs.pop("msg", None)
+    xfail = kwargs.pop("xfail", None)
+    assert xfail is None or isinstance(xfail, str)
     if not args:
         assert not kwargs, f"Unexpected kwargs for pytest_check.raises: {kwargs}"
-        return CheckRaisesContext(*expected_exceptions, msg=msg)
+        return CheckRaisesContext(*expected_exceptions, msg=msg, xfail=xfail)
     else:
         func = args[0]
         assert callable(func)
-        with CheckRaisesContext(*expected_exceptions, msg=msg):
+        with CheckRaisesContext(*expected_exceptions, msg=msg, xfail=xfail):
             func(*args[1:], **kwargs)
 
 
@@ -78,9 +80,12 @@ class CheckRaisesContext:
     CheckContextManager.
     """
 
-    def __init__(self, *expected_excs: type, msg: object = None) -> None:
+    def __init__(
+        self, *expected_excs: type, msg: object = None, xfail: str | None = None
+    ) -> None:
         self.expected_excs = expected_excs
         self.msg = msg
+        self.xfail = xfail
         self.value: object | None = None
 
     def __enter__(self) -> "CheckRaisesContext":
@@ -107,7 +112,7 @@ class CheckRaisesContext:
             # case fall through.  If *not* `_stop_on_fail`, then we want to
             # log the error as a failed check but then continue execution
             # without raising an error, hence `return True`.
-            log_failure(self.msg if self.msg else exc_val)
+            log_failure(self.msg if self.msg else exc_val, xfail=self.xfail)
             return True
 
         # Stop on fail, so return False
