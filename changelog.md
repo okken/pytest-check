@@ -28,6 +28,14 @@ All notable changes to this project will be documented in this file.
 
 -->
 
+## [Unreleased] - yyyy-month-dd
+
+### Added
+
+- added type testing with ty
+  - now testing with both mypy and ty, may reduce that to just ty in the future
+
+
 ## [2.8.0] - 2026-Mar-22
 
 ### Added

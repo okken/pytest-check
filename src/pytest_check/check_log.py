@@ -4,7 +4,7 @@ from typing import Callable
 
 from .pseudo_traceback import _build_pseudo_trace_str
 
-should_use_color = False
+should_use_color: bool = False
 COLOR_RED = "\x1b[31m"
 COLOR_RESET = "\x1b[0m"
 _failures: list[str] = []
@@ -12,15 +12,15 @@ _stop_on_fail = False
 
 _default_max_fail = None
 _default_max_report = None
-_default_max_tb = 1
+_default_max_tb: int = 1
 
 _max_fail: int | None = _default_max_fail
 _max_report: int | None = _default_max_report
-_max_tb = _default_max_tb
+_max_tb: int = _default_max_tb
 _num_failures = 0
 _fail_function: Callable[[str], None] | None = None
 
-_showlocals = False
+_showlocals: bool = False
 
 # Track checks with xfail reasons
 _xfailed_failure: str | None = None

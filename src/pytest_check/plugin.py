@@ -2,6 +2,7 @@ import sys
 import os
 import re
 from typing import Generator, TYPE_CHECKING
+from packaging import version
 
 import pytest
 from pytest import CallInfo, Config, Item, Parser, TestReport
@@ -30,8 +31,8 @@ def pytest_runtest_call(item: Item) -> None:
     # if there's already a mark, don't bother
     if item.get_closest_marker("xfail"):
         return
-    
-    # now we have an xfailed check and the test is not already 
+
+    # now we have an xfailed check and the test is not already
     # marked, so we need to add the mark
     item.add_marker(pytest.mark.xfail(reason=xfail_reason))
 
@@ -74,7 +75,7 @@ def pytest_runtest_makereport(
                 raise AssertionError(report.longrepr)
             except AssertionError as e:
                 excinfo = ExceptionInfo.from_current()
-                if pytest.version_tuple >= (7, 3, 0) and not os.getenv(
+                if version.parse(pytest.__version__) >= version.parse("7.3.0") and not os.getenv(
                     "PYTEST_XDIST_WORKER"
                 ):
                     # Build a summary report with failure reason

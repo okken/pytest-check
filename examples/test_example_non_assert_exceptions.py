@@ -3,6 +3,8 @@ Non-assert exceptions should also be caught by check.
 All of these should report "Failed Checks: 1"
 """
 
+from typing import Any, cast
+
 
 def test_index_error(check):
     a_list: list[str] = []
@@ -17,6 +19,6 @@ def test_key_error(check):
 
 
 def test_attribute_error(check):
-    an_object: object = object()
+    an_object = cast(Any, object())
     with check:
-        assert an_object.v == "obj"  # type: ignore[attr-defined]
+        assert an_object.v == "obj"

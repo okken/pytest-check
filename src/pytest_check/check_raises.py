@@ -1,5 +1,6 @@
 from __future__ import annotations
 from typing import Iterable, Any
+from types import TracebackType
 
 from .check_log import log_failure
 
@@ -91,7 +92,12 @@ class CheckRaisesContext:
     def __enter__(self) -> "CheckRaisesContext":
         return self
 
-    def __exit__(self, exc_type: type, exc_val: object, exc_tb: object) -> bool:
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_val: BaseException | None,
+        exc_tb: TracebackType | None,
+    ) -> bool:
         __tracebackhide__ = True
 
         self.value = exc_val

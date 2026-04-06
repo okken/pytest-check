@@ -22,7 +22,8 @@ classifiers = [
 ]
 dependencies = [
   "pytest >= 7.0.0",
-    "typing-extensions >= 4.12.2, < 5; python_version < '3.11'"
+  "typing-extensions >= 4.12.2, < 5; python_version < '3.11'",
+  "packaging", # for version parsing, needed for pytest 7.3+ support
 ]
 
 [project.urls]
@@ -41,3 +42,9 @@ dev = [
   "tox-uv",
   "build"
 ]
+
+[tool.ty.src]
+exclude = ["examples/test_example_mypy_fail.py"]
+
+[tool.ty.terminal]
+error-on-warning = true

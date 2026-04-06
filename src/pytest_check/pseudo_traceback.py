@@ -19,10 +19,10 @@ _traceback_style = "auto"
 
 def get_full_context(
     frame: FrameInfo
-) -> tuple[AnyStr | LiteralString, Any, Any, str, Any, bool]:
+) -> tuple[AnyStr | LiteralString | str, int, str, str, dict[str, Any], bool]:
     (_, filename, line, funcname, contextlist) = frame[0:5]
     locals_ = frame.frame.f_locals
-    tb_hide = locals_.get("__tracebackhide__", False)
+    tb_hide = bool(locals_.get("__tracebackhide__", False))
     try:
         filename = os.path.relpath(filename)
     except ValueError:  # pragma: no cover
@@ -105,7 +105,7 @@ def _build_pseudo_trace_str(
 
         if color:
             file = f"{COLOR_RED}{file}{COLOR_RESET}"
-        line = f"{file}:{line} in {func}() -> {context}"
-        pseudo_trace.append(line)
+        line_report = f"{file}:{line} in {func}() -> {context}"
+        pseudo_trace.append(line_report)
 
     return "\n".join(reversed(pseudo_trace)) + "\n"

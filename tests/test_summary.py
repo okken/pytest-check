@@ -1,8 +1,8 @@
 import pytest
-
+from packaging import version
 
 require_pytest_7_3 = pytest.mark.skipif(
-    pytest.version_tuple < (7, 3, 0),
+    version.parse(pytest.__version__) < version.parse("7.3.0"),
     reason="summary message only supported on pytest7.3+")
 
 
