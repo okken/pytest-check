@@ -75,9 +75,9 @@ def pytest_runtest_makereport(
                 raise AssertionError(report.longrepr)
             except AssertionError as e:
                 excinfo = ExceptionInfo.from_current()
-                if version.parse(pytest.__version__) >= version.parse("7.3.0") and not os.getenv(
-                    "PYTEST_XDIST_WORKER"
-                ):
+                if version.parse(pytest.__version__) >= version.parse(
+                    "7.3.0"
+                ) and not os.getenv("PYTEST_XDIST_WORKER"):
                     # Build a summary report with failure reason
                     # Depends on internals of pytest, which changed in 7.3
                     # Also, doesn't work with xdist
@@ -94,7 +94,9 @@ def pytest_runtest_makereport(
                     reprcrash = ReprFileLocation(item.nodeid, 0, e_str)
                     # FIXME - the next two lines have broken types
                     reprtraceback = ExceptionRepr(reprcrash, excinfo)  # type: ignore
-                    chain_repr = ExceptionChainRepr([(reprtraceback, reprcrash, str(e))])  # type: ignore
+                    chain_repr = ExceptionChainRepr(
+                        [(reprtraceback, reprcrash, str(e))]
+                    )  # type: ignore
                     report.longrepr = chain_repr
                 else:  # pragma: no cover
                     # coverage is run on latest pytest
@@ -182,6 +184,7 @@ def pytest_configure(config: Config) -> None:
     check_log._default_max_fail = config.getoption("--check-max-fail")
     check_log._default_max_report = config.getoption("--check-max-report")
     check_log._default_max_tb = config.getoption("--check-max-tb")
+    check_log._default_max_tb_line = config.getoption("--check-max-tb-line")
 
 
 # Allow for tests to grab "check" via fixture:
@@ -212,4 +215,15 @@ def pytest_addoption(parser: Parser) -> None:
         type=int,
         default=1,
         help="max pseudo-tracebacks per test",
+    )
+    parser.addoption(
+        "--check-max-tb-line",
+        action="store",
+        type=int,
+        default=None,
+        help=(
+            "max failures per test to show traceback lines for; failures up to "
+            "--check-max-tb use full pseudo-tracebacks, then line format is used "
+            "until this threshold is reached"
+        ),
     )

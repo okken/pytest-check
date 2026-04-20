@@ -4,7 +4,20 @@ All notable changes to this project will be documented in this file.
 
 <!--
 
-## [Unreleased] - yyyy-month-dd
+TEMPLATE EXAMPLE ONLY.
+DO NOT EDIT ANYTHING BETWEEN TEMPLATE_START AND TEMPLATE_END.
+
+TEMPLATE_START
+
+## [UNRELEASED_TEMPLATE_EXAMPLE] - yyyy-month-dd
+
+### Highlights
+
+- nothing so far
+
+### Migration Notes
+
+- nothing so far
 
 ### Added
 
@@ -26,14 +39,40 @@ All notable changes to this project will be documented in this file.
 
 - nothing so far
 
+TEMPLATE_END
+
 -->
 
-## [Unreleased] - yyyy-month-dd
+## [2.9.0] - 19-April-2026
+
+### Highlights
+
+- Added `--check-max-tb-line=<int>` to control one-line traceback output for additional failures.
+- Traceback output now supports two tiers:
+  - full pseudo-tracebacks for early failures (`--check-max-tb`)
+  - one-line traceback output for later failures (`--check-max-tb-line`)
+- Improved one-line traceback output for context-manager checks:
+  - points to the failing line inside `with check:` blocks
+  - includes exception type and message when available
+
+### Migration Notes
+
+- If you already use `--check-max-tb`, behavior is unchanged unless you also set `--check-max-tb-line`.
+- To keep output compact while preserving useful location info, consider:
+  - `--check-max-tb=1 --check-max-tb-line=10`
 
 ### Added
 
 - added type testing with ty
   - now testing with both mypy and ty, may reduce that to just ty in the future
+- `--check-max-tb-line=<int>` option to enable one-line traceback formatting for additional check failures.
+
+### Changed
+
+- traceback reporting can now be split by threshold:
+  - failures up to `--check-max-tb` use full pseudo-tracebacks.
+  - failures above that and up to `--check-max-tb-line` use one-line tracebacks.
+
 
 
 ## [2.8.0] - 2026-Mar-22

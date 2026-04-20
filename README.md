@@ -311,6 +311,28 @@ FAILED test_check.py::test_example - check 1 > 2
 ============================ 1 failed in 0.01s =============================
 ```
 
+If you want shorter traceback details for additional failures, you can also use
+`--check-max-tb-line=<int>`.
+
+This setting works with `--check-max-tb`:
+
+- failures `1..check-max-tb`: full pseudo-traceback format
+- failures `(check-max-tb+1)..check-max-tb-line`: one-line traceback format
+- failures above `check-max-tb-line`: no traceback details
+
+Example:
+
+```
+$ pytest test_check.py --check-max-tb=1 --check-max-tb-line=4
+...
+FAILURE: check 1 > 2
+test_check.py:7 in test_example() -> check.greater(a, b)
+
+FAILURE: check 2 <= 1, test_check.py:8 in test_example() -> check.less_equal(b, a)
+FAILURE: check 1 in [2, 4, 6]: Is 1 in the list, test_check.py:9 in test_example() -> check.is_in(a, c, "Is 1 in the list")
+FAILURE: check 2 not in [2, 4, 6]: make sure 2 isn't in list, test_check.py:10 in test_example() -> check.is_not_in(b, c, "make sure 2 isn't in list")
+```
+
 ## Red output
 
 The failures will also be red, unless you turn that off with pytests `--color=no`.
@@ -359,6 +381,13 @@ There are a few ways to speed things up.
     * Allowing a limited number of pseudo-tracebacks speeds things up quite a bit.
     * Default is 1. 
         * Set a large number, e.g: 1000, if you want pseudo-tracebacks for all failures
+
+* `--check-max-tb-line=10` - Use one-line traceback format for additional failures.
+    * Works together with `--check-max-tb`.
+    * Failures up to `--check-max-tb` use full pseudo-tracebacks.
+    * Failures after that and up to `--check-max-tb-line` use one-line tracebacks.
+    * One-line tracebacks include file and line number, and include exception type/message when available.
+    * Default is 10.
 
 * `--check-max-report=10` - limit reported failures per test.
     * The example shows `10` but any number can be used.
