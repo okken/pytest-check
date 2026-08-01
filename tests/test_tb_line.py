@@ -66,3 +66,17 @@ def test_max_tb_line_includes_line_and_exception_summary(pytester):
         "test_example_multi_check_raises.py:6 in test_multi_check_raises() "
         '-> assert lst_1[-1] == "Fail 2": IndexError: list index out of range'
     ) in output
+
+
+def test_report_log_does_not_crash(pytester):
+    pytester.copy_example("examples/test_example_multiple_failures.py")
+    report_log = pytester.path / "log.json"
+
+    result = pytester.runpytest(
+        "--report-log=log.json",
+        "--check-max-tb=2",
+        "--check-max-tb-line=5",
+    )
+
+    result.assert_outcomes(failed=1)
+    assert report_log.exists()

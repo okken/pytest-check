@@ -32,13 +32,14 @@ def clear_failures() -> None:
     # gets called at the beginning of each test function
     global _failures, _num_failures
     global _max_fail, _max_report, _max_tb, _max_tb_line
-    global _xfailed_failure
+    global _xfailed_failure, _fail_function
     _failures = []
     _num_failures = 0
     _max_fail = _default_max_fail
     _max_report = _default_max_report
     _max_tb = _default_max_tb
     _max_tb_line = _default_max_tb_line
+    _fail_function = None
     _xfailed_failure = None
 
 

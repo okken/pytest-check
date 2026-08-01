@@ -11,7 +11,9 @@ from _pytest._code.code import (
     ExceptionChainRepr,
     ExceptionInfo,
     ExceptionRepr,
+    ReprEntry,
     ReprFileLocation,
+    ReprTraceback,
 )
 
 if TYPE_CHECKING:  # pragma: no cover
@@ -92,11 +94,17 @@ def pytest_runtest_makereport(
                     e_str = str(e)
                     e_str = e_str.split("FAILURE: ")[1]  # Remove redundant "Failure: "
                     reprcrash = ReprFileLocation(item.nodeid, 0, e_str)
-                    # FIXME - the next two lines have broken types
-                    reprtraceback = ExceptionRepr(reprcrash, excinfo)  # type: ignore
+                    reprentry = ReprEntry(
+                            lines=[],
+                            reprfuncargs=None,
+                            reprlocals=None,
+                            reprfileloc=reprcrash,
+                            style="auto"
+                    )
+                    reprtraceback = ReprTraceback([reprentry], None, "auto")
                     chain_repr = ExceptionChainRepr(
                         [(reprtraceback, reprcrash, str(e))]
-                    )  # type: ignore
+                    ) 
                     report.longrepr = chain_repr
                 else:  # pragma: no cover
                     # coverage is run on latest pytest
