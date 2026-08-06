@@ -45,7 +45,7 @@ def pytest_runtest_makereport(
     outcome: "Result[TestReport]" = yield
     report: TestReport = outcome.get_result()
 
-    num_failures = check_log._num_failures
+    num_failures = check_log.get_num_failures()
     failures = check_log.get_failures()
     check_log.clear_failures()
 
