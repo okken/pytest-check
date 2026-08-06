@@ -109,8 +109,8 @@ def test_log_failure_handles_empty_single_line_trace_path(monkeypatch):
         check_log, "_build_single_line_trace_str", lambda *_args, **_kwargs: ""
     )
 
-    check_log._max_tb = 1
-    check_log._max_tb_line = 2
+    check_log._current_state().max_tb = 1
+    check_log._current_state().max_tb_line = 2
 
     check_log.log_failure("first")
     check_log.log_failure("second")
