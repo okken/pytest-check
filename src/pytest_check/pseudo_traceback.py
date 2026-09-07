@@ -23,23 +23,13 @@ def get_full_context(
     (_, filename, line, funcname, contextlist) = frame[0:5]
     locals_ = frame.frame.f_locals
     tb_hide = bool(locals_.get("__tracebackhide__", False))
-    try:
-        filename = os.path.relpath(filename)
-    except ValueError:  # pragma: no cover
-        # this is necessary if we're tracing to a different drive letter
-        # such as C: to D:
-        #
-        # Turning off coverage for abspath, for now,
-        # since that path requires testing with an odd setup.
-        # But.... we'll keep looking for a way to test it. :)
-        filename = os.path.abspath(filename)  # pragma: no cover
+    filename = _shorten_filename(filename)
     context = contextlist[0].strip() if contextlist else ""
     return filename, line, funcname, context, locals_, tb_hide
 
 
 COLOR_RED = "\x1b[31m"
 COLOR_RESET = "\x1b[0m"
-
 
 def reformat_raw_traceback(lines: Iterable[str], color: bool) -> str:
     formatted: list[str] = []
@@ -56,7 +46,7 @@ def reformat_raw_traceback(lines: Iterable[str], color: bool) -> str:
         )
         if result:
             file_path, line_no, func_name, context = result.groups()
-            file_name = os.path.basename(file_path)
+            file_name = _shorten_filename(file_path, full_fallback=False)
             if color:
                 file_name = f"{COLOR_RED}{file_name}{COLOR_RESET}"
             # formatted.append(f'{file_name}:{line_no} in {func_name}\n    {context}')
@@ -85,10 +75,7 @@ def _line_to_trace_frame(
     except ValueError:  # pragma: no cover
         return None
 
-    try:
-        file_name = os.path.relpath(file_path)
-    except ValueError:  # pragma: no cover
-        file_name = os.path.abspath(file_path)  # pragma: no cover
+    file_name = _shorten_filename(file_path)
 
     return file_name, line_number, func_name, context.strip()
 
@@ -218,3 +205,17 @@ def _build_pseudo_trace_str(
         pseudo_trace.append(line_report)
 
     return "\n".join(reversed(pseudo_trace)) + "\n"
+
+def _shorten_filename(filename: str, full_fallback: bool = True)-> str:
+    try:
+        filename = os.path.relpath(filename)
+    except ValueError:  # pragma: no cover
+        # this is necessary if we're tracing to a different drive letter
+        # such as C: to D:
+        #
+        # Turning off coverage for abspath, for now,
+        # since that path requires testing with an odd setup.
+        # But.... we'll keep looking for a way to test it. :)
+        filename = os.path.abspath(filename) if full_fallback else os.path.basename(filename) # pragma: no cover
+    return filename
+
