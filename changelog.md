@@ -43,6 +43,37 @@ TEMPLATE_END
 
 -->
 
+## [Unreleased] - 5-Oct-2026
+
+### Highlights
+
+- nothing so far
+
+### Migration Notes
+
+- nothing so far
+
+### Added
+
+- nothing so far
+
+### Changed
+
+- test against Python 3.14t, 3.15, and 3.15t
+
+### Deprecated
+
+- nothing so far
+
+### Removed
+
+- nothing so far
+
+### Fixed
+
+- #203 call_on_fail() no longer registers globally since 2.9.1
+
+
 ## [2.9.1] - 31-July-2026
 
 ### Fixed
