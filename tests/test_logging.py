@@ -48,3 +48,31 @@ def test_print(testdir):
     result = testdir.runpytest()
     result.assert_outcomes(failed=1)
     result.stdout.fnmatch_lines(["*one*", "*two*", "*three*", "*four*", "*five*"])
+
+
+def test_session_callback_persists_across_tests(testdir):
+    testdir.makeconftest(
+        """
+        import pytest
+        from pytest_check import check
+
+        @pytest.fixture(scope="session", autouse=True)
+        def register_callback():
+            check.call_on_fail(print)
+        """
+    )
+    testdir.makepyfile(
+        """
+        from pytest_check import check
+
+        def test_one():
+            check.equal(1, 2)
+
+        def test_two():
+            check.equal(3, 4)
+        """
+    )
+
+    result = testdir.runpytest()
+    result.assert_outcomes(failed=2)
+    result.stdout.fnmatch_lines(["*check 1 == 2*", "*check 3 == 4*"])
