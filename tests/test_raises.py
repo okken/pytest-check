@@ -310,3 +310,28 @@ def test_raises_custom_msg(run_example_test):
     if version.parse(pytest.__version__) >= version.parse("7.3.0"):  # pragma: no branch
         expected_line += " - Custom error message"
     result.stdout.fnmatch_lines([expected_line])
+
+
+@pytest.mark.parametrize("style", ["context", "callable"])
+def test_raises_missing_exception_with_exitfirst(
+    pytester: pytest.Pytester, style: str
+) -> None:
+    invocation = (
+        "with raises(ValueError):\n        pass"
+        if style == "context"
+        else "raises(ValueError, lambda: None)"
+    )
+    pytester.makepyfile(
+        "from pathlib import Path\n"
+        "from pytest_check import raises\n\n"
+        "def test_missing_exception():\n"
+        f"    {invocation}\n"
+        '    Path("continued").touch()\n\n'
+        "def test_next():\n"
+        '    Path("next-test").touch()\n'
+    )
+    result = pytester.runpytest_subprocess("-x")
+    result.assert_outcomes(failed=1)
+    assert result.ret == 1
+    assert not (pytester.path / "continued").exists()
+    assert not (pytester.path / "next-test").exists()

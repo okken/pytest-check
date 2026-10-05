@@ -108,7 +108,7 @@ class CheckRaisesContext:
             # context.
             return True
 
-        if not _stop_on_fail:
+        if not _stop_on_fail or exc_type is None:
             # Returning something falsey here will cause the context
             # manager to *not* suppress an exception not in
             # `expected_excs`, thus allowing the higher-level Pytest
