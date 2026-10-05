@@ -316,22 +316,40 @@ def test_raises_custom_msg(run_example_test):
 def test_raises_missing_exception_with_exitfirst(
     pytester: pytest.Pytester, style: str
 ) -> None:
-    invocation = (
-        "with raises(ValueError):\n        pass"
-        if style == "context"
-        else "raises(ValueError, lambda: None)"
-    )
-    pytester.makepyfile(
-        "from pathlib import Path\n"
-        "from pytest_check import raises\n\n"
-        "def test_missing_exception():\n"
-        f"    {invocation}\n"
-        '    Path("continued").touch()\n\n'
-        "def test_next():\n"
-        '    Path("next-test").touch()\n'
-    )
-    result = pytester.runpytest_subprocess("-x")
+    # raises() can be used as a context manager or called directly with a
+    # callable; -x needs to stop execution the same way for both styles.
+    if style == "context":
+        pytester.makepyfile(
+            """
+            from pytest_check import raises
+
+            def test_missing_exception():
+                with raises(ValueError):
+                    pass
+                print("CONTINUED")
+
+            def test_next():
+                print("NEXT-TEST")
+        """,
+        )
+    else:
+        pytester.makepyfile(
+            """
+            from pytest_check import raises
+
+            def test_missing_exception():
+                raises(ValueError, lambda: None)
+                print("CONTINUED")
+
+            def test_next():
+                print("NEXT-TEST")
+        """,
+        )
+    result = pytester.runpytest_subprocess("-x", "-s")
     result.assert_outcomes(failed=1)
     assert result.ret == 1
-    assert not (pytester.path / "continued").exists()
-    assert not (pytester.path / "next-test").exists()
+    # -x should abort test_missing_exception right at the failed raises(),
+    # so the print after it should never run.
+    result.stdout.no_fnmatch_line("*CONTINUED*")
+    # -x should also stop the session before test_next ever runs.
+    result.stdout.no_fnmatch_line("*NEXT-TEST*")

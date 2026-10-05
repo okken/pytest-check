@@ -75,6 +75,9 @@ TEMPLATE_END
 ### Fixed
 
 - #203 call_on_fail() no longer registers globally since 2.9.1
+- Issue with raises
+  - no issue filed, but this is related to PR #205
+  - thanks [oyeong011](https://github.com/oyeong011)
 
 
 ## [2.9.1] - 31-July-2026
