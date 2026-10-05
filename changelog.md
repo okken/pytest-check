@@ -60,6 +60,9 @@ TEMPLATE_END
 ### Changed
 
 - test against Python 3.14t, 3.15, and 3.15t
+- show relative path from log_failures with tb
+  - this is to allow clicking on the file name in IDEs
+  - thanks [dpinol](https://github.com/dpinol)
 
 ### Deprecated
 
