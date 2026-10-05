@@ -44,7 +44,28 @@ def test_print(testdir):
             print('three')
             check.equal(1, 2, "four")
             print('five')
-        """)
+        """
+    )
     result = testdir.runpytest()
     result.assert_outcomes(failed=1)
     result.stdout.fnmatch_lines(["*one*", "*two*", "*three*", "*four*", "*five*"])
+
+
+def test_logging_to_a_file_example(pytester):
+    """
+    Verify the examples/logging_to_a_file example (documented in the README
+    "Logging to a file" section) correctly logs check failures to session.log.
+    """
+    pytester.copy_example("examples/logging_to_a_file/conftest.py")
+    pytester.copy_example("examples/logging_to_a_file/test_file_logging.py")
+
+    result = pytester.runpytest()
+    result.assert_outcomes(failed=2)
+
+    log_file = pytester.path / "session.log"
+    assert log_file.is_file()
+
+    content = log_file.read_text()
+    assert "Starting test run" in content
+    assert "FAILURE: check 1 == 2" in content
+    assert "FAILURE: check 5 == 6" in content

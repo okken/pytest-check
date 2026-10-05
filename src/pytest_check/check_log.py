@@ -32,15 +32,18 @@ def clear_failures() -> None:
     # gets called at the beginning of each test function
     global _failures, _num_failures
     global _max_fail, _max_report, _max_tb, _max_tb_line
-    global _xfailed_failure, _fail_function
+    global _xfailed_failure
     _failures = []
     _num_failures = 0
     _max_fail = _default_max_fail
     _max_report = _default_max_report
     _max_tb = _default_max_tb
     _max_tb_line = _default_max_tb_line
-    _fail_function = None
     _xfailed_failure = None
+    # Note: _fail_function (set via check.call_on_fail()) is intentionally NOT
+    # reset here. It's commonly registered once in a session/module-scoped
+    # fixture's setup phase, which runs before this is first called. Clearing
+    # it here would wipe out that registration before any check ever runs.
 
 
 def any_failures() -> bool:
