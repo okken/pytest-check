@@ -43,19 +43,15 @@ TEMPLATE_END
 
 -->
 
-## [Unreleased] - 5-Oct-2026
+## [2.10.1] - 10-Oct-2026
 
 ### Highlights
 
-- nothing so far
+- Fix call_on_fail() functionality, issue #203
+- Fix an issue with `-x` and `check.raises()`, PR #205
+- Show relative path in psuedo traceback
+- Test against 3.14t, 3.15, 3.15t
 
-### Migration Notes
-
-- nothing so far
-
-### Added
-
-- nothing so far
 
 ### Changed
 
@@ -64,21 +60,12 @@ TEMPLATE_END
   - this is to allow clicking on the file name in IDEs
   - thanks [dpinol](https://github.com/dpinol)
 
-### Deprecated
-
-- nothing so far
-
-### Removed
-
-- nothing so far
-
 ### Fixed
 
 - #203 call_on_fail() no longer registers globally since 2.9.1
 - Issue with raises
   - no issue filed, but this is related to PR #205
   - thanks [oyeong011](https://github.com/oyeong011)
-
 
 ## [2.9.1] - 31-July-2026
 
