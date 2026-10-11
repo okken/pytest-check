@@ -17,6 +17,23 @@ def test_passing_threaded_testcode(pytester):
     result.assert_outcomes(failed=0, passed=2)
 
 
+def test_xfailed_state_is_aggregated_from_child_thread():
+    # The test report reads the root state, which must include xfail reasons
+    # recorded by helper threads as well as failures recorded by the root.
+    parent = check_log._CheckState()
+    child = parent.new_child()
+
+    child.xfailed_failure = "failure in child thread"
+
+    assert parent.all_xfailed_failure() == "failure in child thread"
+
+
+def test_thread_context_propagation_is_idempotent():
+    # check_log installs the Thread.start() wrapper when imported. Calling the
+    # installer again must not wrap Thread.start() repeatedly.
+    check_log._propagate_context_to_new_threads()
+
+
 def test_concurrent_check_failures_are_tracked_per_thread():
     """
     Each thread's check failures should be tracked independently, so

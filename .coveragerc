@@ -4,4 +4,5 @@ branch = True
 [paths]
 source =
    src
-   .tox/*/site-packages
+   .tox/*/lib/python*/site-packages
+   .tox/*/Lib/site-packages

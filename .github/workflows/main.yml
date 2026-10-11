@@ -70,4 +70,4 @@ jobs:
       - name: Install Tox and any other packages
         run: pip install tox tox-uv
       - name: Run Tox quality checks
-        run: tox -e coverage
+        run: tox -e coverage-py313,run_parallel,swarm,freethreaded,coverage
