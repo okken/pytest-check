@@ -52,6 +52,7 @@ TEMPLATE_END
 ### Migration Notes
 
 - Failures raised in helper threads remain part of their parent test's report. When reading `check_log` from a worker thread, its failure state is now independent of other concurrently running threads.
+- Thanks [dpadninja](https://github.com/dpadninja) for getting the ball rolling on this
 
 ### Changed
 
