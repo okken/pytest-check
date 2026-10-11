@@ -6,19 +6,22 @@ Run this example with pytest-run-parallel installed:
     pip install pytest-run-parallel
     pytest examples/test_example_parallel_threads.py --parallel-threads=4 -v
 
+pytest-run-parallel runs a single test's body concurrently in several
+threads rather than running separate tests, so pytest-check's own
+"Failed Checks: N" reporting for the test as a whole is a combined total
+across every thread - true before and after the fix. The property this
+example actually checks is per-thread: each thread should see only the
+failures *it* logged via check_log.get_failures(), not its siblings'.
+
+That per-thread result is printed (not asserted) because pytest-check's
+own test reporting replaces a test's failure output whenever real check
+failures occur, which would otherwise hide a plain assert's message.
+Instead, look for a "MISMATCH" line in the captured stdout: its absence
+means every thread's check failures were tracked independently.
+
 Without --parallel-threads (or without the plugin installed), the test
-runs single-threaded with thread_index == 0 and num_failures == 0, so it
-passes cleanly - there's no bug to see yet.
-
-With --parallel-threads=4, four threads run the test body concurrently,
-each logging a different, known number of failures (0, 1, 2, and 3).
-Thread 0 logs none of its own failures and should therefore see 0 - but
-because check_log's state is shared, it instead sees all 6 failures
-logged by the other three threads, and fails with something like:
-
-    thread 0 expected to see 0 of its own failures, but check_log reports
-    6 total failures (state is shared/polluted across threads instead of
-    being private per thread)
+runs single-threaded with thread_index == 0 and num_failures == 0, so no
+checks are logged and there's nothing to print.
 """
 
 import threading
@@ -53,8 +56,11 @@ def test_check_failures_leak_across_parallel_threads(thread_index, num_parallel_
     barrier.wait()  # make sure every thread finishes logging before any reads the count
 
     seen = len(check_log.get_failures())
-    assert seen == num_failures, (
-        f"thread {thread_index} expected to see {num_failures} of its own "
-        f"failures, but check_log reports {seen} total failures (state is "
-        "shared/polluted across threads instead of being private per thread)"
-    )
+    if seen == num_failures:
+        print(f"thread {thread_index}: saw its own {seen} failure(s), as expected")
+    else:
+        print(
+            f"MISMATCH: thread {thread_index} expected to see {num_failures} of "
+            f"its own failures, but check_log reports {seen} total failures"
+        )
+

@@ -16,8 +16,17 @@ def test_check_failures_leak_across_parallel_threads(pytester):
     result = pytester.runpytest()
     result.assert_outcomes(passed=1)
 
-    # pytest-run-parallel runs the test body concurrently in 4 threads.
-    # If check_log's state were thread-local, each thread would only see
-    # its own failures and the whole run would still pass. 
+    # pytest-run-parallel runs the test body concurrently in 4 threads,
+    # each logging a different, known number of failures (0, 1, 2, 3), so
+    # the test is expected to fail/error either way - those are genuine
+    # check failures (0 + 1 + 2 + 3 = 6), not evidence of the bug.
+    #
+    # The property under test is per-thread isolation, which each thread
+    # prints to stdout rather than asserts (see the example's docstring
+    # for why). If check_log's state were shared instead of thread-local,
+    # every thread would see all 6 failures instead of just its own, and
+    # print a "MISMATCH" line.
     result = pytester.runpytest("--parallel-threads=4")
-    result.assert_outcomes(passed=1)
+    result.assert_outcomes(errors=1)
+    result.stdout.no_fnmatch_line("*MISMATCH*")
+

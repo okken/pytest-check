@@ -1,4 +1,6 @@
 from __future__ import annotations
+import contextvars
+import threading
 from collections.abc import Iterable
 from typing import Callable
 
@@ -7,43 +9,178 @@ from .pseudo_traceback import _build_pseudo_trace_str, _build_single_line_trace_
 should_use_color: bool = False
 COLOR_RED = "\x1b[31m"
 COLOR_RESET = "\x1b[0m"
-_failures: list[str] = []
 _stop_on_fail = False
 
+# Session-wide config, set once in pytest_configure() before any test runs.
+# Safe to keep as plain globals - never mutated per-test.
 _default_max_fail = None
 _default_max_report = None
 _default_max_tb: int = 1
 _default_max_tb_line: int | None = None
 
-_max_fail: int | None = _default_max_fail
-_max_report: int | None = _default_max_report
-_max_tb: int = _default_max_tb
-_max_tb_line: int | None = _default_max_tb_line
-_num_failures = 0
-_fail_function: Callable[[str], None] | None = None
-
 _showlocals: bool = False
 
-# Track checks with xfail reasons
-_xfailed_failure: str | None = None
+
+class _CheckState:
+    """Failure bookkeeping for a single, currently-running test, or for a
+    single thread spawned from one (see _propagate_context_to_new_threads).
+
+    Each state tracks its own failures only, and keeps a list of any child
+    states registered by threads spawned while it was current. The
+    all_*() methods walk that tree to answer "how many failures happened
+    in this test, including every thread it (transitively) spawned?",
+    while a thread reading its own state directly (via get_failures() from
+    inside that thread) sees only the failures it logged itself.
+    """
+
+    def __init__(self) -> None:
+        self.failures: list[str] = []
+        self.num_failures = 0
+        self.max_fail: int | None = _default_max_fail
+        self.max_report: int | None = _default_max_report
+        self.max_tb: int = _default_max_tb
+        self.max_tb_line: int | None = _default_max_tb_line
+        self.fail_function: Callable[[str], None] | None = None
+        # Track checks with xfail reasons
+        self.xfailed_failure: str | None = None
+        self._children: list[_CheckState] = []
+        # Guards _children: multiple sibling threads may spawn further
+        # threads of their own concurrently.
+        self._children_lock = threading.Lock()
+
+    def new_child(self) -> _CheckState:
+        """Create a state for a newly spawned thread, inheriting this
+        state's config (max_fail, fail_function, ...), and register it so
+        this state's all_*() methods pick up its failures too.
+        """
+        child = _CheckState()
+        child.max_fail = self.max_fail
+        child.max_report = self.max_report
+        child.max_tb = self.max_tb
+        child.max_tb_line = self.max_tb_line
+        child.fail_function = self.fail_function
+        with self._children_lock:
+            self._children.append(child)
+        return child
+
+    def _snapshot_children(self) -> list[_CheckState]:
+        with self._children_lock:
+            return list(self._children)
+
+    def all_failures(self) -> list[str]:
+        failures = list(self.failures)
+        for child in self._snapshot_children():
+            failures.extend(child.all_failures())
+        return failures
+
+    def all_num_failures(self) -> int:
+        total = self.num_failures
+        for child in self._snapshot_children():
+            total += child.all_num_failures()
+        return total
+
+    def all_xfailed_failure(self) -> str | None:
+        if self.xfailed_failure is not None:
+            return self.xfailed_failure
+        for child in self._snapshot_children():
+            found = child.all_xfailed_failure()
+            if found is not None:
+                return found
+        return None
+
+
+# One _CheckState tree per *currently executing test*, rooted at whichever
+# state was bound when the real pytest test item's call phase began.
+#
+# A plain threading.local() would isolate state between OS threads, which is
+# exactly what's needed when a thread-based parallel runner (pytest-swarm,
+# pytest-run-parallel, pytest-freethreaded, ...) executes several *different*
+# tests concurrently in separate worker threads - each worker must get its
+# own failure list.
+#
+# But pytest-check also documents and tests a different pattern: a *single*
+# test spawning helper threads (via threading.Thread or ThreadPoolExecutor)
+# and expecting check failures raised inside them to count against that one
+# test (see tests/test_thread.py). A bare threading.local() breaks that,
+# because the helper thread would get its own empty state that the main
+# thread's test report never sees.
+#
+# _CheckState's parent/child tree reconciles both: every new OS thread gets
+# its own, private _CheckState (so each thread can answer "how many of
+# *these* failures are mine?" correctly), but that state is also registered
+# as a child of whichever state was current in the thread that spawned it.
+# Reading failures via the all_*() methods walks the whole tree, so the
+# thread (or real test) at the root of the tree still sees every failure
+# logged by every thread it transitively spawned - preserving the "helper
+# thread's checks belong to the test that spawned it" behaviour that
+# pytest-check's global-state implementation used to provide for free.
+_state_var: contextvars.ContextVar[_CheckState] = contextvars.ContextVar(
+    "pytest_check_state"
+)
+
+
+def _current_state() -> _CheckState:
+    try:
+        return _state_var.get()
+    except LookupError:
+        state = _CheckState()
+        _state_var.set(state)
+        return state
+
+
+_propagation_installed = False
+
+
+def _propagate_context_to_new_threads() -> None:
+    """Give new threads their own _CheckState, registered as a child of
+    whichever state is current in the spawning thread.
+
+    threading.Thread (and, transitively, ThreadPoolExecutor workers on their
+    first task) normally start with a fresh, empty Context, so a ContextVar
+    set in the parent thread would not be visible to code running in the
+    child thread. Patching Thread.start() to bind a freshly-created child
+    _CheckState - parented to the spawning thread's current state - into a
+    copy of the calling thread's Context gives the new thread private
+    bookkeeping while keeping its failures visible to the spawning thread's
+    all_*() queries.
+
+    This is a process-wide, one-time patch applied when pytest-check is
+    loaded; it only affects contextvars propagation and has no effect on
+    unrelated thread behaviour.
+    """
+    global _propagation_installed
+    if _propagation_installed:
+        return
+    _propagation_installed = True
+
+    original_start = threading.Thread.start
+
+    def start_with_context(self: threading.Thread) -> None:
+        child_state = _current_state().new_child()
+        ctx = contextvars.copy_context()
+        original_run = self.run
+
+        def run_in_context() -> None:
+            def body() -> None:
+                _state_var.set(child_state)
+                original_run()
+
+            ctx.run(body)
+
+        self.run = run_in_context  # type: ignore[method-assign]
+        original_start(self)
+
+    threading.Thread.start = start_with_context  # type: ignore[method-assign]
+
+
+_propagate_context_to_new_threads()
 
 
 def clear_failures() -> None:
     # gets called at the beginning of each test function
-    global _failures, _num_failures
-    global _max_fail, _max_report, _max_tb, _max_tb_line
-    global _xfailed_failure
-    _failures = []
-    _num_failures = 0
-    _max_fail = _default_max_fail
-    _max_report = _default_max_report
-    _max_tb = _default_max_tb
-    _max_tb_line = _default_max_tb_line
-    _xfailed_failure = None
-    # Note: _fail_function (set via check.call_on_fail()) is intentionally NOT
-    # reset here. It's commonly registered once in a session/module-scoped
-    # fixture's setup phase, which runs before this is first called. Clearing
-    # it here would wipe out that registration before any check ever runs.
+    state = _CheckState()
+    state.fail_function = _current_state().fail_function
+    _state_var.set(state)
 
 
 def any_failures() -> bool:
@@ -51,7 +188,11 @@ def any_failures() -> bool:
 
 
 def get_failures() -> list[str]:
-    return _failures
+    return _current_state().all_failures()
+
+
+def get_num_failures() -> int:
+    return _current_state().all_num_failures()
 
 
 def log_failure(
@@ -60,23 +201,25 @@ def log_failure(
     tb: Iterable[str] | None = None,
     xfail: str | None = None,
 ) -> None:
-    global _num_failures
-    global _xfailed_failure
     __tracebackhide__ = True
-    _num_failures += 1
+    state = _current_state()
+    state.num_failures += 1
 
     msg = str(msg).strip()
 
     if check_str:
         msg = f"{msg}: {check_str}"
 
-    if (_max_report is None) or (_num_failures <= _max_report):
-        if _num_failures <= _max_tb:
+    if (state.max_report is None) or (state.num_failures <= state.max_report):
+        if state.num_failures <= state.max_tb:
             pseudo_trace_str = _build_pseudo_trace_str(
                 _showlocals, tb, should_use_color
             )
             msg = f"{msg}\n{pseudo_trace_str}"
-        elif _max_tb_line is not None and _num_failures <= _max_tb_line:
+        elif (
+            state.max_tb_line is not None
+            and state.num_failures <= state.max_tb_line
+        ):
             pseudo_trace_str = _build_single_line_trace_str(tb, should_use_color)
             if pseudo_trace_str:
                 msg = f"{msg}, {pseudo_trace_str}"
@@ -85,17 +228,17 @@ def log_failure(
             msg = f"{COLOR_RED}FAILURE: {COLOR_RESET}{msg}"
         else:
             msg = f"FAILURE: {msg}"
-        _failures.append(msg)
+        state.failures.append(msg)
 
-        if xfail and _xfailed_failure is None:
-            _xfailed_failure = xfail
+        if xfail and state.xfailed_failure is None:
+            state.xfailed_failure = xfail
 
-        if _fail_function:
-            _fail_function(str(msg))
+        if state.fail_function:
+            state.fail_function(str(msg))
 
-    if _max_fail and (_num_failures >= _max_fail):
-        assert_msg = f"pytest-check max fail of {_num_failures} reached"
-        assert _num_failures < _max_fail, assert_msg
+    if state.max_fail and (state.num_failures >= state.max_fail):
+        assert_msg = f"pytest-check max fail of {state.num_failures} reached"
+        assert state.num_failures < state.max_fail, assert_msg
 
     if _stop_on_fail:
         assert False, "Stopping on first failure"
@@ -103,4 +246,4 @@ def log_failure(
 
 def get_xfailed_failure() -> str | None:
     """Return the xfail reason for the first check that failed with xfail."""
-    return _xfailed_failure
+    return _current_state().all_xfailed_failure()

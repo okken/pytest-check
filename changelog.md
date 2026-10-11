@@ -43,6 +43,25 @@ TEMPLATE_END
 
 -->
 
+## [3.0.0] - 10-Oct-2026
+
+### Highlights
+
+- This plugin should now work fine with tests running in parallel with other plugins such as `pytest-run-parallel`, `pytest-swarm`,  or `pytest-freethreaded`.
+
+### Migration Notes
+
+- Failures raised in helper threads remain part of their parent test's report. When reading `check_log` from a worker thread, its failure state is now independent of other concurrently running threads.
+
+### Changed
+
+- Check failure state is now isolated per thread and aggregated through parent/child thread relationships, preserving a test's combined failure report when it starts helper threads.
+
+### Fixed
+
+- Prevent failure counts and messages from leaking between tests executed concurrently in threads.
+- Verify thread-state isolation with `pytest-swarm`, `pytest-freethreaded`, and `pytest-run-parallel`.
+
 ## [2.10.1] - 10-Oct-2026
 
 ### Highlights
