@@ -13,3 +13,8 @@ require_pytest_reportlog = pytest.mark.skipif(
     importlib.util.find_spec("pytest_reportlog") is None,
     reason="requires pytest-reportlog",
 )
+
+require_pytest_run_parallel = pytest.mark.skipif(
+    importlib.util.find_spec("pytest_run_parallel") is None,
+    reason="requires pytest-run-parallel",
+)
