@@ -167,7 +167,7 @@ def _propagate_context_to_new_threads() -> None:
 
             ctx.run(body)
 
-        self.run = run_in_context  # type: ignore[method-assign]
+        self.run = run_in_context  # type: ignore[method-assign]  # ty: ignore[invalid-assignment]
         original_start(self)
 
     threading.Thread.start = start_with_context  # type: ignore[method-assign]
