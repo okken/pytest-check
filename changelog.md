@@ -43,7 +43,7 @@ TEMPLATE_END
 
 -->
 
-## [Unreleased]
+## [3.0.1] - 12-Oct-2026
 
 ### Fixed
 
