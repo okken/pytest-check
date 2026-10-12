@@ -43,6 +43,12 @@ TEMPLATE_END
 
 -->
 
+## [Unreleased]
+
+### Fixed
+
+- Truncate long local values in check pseudo tracebacks with `-l` or `-lv`, while preserving full values with `-lvv` (issue #208).
+
 ## [3.0.0] - 10-Oct-2026
 
 ### Highlights

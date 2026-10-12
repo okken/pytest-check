@@ -8,6 +8,8 @@ from inspect import FrameInfo
 from pprint import pformat
 from typing import AnyStr, Any
 
+from _pytest._io.saferepr import saferepr
+
 if sys.version_info < (3, 11):  # pragma: no cover
     from typing_extensions import LiteralString
 else:
@@ -15,6 +17,7 @@ else:
 
 
 _traceback_style = "auto"
+_truncate_locals = True
 
 
 def get_full_context(
@@ -196,7 +199,12 @@ def _build_pseudo_trace_str(
                 if not name.startswith("@py"):
                     pseudo_trace.append(
                         "%-10s = %s"
-                        % (name, pformat(val, sort_dicts=False, compact=True))
+                        % (
+                            name,
+                            saferepr(val)
+                            if _truncate_locals
+                            else pformat(val, sort_dicts=False, compact=True),
+                        )
                     )
 
         if color:

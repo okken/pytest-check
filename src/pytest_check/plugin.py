@@ -186,6 +186,7 @@ def pytest_configure(config: Config) -> None:
     traceback_style = config.getoption("tbstyle", default=None)
     pseudo_traceback._traceback_style = traceback_style
     check_log._showlocals = config.getoption("showlocals", default=None)
+    pseudo_traceback._truncate_locals = config.getoption("verbose", default=0) <= 1
 
     # grab options
     check_log._default_max_fail = config.getoption("--check-max-fail")
