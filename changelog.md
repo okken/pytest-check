@@ -39,9 +39,23 @@ TEMPLATE_START
 
 - nothing so far
 
+### Developer Experience
+
+- nothing so far
+
 TEMPLATE_END
 
 -->
+
+## [3.0.2] - 13-Oct-2026
+
+### Fixed
+
+- Report failed checks correctly in `unittest.IsolatedAsyncioTestCase` tests (issue #210).
+
+### Developer Experience
+
+- Split mypy checks into separate tox environments so they can run in parallel with `tox -p`.
 
 ## [3.0.1] - 12-Oct-2026
 
