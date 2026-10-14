@@ -167,6 +167,10 @@ def _match_exception(exc_name: str, failures: list[str]) -> bool:
 
 
 def pytest_configure(config: Config) -> None:
+    # IsolatedAsyncioTestCase snapshots the current context when its test case
+    # is created during collection. Seed the state before that snapshot.
+    check_log.clear_failures()
+
     # Add some red to the failure output, if stdout can accommodate it.
     isatty = sys.stdout.isatty()
     color = getattr(config.option, "color", None)

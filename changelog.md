@@ -47,6 +47,16 @@ TEMPLATE_END
 
 -->
 
+## [3.0.3] - 14-Oct-2026
+
+### Fixed
+
+- Second attempt to fix issue #210.
+  - First attempt "seemed" fixed in the context of the in-process pytest runner, but failed as a subprocess.
+  - I've added a subprocess run, and a fix.
+  - Pretty sure it's fixed now.
+
+
 ## [3.0.2] - 13-Oct-2026
 
 ### Fixed
