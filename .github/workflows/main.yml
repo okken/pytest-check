@@ -42,7 +42,7 @@ jobs:
       - name: Install Tox and any other packages
         run: pip install tox tox-uv
       - name: Run Tox quality checks
-        run: tox -e lint,mypy
+        run: tox -p -m static-analysis
  
   pytest-7-earliest:
     runs-on: ubuntu-latest
