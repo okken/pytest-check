@@ -63,6 +63,18 @@ class _CheckState:
             self._children.append(child)
         return child
 
+    def clear(self) -> None:
+        """Reset per-test data in place so copied async contexts still see it."""
+        self.failures = []
+        self.num_failures = 0
+        self.max_fail = _default_max_fail
+        self.max_report = _default_max_report
+        self.max_tb = _default_max_tb
+        self.max_tb_line = _default_max_tb_line
+        self.xfailed_failure = None
+        with self._children_lock:
+            self._children = []
+
     def _snapshot_children(self) -> list[_CheckState]:
         with self._children_lock:
             return list(self._children)
@@ -178,9 +190,7 @@ _propagate_context_to_new_threads()
 
 def clear_failures() -> None:
     # gets called at the beginning of each test function
-    state = _CheckState()
-    state.fail_function = _current_state().fail_function
-    _state_var.set(state)
+    _current_state().clear()
 
 
 def any_failures() -> bool:
