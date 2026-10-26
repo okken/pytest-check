@@ -42,6 +42,32 @@ def test_raises_with_assertion_error():
         assert 0
 
 
+@pytest.mark.parametrize('callable_form', [False, True])
+def test_raises_with_exception_iterator(testdir, callable_form):
+    testdir.makepyfile(
+        """
+        from pytest_check import raises
+
+        def raise_error():
+            raise ValueError('expected')
+
+        def test_expected():
+            expected = iter([TypeError, ValueError])
+            if CALLABLE_FORM:
+                raises(expected, raise_error)
+            else:
+                with raises(expected):
+                    raise_error()
+
+        def test_unexpected():
+            with raises(iter([TypeError])):
+                raise_error()
+        """.replace('CALLABLE_FORM', repr(callable_form))
+    )
+    result = testdir.runpytest()
+    result.assert_outcomes(passed=1, failed=1)
+
+
 def test_raises_with_multiple_errors(testdir):
     with raises((_TestException, AnotherTestException)):
         raise _TestException
