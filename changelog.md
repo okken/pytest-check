@@ -47,6 +47,12 @@ TEMPLATE_END
 
 -->
 
+## [Unreleased]
+
+### Fixed
+
+- Keep custom check context messages separate when contexts are nested, saved for later, or used in different threads.
+
 ## [3.0.3] - 14-Oct-2026
 
 ### Fixed
