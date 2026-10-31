@@ -47,6 +47,13 @@ TEMPLATE_END
 
 -->
 
+## [Unreleased]
+
+### Fixed
+
+- Preserve pytest's source highlighting for assertions that fail after a soft
+  check, retaining both failure reports (#216).
+
 ## [3.0.3] - 14-Oct-2026
 
 ### Fixed

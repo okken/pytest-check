@@ -63,6 +63,7 @@ def pytest_runtest_makereport(
             report.wasxfail = xfailed_value.reason
         else:
             summary = f"Failed Checks: {num_failures}"
+            original_longrepr = report.longrepr
             longrepr = ["\n".join(failures), "-" * 60, summary]
 
             if report.longrepr:
@@ -110,6 +111,22 @@ def pytest_runtest_makereport(
                     # we'll have one test run on an older pytest just to make sure
                     # it works.
                     ...
+
+            if isinstance(original_longrepr, ExceptionChainRepr):
+                # Keep pytest's source-aware renderer for a simultaneous
+                # assertion/exception instead of flattening it into text.
+                checks_crash = original_longrepr.reprcrash
+                if isinstance(report.longrepr, ExceptionChainRepr):
+                    checks_crash = report.longrepr.reprcrash
+                combined = ExceptionChainRepr(
+                    [
+                        (ReprTraceback([], None, "auto"), checks_crash, "\n".join(longrepr[:3])),
+                        *original_longrepr.chain,
+                    ]
+                )
+                combined.reprcrash = checks_crash
+                combined.sections.extend(original_longrepr.sections)
+                report.longrepr = combined
 
             call.excinfo = excinfo
 
