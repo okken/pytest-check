@@ -47,6 +47,13 @@ TEMPLATE_END
 
 -->
 
+## [Unreleased]
+
+### Fixed
+
+- Release completed thread context wrappers without requiring cyclic garbage
+  collection, preserving existing run overrides and cleaning up failed starts (#217).
+
 ## [3.0.3] - 14-Oct-2026
 
 ### Fixed

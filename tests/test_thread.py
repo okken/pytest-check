@@ -1,6 +1,63 @@
-from threading import Barrier, Thread
+import gc
+import threading
+from threading import Barrier, Thread, Timer
+import weakref
+
+import pytest
 
 from pytest_check import check, check_log
+
+
+@pytest.mark.parametrize("timer", [False, True])
+def test_finished_threads_do_not_need_garbage_collection(timer):
+    was_enabled = gc.isenabled()
+    gc.disable()
+    try:
+        thread = Timer(60, lambda: None) if timer else Thread(target=lambda: None)
+        reference = weakref.ref(thread)
+        thread.start()
+        if isinstance(thread, Timer):
+            thread.cancel()
+        thread.join()
+        del thread
+        assert reference() is None
+    finally:
+        if was_enabled:
+            gc.enable()
+
+
+def test_thread_run_override_is_restored():
+    thread = Thread()
+
+    def original_run():
+        pass
+    thread.__dict__["run"] = original_run
+    thread.start()
+    thread.join()
+    assert thread.run is original_run
+
+
+def test_failed_thread_start_does_not_leave_wrapper():
+    thread = Thread(target=lambda: None)
+    thread.start()
+    thread.join()
+    with pytest.raises(RuntimeError, match="once"):
+        thread.start()
+    assert "run" not in thread.__dict__
+
+
+def test_thread_run_is_restored_after_error(monkeypatch):
+    errors = []
+    monkeypatch.setattr(threading, "excepthook", lambda args: errors.append(args.exc_type))
+
+    def fail():
+        raise ValueError("thread failed")
+
+    thread = Thread(target=fail)
+    thread.start()
+    thread.join()
+    assert errors == [ValueError]
+    assert "run" not in thread.__dict__
 
 
 def test_failing_threaded_testcode(pytester):

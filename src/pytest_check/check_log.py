@@ -171,16 +171,32 @@ def _propagate_context_to_new_threads() -> None:
         child_state = _current_state().new_child()
         ctx = contextvars.copy_context()
         original_run = self.run
+        had_run_override = "run" in self.__dict__
+
+        def restore_run() -> None:
+            if had_run_override:
+                self.__dict__["run"] = original_run
+            else:
+                self.__dict__.pop("run", None)
 
         def run_in_context() -> None:
             def body() -> None:
                 _state_var.set(child_state)
                 original_run()
 
-            ctx.run(body)
+            try:
+                ctx.run(body)
+            finally:
+                # The wrapper closes over the thread's bound run method.
+                # Remove that reference even if its body raises.
+                restore_run()
 
         self.run = run_in_context  # type: ignore[method-assign]  # ty: ignore[invalid-assignment]
-        original_start(self)
+        try:
+            original_start(self)
+        except BaseException:
+            restore_run()
+            raise
 
     threading.Thread.start = start_with_context  # type: ignore[method-assign]
 
