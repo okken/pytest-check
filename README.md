@@ -345,7 +345,7 @@ You can turn off the failure reports with pytests `--tb=no`.
 
 Setting `-x` or `--maxfail=1` will cause this plugin to abort testing after the first failed check.
 
-Setting `-maxfail=2` or greater will turn off any handling of maxfail within this plugin and the behavior is controlled by pytest.
+Setting `--maxfail=2` or greater will turn off any handling of maxfail within this plugin and the behavior is controlled by pytest.
 
 In other words, the `maxfail` count is counting tests, not checks.
 The exception is the case of `1`, where we want to stop on the very first failed check.
