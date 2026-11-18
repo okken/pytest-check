@@ -47,13 +47,7 @@ TEMPLATE_END
 
 -->
 
-## [Unreleased]
-
-### Fixed
-
-- Release completed thread context wrappers without requiring cyclic garbage
-  collection, preserving existing run overrides and cleaning up failed starts (#217).
-- Keep custom check context messages separate when contexts are nested, saved for later, or used in different threads.
+## [3.1.0] - 17-Nov-2026 
 
 ### Removed
 
@@ -62,8 +56,20 @@ TEMPLATE_END
 
 ### Fixed
 
+- Release completed thread context wrappers without requiring cyclic garbage
+  collection, preserving existing run overrides and cleaning up failed starts (#217).
+- Keep custom check context messages separate when contexts are nested, saved for later, or used in different threads (#215).
 - Preserve pytest's source highlighting for assertions that fail after a soft
   check, retaining both failure reports (#216).
+- `check.raises()` no longer consumes a generator or other one-shot iterable of
+  expected exceptions while validating it (#214).
+- README: corrected the `--maxfail` option spelling.
+
+### Developer Experience
+
+- Coverage environment now installs `pytest-xdist` and measures subprocesses
+  (`patch = subprocess` in `.coveragerc`), so code paths that only run in
+  xdist workers are covered.
 
 ## [3.0.3] - 14-Oct-2026
 
