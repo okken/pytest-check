@@ -51,6 +51,8 @@ TEMPLATE_END
 
 ### Fixed
 
+- Release completed thread context wrappers without requiring cyclic garbage
+  collection, preserving existing run overrides and cleaning up failed starts (#217).
 - Keep custom check context messages separate when contexts are nested, saved for later, or used in different threads.
 
 ### Removed
