@@ -47,7 +47,11 @@ TEMPLATE_END
 
 -->
 
-## [unreleased] - dd-month-yyyy
+## [Unreleased]
+
+### Fixed
+
+- Keep custom check context messages separate when contexts are nested, saved for later, or used in different threads.
 
 ### Removed
 
