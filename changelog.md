@@ -53,6 +53,11 @@ TEMPLATE_END
 
 - Keep custom check context messages separate when contexts are nested, saved for later, or used in different threads.
 
+### Removed
+
+- Support for Python 3.9
+  - pytest now requires 3.10+, so we may as well also
+
 ## [3.0.3] - 14-Oct-2026
 
 ### Fixed
