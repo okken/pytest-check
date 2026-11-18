@@ -54,6 +54,11 @@ TEMPLATE_END
 - Support for Python 3.9
   - pytest now requires 3.10+, so we may as well also
 
+### Fixed
+
+- Preserve pytest's source highlighting for assertions that fail after a soft
+  check, retaining both failure reports (#216).
+
 ## [3.0.3] - 14-Oct-2026
 
 ### Fixed
