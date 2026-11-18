@@ -22,7 +22,7 @@ def test_finished_threads_do_not_need_garbage_collection(timer):
         del thread
         assert reference() is None
     finally:
-        if was_enabled:
+        if was_enabled:  # pragma: no branch
             gc.enable()
 
 
