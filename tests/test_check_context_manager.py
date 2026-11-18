@@ -48,3 +48,32 @@ def test_context_manager_shows_custom_messages_on_failure(
     assert "first fail" in str(result.stdout)
     assert "second fail" in str(result.stdout)
     assert "third fail" in str(result.stdout)
+
+
+def test_nested_context_messages_remain_separate(run_example_test: Callable) -> None:
+    result = run_example_test("test_example_context_manager_messages.py", "nested_messages")
+    result.assert_outcomes(failed=1)
+    result.stdout.fnmatch_lines(
+        ["*FAILURE: inner failure, inner message*", "*FAILURE: outer failure, outer message*"]
+    )
+
+
+def test_saved_context_messages_remain_separate(run_example_test: Callable) -> None:
+    result = run_example_test("test_example_context_manager_messages.py", "saved_messages")
+    result.assert_outcomes(failed=1)
+    result.stdout.fnmatch_lines(
+        ["*FAILURE: first failure, first message*", "*FAILURE: second failure, second message*"]
+    )
+
+
+def test_thread_context_messages_remain_separate(run_example_test: Callable) -> None:
+    result = run_example_test("test_example_context_manager_messages.py", "thread_messages")
+    result.assert_outcomes(failed=1)
+    result.stdout.fnmatch_lines(
+        ["*FAILURE: first failure, first message*", "*FAILURE: second failure, second message*"]
+    )
+
+
+def test_configured_context_keeps_bound_helpers(run_example_test: Callable) -> None:
+    result = run_example_test("test_example_context_manager_messages.py", "bound_helpers")
+    result.assert_outcomes(passed=1)
