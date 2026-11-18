@@ -51,7 +51,7 @@ def raises(
     if isinstance(expected_exception, type):
         expected_exceptions: Iterable[type] = (expected_exception,)
     else:
-        expected_exceptions = expected_exception
+        expected_exceptions = tuple(expected_exception)
 
     assert all(
         isinstance(exc, type) or issubclass(exc, BaseException)
