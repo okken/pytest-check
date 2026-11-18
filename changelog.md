@@ -53,6 +53,12 @@ TEMPLATE_END
 
 - Release completed thread context wrappers without requiring cyclic garbage
   collection, preserving existing run overrides and cleaning up failed starts (#217).
+## [unreleased] - dd-month-yyyy
+
+### Removed
+
+- Support for Python 3.9
+  - pytest now requires 3.10+, so we may as well also
 
 ## [3.0.3] - 14-Oct-2026
 

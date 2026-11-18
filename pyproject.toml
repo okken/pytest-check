@@ -5,13 +5,12 @@ readme = "README.md"
 license = { file = "LICENSE.txt" }
 description = "A pytest plugin that allows multiple failures per test."
 version = "3.0.3"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 classifiers = [
   'Development Status :: 5 - Production/Stable',
   'Framework :: Pytest',
   'Intended Audience :: Developers',
   'Programming Language :: Python',
-  'Programming Language :: Python :: 3.9',
   'Programming Language :: Python :: 3.10',
   'Programming Language :: Python :: 3.11',
   'Programming Language :: Python :: 3.12',
