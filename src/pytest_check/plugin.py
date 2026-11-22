@@ -91,8 +91,8 @@ def pytest_runtest_makereport(
                     #   =========== short test summary info ===========
                     #   FAILED test_example_simple.py::test_fail - assert 1 == 2
                     #
-                    e_str = str(e)
-                    e_str = e_str.split("FAILURE: ")[1]  # Remove redundant "Failure: "
+                    # Remove only the reporting prefix from the first failure.
+                    e_str = failures[0].split("FAILURE: ", 1)[-1]
                     reprcrash = ReprFileLocation(item.nodeid, 0, e_str)
                     reprentry = ReprEntry(
                             lines=[],
