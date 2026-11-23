@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import Iterable, Any
 from types import TracebackType
 
-from .check_log import log_failure
+from .check_log import _is_control_flow_exception, log_failure
 
 _stop_on_fail = False
 
@@ -107,6 +107,9 @@ class CheckRaisesContext:
             # to silence this error and proceed with execution outside the
             # context.
             return True
+
+        if exc_type is not None and _is_control_flow_exception(exc_type):
+            return False
 
         if not _stop_on_fail or exc_type is None:
             # Returning something falsey here will cause the context

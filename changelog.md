@@ -47,6 +47,14 @@ TEMPLATE_END
 
 -->
 
+## [Unreleased]
+
+### Fixed
+
+- Preserve pytest skips, expected-failure outcomes, session exits and unmatched
+  process-control exceptions inside check contexts, while keeping ordinary
+  failures soft and honoring explicitly expected exceptions in `raises()`.
+
 ## [3.1.0] - 17-Nov-2026 
 
 ### Removed
