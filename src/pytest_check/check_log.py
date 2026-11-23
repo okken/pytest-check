@@ -4,6 +4,8 @@ import threading
 from collections.abc import Iterable
 from typing import Callable
 
+import pytest
+
 from .pseudo_traceback import _build_pseudo_trace_str, _build_single_line_trace_str
 
 should_use_color: bool = False
@@ -19,6 +21,15 @@ _default_max_tb: int = 1
 _default_max_tb_line: int | None = None
 
 _showlocals: bool = False
+
+
+def _is_control_flow_exception(exc_type: type[BaseException]) -> bool:
+    # pytest.fail is a soft failure even though it inherits BaseException.
+    # xfail subclasses pytest.fail; pytest.exit inherits Exception. Both
+    # still control execution rather than recording a normal check failure.
+    return issubclass(exc_type, (pytest.xfail.Exception, pytest.exit.Exception)) or not issubclass(
+        exc_type, (Exception, pytest.fail.Exception)
+    )
 
 
 class _CheckState:

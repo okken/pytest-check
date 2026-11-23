@@ -6,7 +6,7 @@ from types import TracebackType
 from typing import Any, Callable, Type
 
 from . import check_log
-from .check_log import log_failure
+from .check_log import _is_control_flow_exception, log_failure
 
 _stop_on_fail = False
 
@@ -31,6 +31,9 @@ class CheckContextManager:
     ) -> bool | None:
         __tracebackhide__ = True
         if exc_type is not None:
+            if _is_control_flow_exception(exc_type):
+                self.msg = None
+                return False
             if _stop_on_fail:
                 self.msg = None
                 return None

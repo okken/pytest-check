@@ -236,6 +236,13 @@ def test_raises_and_xfail():
 ```
 
 
+`with check` and `check.raises()` let pytest skips, expected-failure outcomes,
+session exits and unmatched process-control exceptions propagate instead of
+recording them as new soft failures. `raises()` still catches an explicitly
+expected exception, including when the expected type is `BaseException`.
+`pytest.fail()` continues to count as a soft failure. Earlier check failures
+retain their existing reporting behavior.
+
 ## Pseudo-tracebacks
 
 With `check`, tests can have multiple failures per test.
